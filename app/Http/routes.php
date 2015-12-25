@@ -35,3 +35,8 @@ Route::group(['middleware' => 'web'], function () {
 
     Route::get('/home', 'HomeController@index');
 });
+
+Route::group(['namespace' => 'Product', 'prefix' => 'product'], function()
+{
+	Route::get('create', 'ProductController@create');
+});
