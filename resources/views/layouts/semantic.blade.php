@@ -1,25 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
     <title>Always</title>
     <!-- Styles -->
     <link href="{{ elixir('css/semantic.css') }}" rel="stylesheet">
 </head>
 <body class="started pushable">
-    <div class="ui stackable menu">
+    <div class="ui attached menu">
         <div class="item">
             <img src="/image/logo.png" />
         </div>
         <a class="item active">Features</a>
         <a class="item">Testimonials</a>
-        <a class="item">Sign-in</a>
+        <div class="right menu">
+            <div class="ui right aligned category search item">
+                <div class="ui transparent icon input">
+                <input class="prompt" type="text" placeholder="Search animals...">
+                <i class="search link icon"></i>
+                </div>
+                <div class="results"></div>
+            </div>
+            <a class="item right">Logout</a>
+        </div>
     </div>
 
     <div class="ui main text container">
+        <div class="ui label">
+            <i class="search link icon"></i>
+        </div>
         @yield('content')
     </div>
 
@@ -52,6 +64,7 @@
         </div>
     </div>
     <!-- JavaScripts -->
+    <script src="/js/jquery.min.js"></script>
     <script src="{{ elixir('js/semantic.js') }}"></script>
 </body>
 </html>
