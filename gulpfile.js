@@ -13,4 +13,11 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.sass('app.scss');
+    mix.copy('node_modules/semantic-ui/dist/semantic.js', 'public/js/semantic.js')
+    mix.copy('node_modules/semantic-ui/dist/semantic.css', 'public/css/semantic.css')
+    mix.version([
+		'public/js/semantic.js',
+		'public/css/semantic.css',
+	]);
+
 });
