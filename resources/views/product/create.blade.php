@@ -2,7 +2,7 @@
 
 @section('content')
 	<h1 class="ui header">This is product page</h1>
-	{!! Form::open(array('url' => 'product/create', 'class' => 'ui form' )) !!}
+	{!! Form::open(array('url' => 'product', 'method' => 'POST', 'class' => 'ui form' )) !!}
 		<div class="field">
 			<label>Name</label>
 			{!! Form::text('name') !!}

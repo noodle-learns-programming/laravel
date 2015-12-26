@@ -38,5 +38,5 @@ Route::group(['middleware' => 'web'], function () {
 
 Route::group(['namespace' => 'Product', 'prefix' => 'product'], function()
 {
-	Route::get('create', 'ProductController@create');
+	Route::resource('/', 'ProductController');
 });
