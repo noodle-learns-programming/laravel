@@ -1,5 +1,5 @@
 var elixir 	= require('laravel-elixir');
-
+	require("laravel-elixir-webpack");
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -12,5 +12,12 @@ var elixir 	= require('laravel-elixir');
  */
 
 elixir(function(mix) {
+    mix.webpack("app.js", {
+        outputDir: "public/js",
+        output: {
+            filename: "bundle.js"
+        }
+    });
     mix.sass('app.scss');
+    mix.version("js/bundle.js");
 });

@@ -57,5 +57,6 @@
     <script src="/js/underscore.min.js"></script>
     <script src="/js/backbone.min.js"></script>
     <script src="/js/semantic.min.js"></script>
+    <script src="{{ elixir('js/bundle.js') }}"></script>
 </body>
 </html>
