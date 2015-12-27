@@ -1,4 +1,4 @@
-<div class="ui vertical menu">
+<div class="ui inverted vertical thin sidebar menu uncover visible">
     <div class="item">
         <div class="header">Product</div>
         <div class="menu">

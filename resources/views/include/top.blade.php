@@ -1,7 +1,7 @@
-<div class="ui attached menu">
-    <div class="item">
-        <img src="/image/logo.png" />
-    </div>
+<div class="ui top attached menu">
+    <a class="item" id="sidebar">
+        <i class="sidebar icon"></i>
+    </a>
     <a class="item active">Dashboard</a>
     <div class="right menu">
         <div class="ui right aligned category search item">

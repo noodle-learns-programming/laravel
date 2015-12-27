@@ -10,31 +10,17 @@
     <link href="/css/semantic.min.css" rel="stylesheet">
     <link href="{{ elixir('css/all.css') }}" rel="stylesheet"></link>
 </head>
-<body class="pushable">
+<body>
     @include('include.top')
-
-    <div class="pusher">
-        <div class="full height">
-            <div id="leftNag">
-                @include('include.navigate')
-            </div>
-            <div id="centerMain">
-                <div class="ui vertically divided grid">
-                    <div class="row">
-                        <div class="thirdteen wide column">
-                            <div id="app"></div>
-                            <div class="ui container">
-                                @yield('content')
-                            </div>
-                        </div>
-                        <div class="three wide column"></div>
-                    </div>
-                </div>
+    <div class="ui bottom attached segment pushable">
+        @include('include.navigate')
+        <div class="pusher">
+            <div class="ui basic segment">
+                <h3 class="ui header">Application Content</h3>
+                @yield('content')
             </div>
         </div>
     </div>
-    
-    @include('include.footer')
     <!-- JavaScripts -->
     <script src="/js/jquery.min.js"></script>
     <script src="/js/underscore.min.js"></script>
