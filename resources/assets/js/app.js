@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-import Hello from './test.jsx';
+import Hello from './../jsx/test.jsx';
 
 main();
 
