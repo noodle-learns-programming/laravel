@@ -1,5 +1,7 @@
-var elixir 	= require('laravel-elixir');
-	require("laravel-elixir-webpack");
+var elixir  = require('laravel-elixir');
+    require("laravel-elixir-webpack");
+
+var path = require('path');
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -16,8 +18,20 @@ elixir(function(mix) {
         outputDir: "public/js",
         output: {
             filename: "bundle.js"
+        },
+        module: {
+            loaders : [{
+                test    : /\.jsx?$/,
+                loader  : ['babel'],
+                exclude : /node_modules/,
+                query   : {
+                    presets: ['react', 'es2015']
+                }
+            }]
         }
     });
-    mix.sass('app.scss');
-    mix.version("js/bundle.js");
+    mix.styles([
+        'app.css'
+    ]);
+    mix.version(["js/bundle.js", "css/all.css"]);
 });

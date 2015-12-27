@@ -8,21 +8,29 @@
     <title>Always</title>
     <!-- Styles -->
     <link href="/css/semantic.min.css" rel="stylesheet">
+    <link href="{{ elixir('css/all.css') }}" rel="stylesheet"></link>
 </head>
-<body class="">
+<body class="pushable">
     @include('include.top')
 
-    <div class="ui vertically divided grid">
-        <div class="row">
-            <div class="three wide column">
+    <div class="pusher">
+        <div class="full height">
+            <div id="leftNag">
                 @include('include.navigate')
             </div>
-            <div class="ten wide column">
-                <div class="ui container">
-                    @yield('content')
+            <div id="centerMain">
+                <div class="ui vertically divided grid">
+                    <div class="row">
+                        <div class="thirdteen wide column">
+                            <div id="app"></div>
+                            <div class="ui container">
+                                @yield('content')
+                            </div>
+                        </div>
+                        <div class="three wide column"></div>
+                    </div>
                 </div>
             </div>
-            <div class="three wide column"></div>
         </div>
     </div>
     
