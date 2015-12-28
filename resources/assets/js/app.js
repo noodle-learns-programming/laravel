@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-import Hello from './../jsx/test.jsx';
+import Product from '../jsx/product.jsx';
 
 
 (function(){
@@ -16,6 +16,7 @@ App.Router = Backbone.Router.extend({
 		'': 'index'
 	},
 	index: function(){
+		ReactDOM.render(<Product />, document.getElementById('main'));
 	}
 });
 

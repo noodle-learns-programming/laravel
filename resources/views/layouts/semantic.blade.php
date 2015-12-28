@@ -9,23 +9,26 @@
     <!-- Styles -->
     <link href="/css/semantic.min.css" rel="stylesheet">
     <link href="{{ elixir('css/all.css') }}" rel="stylesheet"></link>
+    @yield('css')
 </head>
 <body>
     @include('include.top')
     <div class="ui bottom attached segment pushable">
         @include('include.navigate')
         <div class="pusher">
-            <div class="ui basic segment">
-                <h3 class="ui header">Application Content</h3>
+            <div class="ui basic segment container" id="main">
                 @yield('content')
             </div>
         </div>
     </div>
     <!-- JavaScripts -->
+    <script src="/js/react.js"></script>
+    <script src="/js/react-dom.js"></script>
+    <script src="/js/babel-core-browser.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/underscore.min.js"></script>
     <script src="/js/backbone.min.js"></script>
     <script src="/js/semantic.min.js"></script>
-    <script src="{{ elixir('js/bundle.js') }}"></script>
+    @yield('scripts')
 </body>
 </html>

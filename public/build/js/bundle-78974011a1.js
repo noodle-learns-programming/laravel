@@ -46,9 +46,9 @@
 
 	'use strict';
 
-	var _test = __webpack_require__(1);
+	var _product = __webpack_require__(1);
 
-	var _test2 = _interopRequireDefault(_test);
+	var _product2 = _interopRequireDefault(_product);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -67,7 +67,9 @@
 			routes: {
 				'': 'index'
 			},
-			index: function index() {}
+			index: function index() {
+				ReactDOM.render(React.createElement(_product2.default, null), document.getElementById('main'));
+			}
 		});
 
 		new App.Router();
@@ -83,12 +85,12 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _react = __webpack_require__(2);
@@ -103,30 +105,63 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Hello = (function (_React$Component) {
-	  _inherits(Hello, _React$Component);
+	var Product = (function (_React$Component) {
+	    _inherits(Product, _React$Component);
 
-	  function Hello() {
-	    _classCallCheck(this, Hello);
+	    function Product() {
+	        _classCallCheck(this, Product);
 
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Hello).apply(this, arguments));
-	  }
-
-	  _createClass(Hello, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'h1',
-	        null,
-	        'Hello world'
-	      );
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Product).apply(this, arguments));
 	    }
-	  }]);
 
-	  return Hello;
+	    _createClass(Product, [{
+	        key: "render",
+	        value: function render() {
+	            return;
+	            _react2.default.createElement(
+	                "div",
+	                null,
+	                _react2.default.createElement(
+	                    "div",
+	                    null,
+	                    _react2.default.createElement(
+	                        "h2",
+	                        null,
+	                        "Dropdown"
+	                    ),
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "ui fluid multiple search selection dropdown" },
+	                        _react2.default.createElement("input", { type: "hidden", name: "repo-ids" }),
+	                        _react2.default.createElement(
+	                            "div",
+	                            { className: "default text" },
+	                            "Select Repos"
+	                        ),
+	                        _react2.default.createElement("i", { className: "dropdown icon" }),
+	                        _react2.default.createElement("div", { className: "menu" })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    null,
+	                    _react2.default.createElement("div", { className: "ui divider" }),
+	                    _react2.default.createElement(
+	                        "b",
+	                        null,
+	                        "Selected value"
+	                    ),
+	                    " ",
+	                    this.state.value
+	                )
+	            );
+	        }
+	    }]);
+
+	    return Product;
 	})(_react2.default.Component);
 
-	exports.default = Hello;
+	exports.default = Product;
 
 /***/ },
 /* 2 */

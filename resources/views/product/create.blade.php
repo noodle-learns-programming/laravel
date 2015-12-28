@@ -1,16 +1,13 @@
 @extends('layouts.semantic')
 
+@section('css')
+@endsection
+
+
 @section('content')
-	<h1 class="ui header">This is product page</h1>
-	{!! Form::open(array('url' => 'product', 'method' => 'POST', 'class' => 'ui form' )) !!}
-		<div class="field">
-			<label>Name</label>
-			{!! Form::text('name') !!}
-		</div>
-		<div class="field">
-			<label>Description</label>
-			{!! Form::textarea('description', '', array('rows' => 2)) !!}
-		</div>
-		<button class="ui button" type="submit">Submit</button>
-	{!! Form::close() !!}
+	<h1>Test</h1>
+@endsection
+
+@section('scripts')
+	<script type="text/babel" src="/component/product.js"></script>
 @endsection
