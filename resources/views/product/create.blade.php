@@ -9,5 +9,4 @@
 @endsection
 
 @section('scripts')
-	<script type="text/babel" src="/component/product.js"></script>
 @endsection
