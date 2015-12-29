@@ -1,4 +1,7 @@
-(function(){
+$('.ui.sidebar').sidebar({
+	context	: $('.bottom.segment'),
+	dimPage : false
+}).sidebar('attach events', '#sidebar');
 
 window.App = {
 	Models: {},
@@ -17,10 +20,3 @@ App.Router = Backbone.Router.extend({
 
 new App.Router;
 Backbone.history.start();
-
-$('.ui.sidebar').sidebar({
-	context	: $('.bottom.segment'),
-	dimPage : false
-}).sidebar('attach events', '#sidebar');
-
-})();
