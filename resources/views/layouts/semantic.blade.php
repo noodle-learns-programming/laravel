@@ -22,15 +22,14 @@
         </div>
     </div>
     <!-- JavaScripts -->
-    <script src="/js/vendor/react.js" type="text/javascript"></script>
-    <script src="/js/vendor/react-dom.js" type="text/javascript"></script>
-    <script src="/js/vendor/babel-core-browser.js" type="text/javascript"></script>
-    <script src="/js/vendor/es6-module-loader.js" type="text/javascript"></script>
-    <script src="/js/vendor/jquery.min.js" type="text/javascript"></script>
-    <script src="/js/vendor/underscore.min.js" type="text/javascript"></script>
-    <script src="/js/vendor/backbone.min.js" type="text/javascript"></script>
-    <script src="/js/vendor/semantic.min.js" type="text/javascript"></script>
-    <script src="/js/app.js" type="text/babel"></script>
+    <script src="/js/vendor/react.js"></script>
+    <script src="/js/vendor/react-dom.js"></script>
+    <script src="/js/vendor/babel-core-browser.js"></script>
+    <script src="/js/vendor/jquery.min.js"></script>
+    <script src="/js/vendor/underscore.min.js"></script>
+    <script src="/js/vendor/backbone.min.js"></script>
+    <script src="/js/vendor/semantic.min.js"></script>
+    <script src="{{ elixir('js/app.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

@@ -14,7 +14,14 @@ var path = require('path');
  */
 
 elixir(function(mix) {
+    mix.babel([
+        'product.js',
+        'app.js'
+    ], 'public/js/app.js');
+    /*
     mix.webpack("app.js", {
+        entry: {
+        },
         outputDir: "public/js",
         output: {
             filename: "bundle.js"
@@ -29,8 +36,9 @@ elixir(function(mix) {
             }]
         }
     });
+    */
     mix.styles([
         'app.css'
     ]);
-    mix.version(["js/bundle.js", "css/all.css"]);
+    mix.version(["js/app.js", "css/all.css"]);
 });

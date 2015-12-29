@@ -104,4 +104,4 @@ var Product = React.createClass({
         dimPage: false
     }).sidebar('attach events', '#sidebar');
 })();
-//# sourceMappingURL=app.js.map
+//# sourceMappingURL=all.js.map
