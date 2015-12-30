@@ -11,9 +11,13 @@ window.App = {
 };
 App.Router = Backbone.Router.extend({
 	routes: {
-		'': 'index'
+		''			: 'index',
+		'product'	: 'product'
 	},
 	index: function(){
+		console.log('Home page');
+	},
+	product: function(){
 		ReactDOM.render(<Product />, document.getElementById('main'));
 	}
 });
