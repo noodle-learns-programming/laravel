@@ -29,7 +29,7 @@
     <script src="/js/vendor/underscore.min.js"></script>
     <script src="/js/vendor/backbone.min.js"></script>
     <script src="/js/vendor/semantic.min.js"></script>
-    <script src="{{ elixir('js/app.js') }}"></script>
+    <script src="{{ elixir('js/bundle.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

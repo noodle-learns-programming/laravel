@@ -14,10 +14,8 @@ var path = require('path');
  */
 
 elixir(function(mix) {
-    mix.babel([
-        'product.js',
-        'app.js'
-    ], 'public/js/app.js');
+    mix.babel('components/*.js', 'public/js/components.js');
+    mix.babel(['app.js'], 'public/js/app.js');
     /*
     mix.webpack("app.js", {
         entry: {
@@ -37,8 +35,12 @@ elixir(function(mix) {
         }
     });
     */
+    mix.scripts([
+        'js/components.js',
+        'js/app.js'
+    ], 'public/js/bundle.js', 'public');
     mix.styles([
         'app.css'
     ]);
-    mix.version(["js/app.js", "css/all.css"]);
+    mix.version(['js/bundle.js', 'css/all.css']);
 });
