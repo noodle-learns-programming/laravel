@@ -137,6 +137,30 @@ var Product = React.createClass({
         ),
         React.createElement(
           'div',
+          { className: 'two fields' },
+          React.createElement(
+            'div',
+            { className: 'field' },
+            React.createElement(
+              'label',
+              null,
+              Lang.get('product.brand')
+            ),
+            React.createElement('input', { placeholder: Lang.get('product.brand'), type: 'text' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'field' },
+            React.createElement(
+              'label',
+              null,
+              Lang.get('product.unit')
+            ),
+            React.createElement('input', { placeholder: Lang.get('product.unit'), type: 'text' })
+          )
+        ),
+        React.createElement(
+          'div',
           { className: 'ui submit button' },
           'Submit'
         )

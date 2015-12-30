@@ -56,6 +56,16 @@ var Product = React.createClass({
               <input placeholder={Lang.get('product.series')} type="text" />
             </div>
           </div>
+          <div className="two fields">
+            <div className="field">
+              <label>{ Lang.get('product.brand') }</label>
+              <input placeholder={Lang.get('product.brand')} type="text" />
+            </div>
+            <div className="field">
+              <label>{ Lang.get('product.unit') }</label>
+              <input placeholder={Lang.get('product.unit')} type="text" />
+            </div>
+          </div>
           <div className="ui submit button">Submit</div>
         </div>
       </form>

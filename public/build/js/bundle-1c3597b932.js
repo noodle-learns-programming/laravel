@@ -137,6 +137,30 @@ var Product = React.createClass({
         ),
         React.createElement(
           'div',
+          { className: 'two fields' },
+          React.createElement(
+            'div',
+            { className: 'field' },
+            React.createElement(
+              'label',
+              null,
+              Lang.get('product.brand')
+            ),
+            React.createElement('input', { placeholder: Lang.get('product.brand'), type: 'text' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'field' },
+            React.createElement(
+              'label',
+              null,
+              Lang.get('product.unit')
+            ),
+            React.createElement('input', { placeholder: Lang.get('product.unit'), type: 'text' })
+          )
+        ),
+        React.createElement(
+          'div',
           { className: 'ui submit button' },
           'Submit'
         )
@@ -157,9 +181,18 @@ Lang.setLocale('vi');
 
 window.App = {
 	Models: {},
-	Collections: {},
-	Views: {},
-	Router: {}
+	Router: {},
+	init: function init() {
+		this.router = new App.Router();
+		this.router.on("route", function (route, params) {
+			console.log("Different Page: " + route, params);
+		});
+		Backbone.history.start();
+		return this;
+	},
+	run: function run() {
+		return this;
+	}
 };
 App.Router = Backbone.Router.extend({
 	routes: {
@@ -174,8 +207,7 @@ App.Router = Backbone.Router.extend({
 	}
 });
 
-new App.Router();
-Backbone.history.start();
+App.init().run();
 //# sourceMappingURL=app.js.map
 
 //# sourceMappingURL=bundle.js.map

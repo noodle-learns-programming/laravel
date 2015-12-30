@@ -16,8 +16,23 @@
     <div class="ui bottom attached segment pushable">
         @include('include.navigate')
         <div class="pusher">
-            <div class="ui basic segment" id="main">
-                @yield('content')
+            <div class="ui basic segment">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="ten wide column">
+                            <div id="breadcrumb" class="">
+                                @yield('breadcrumb')    
+                            </div>
+                            <div id="main" >
+                                @yield('content')
+                            </div>
+                        </div>
+                        <div class="six wide column">
+                            <h1>Feed</h1>
+                            @yield('feed')
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -9,9 +9,18 @@ Lang.setLocale('vi');
 
 window.App = {
 	Models: {},
-	Collections: {},
-	Views: {},
-	Router: {}
+	Router: {},
+	init: function init() {
+		this.router = new App.Router();
+		this.router.on("route", function (route, params) {
+			console.log("Different Page: " + route, params);
+		});
+		Backbone.history.start();
+		return this;
+	},
+	run: function run() {
+		return this;
+	}
 };
 App.Router = Backbone.Router.extend({
 	routes: {
@@ -26,6 +35,5 @@ App.Router = Backbone.Router.extend({
 	}
 });
 
-new App.Router();
-Backbone.history.start();
+App.init().run();
 //# sourceMappingURL=app.js.map
