@@ -17,7 +17,7 @@ App.Router = Backbone.Router.extend({
 		'product': 'product'
 	},
 	index: function index() {
-		console.log('Home page');
+		ReactDOM.render(React.createElement(Dashboard, null), document.getElementById('main'));
 	},
 	product: function product() {
 		ReactDOM.render(React.createElement(Product, null), document.getElementById('main'));

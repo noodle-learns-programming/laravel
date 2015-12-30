@@ -2,7 +2,7 @@
     <a class="item" id="sidebar">
         <i class="sidebar icon"></i>
     </a>
-    <a class="item active">Dashboard</a>
+    <a class="item active" href="#">Dashboard</a>
     <div class="right menu">
         <div class="ui right aligned category search item">
             <div class="ui transparent icon input">
