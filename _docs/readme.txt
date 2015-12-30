@@ -1,0 +1,1 @@
+php artisan lang:js public/js/lang.js

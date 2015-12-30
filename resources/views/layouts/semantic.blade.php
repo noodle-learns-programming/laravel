@@ -16,7 +16,7 @@
     <div class="ui bottom attached segment pushable">
         @include('include.navigate')
         <div class="pusher">
-            <div class="ui basic segment container" id="main">
+            <div class="ui basic segment" id="main">
                 @yield('content')
             </div>
         </div>
@@ -29,6 +29,7 @@
     <script src="/js/vendor/underscore.min.js"></script>
     <script src="/js/vendor/backbone.min.js"></script>
     <script src="/js/vendor/semantic.min.js"></script>
+    <script src="{{ elixir('js/lang.js') }}"></script>
     <script src="{{ elixir('js/bundle.js') }}"></script>
     @yield('scripts')
 </body>

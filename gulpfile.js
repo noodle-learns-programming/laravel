@@ -1,7 +1,9 @@
 var elixir  = require('laravel-elixir');
     require("laravel-elixir-webpack");
+var gulp    = require('gulp');
+var shell   = require('gulp-shell');
+var path    = require('path');
 
-var path = require('path');
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -12,6 +14,10 @@ var path = require('path');
  | file for our application, as well as publishing vendor resources.
  |
  */
+
+gulp.task('langJs', 
+    shell.task('php artisan lang:js -c public/js/lang.js')
+);
 
 elixir(function(mix) {
     mix.babel('components/*.js', 'public/js/components.js');
@@ -42,5 +48,5 @@ elixir(function(mix) {
     mix.styles([
         'app.css'
     ]);
-    mix.version(['js/bundle.js', 'css/all.css']);
+    mix.version(['js/lang.js', 'js/bundle.js', 'css/all.css']);
 });

@@ -3,6 +3,8 @@ $('.ui.sidebar').sidebar({
 	dimPage : false
 }).sidebar('attach events', '#sidebar');
 
+Lang.setLocale('vi');
+
 window.App = {
 	Models: {},
 	Collections: {},

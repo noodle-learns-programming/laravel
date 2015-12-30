@@ -1,137 +1,147 @@
 'use strict';
 
 var Dashboard = React.createClass({
-    displayName: 'Dashboard',
-    getInitialState: function getInitialState() {
-        return {
-            value: null
-        };
-    },
-    componentDidMount: function componentDidMount() {
-        var _this = this;
+  displayName: 'Dashboard',
+  getInitialState: function getInitialState() {
+    return {
+      value: null
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    var _this = this;
 
-        $('.ui.selection.dropdown').dropdown({
-            dataType: 'jsonp',
-            apiSettings: {
-                onResponse: function onResponse(githubResponse) {
-                    var response = {
-                        results: []
-                    };
-                    // translate github api response to work with dropdown
-                    $.each(githubResponse.items, function (index, item) {
-                        response.results.push({
-                            name: item.name,
-                            value: item.id
-                        });
-                    });
-                    return response;
-                },
-                url: '//api.github.com/search/repositories?q={query}'
-            },
-            onChange: function onChange(value) {
-                _this.setState({
-                    value: value
-                });
-            }
+    $('.ui.selection.dropdown').dropdown({
+      dataType: 'jsonp',
+      apiSettings: {
+        onResponse: function onResponse(githubResponse) {
+          var response = {
+            results: []
+          };
+          // translate github api response to work with dropdown
+          $.each(githubResponse.items, function (index, item) {
+            response.results.push({
+              name: item.name,
+              value: item.id
+            });
+          });
+          return response;
+        },
+        url: '//api.github.com/search/repositories?q={query}'
+      },
+      onChange: function onChange(value) {
+        _this.setState({
+          value: value
         });
-    },
-    componentDidUpdate: function componentDidUpdate() {
-        $('.ui.dropdown').dropdown('refresh');
-    },
+      }
+    });
+  },
+  componentDidUpdate: function componentDidUpdate() {
+    $('.ui.dropdown').dropdown('refresh');
+  },
 
-    render: function render() {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'h2',
-                    null,
-                    'Dashboard page'
-                )
-            )
-        );
-    }
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(
+        'div',
+        null,
+        React.createElement(
+          'h2',
+          null,
+          'Dashboard page'
+        )
+      )
+    );
+  }
 });
 var Product = React.createClass({
-    displayName: 'Product',
-    getInitialState: function getInitialState() {
-        return {
-            value: null
-        };
-    },
-    componentDidMount: function componentDidMount() {
-        var _this2 = this;
+  displayName: 'Product',
+  getInitialState: function getInitialState() {
+    return {
+      value: null
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    var _this2 = this;
 
-        $('.ui.selection.dropdown').dropdown({
-            dataType: 'jsonp',
-            apiSettings: {
-                onResponse: function onResponse(githubResponse) {
-                    var response = {
-                        results: []
-                    };
-                    // translate github api response to work with dropdown
-                    $.each(githubResponse.items, function (index, item) {
-                        response.results.push({
-                            name: item.name,
-                            value: item.id
-                        });
-                    });
-                    return response;
-                },
-                url: '//api.github.com/search/repositories?q={query}'
-            },
-            onChange: function onChange(value) {
-                _this2.setState({
-                    value: value
-                });
-            }
+    $('.ui.selection.dropdown').dropdown({
+      dataType: 'jsonp',
+      apiSettings: {
+        onResponse: function onResponse(githubResponse) {
+          var response = {
+            results: []
+          };
+          // translate github api response to work with dropdown
+          $.each(githubResponse.items, function (index, item) {
+            response.results.push({
+              name: item.name,
+              value: item.id
+            });
+          });
+          return response;
+        },
+        url: '//api.github.com/search/repositories?q={query}'
+      },
+      onChange: function onChange(value) {
+        _this2.setState({
+          value: value
         });
-    },
-    componentDidUpdate: function componentDidUpdate() {
-        $('.ui.dropdown').dropdown('refresh');
-    },
+      }
+    });
+  },
+  componentDidUpdate: function componentDidUpdate() {
+    $('.ui.dropdown').dropdown('refresh');
+  },
 
-    render: function render() {
-        return React.createElement(
-            'div',
+  render: function render() {
+    return React.createElement(
+      'form',
+      null,
+      React.createElement(
+        'div',
+        { className: 'ui form' },
+        React.createElement(
+          'div',
+          { className: 'field' },
+          React.createElement(
+            'label',
             null,
+            Lang.get('product.name')
+          ),
+          React.createElement('input', { placeholder: Lang.get('product.name'), type: 'text' })
+        ),
+        React.createElement(
+          'div',
+          { className: 'two fields' },
+          React.createElement(
+            'div',
+            { className: 'field' },
             React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'h2',
-                    null,
-                    'Dropdown'
-                ),
-                React.createElement(
-                    'div',
-                    { className: 'ui fluid multiple search selection dropdown' },
-                    React.createElement('input', { type: 'hidden', name: 'repo-ids' }),
-                    React.createElement(
-                        'div',
-                        { className: 'default text' },
-                        'Select Repos'
-                    ),
-                    React.createElement('i', { className: 'dropdown icon' }),
-                    React.createElement('div', { className: 'menu' })
-                )
+              'label',
+              null,
+              Lang.get('product.sku')
             ),
+            React.createElement('input', { placeholder: Lang.get('product.sku'), type: 'text' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'field' },
             React.createElement(
-                'div',
-                null,
-                React.createElement('div', { className: 'ui divider' }),
-                React.createElement(
-                    'b',
-                    null,
-                    'Selected value'
-                ),
-                ' ',
-                this.state.value
-            )
-        );
-    }
+              'label',
+              null,
+              Lang.get('product.series')
+            ),
+            React.createElement('input', { placeholder: Lang.get('product.series'), type: 'text' })
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'ui submit button' },
+          'Submit'
+        )
+      )
+    );
+  }
 });
 //# sourceMappingURL=components.js.map
