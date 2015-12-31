@@ -20,10 +20,10 @@
                 <div class="ui grid">
                     <div class="row">
                         <div class="ten wide column">
-                            <div id="breadcrumb" class="">
+                            <div id="breadcrumb">
                                 @yield('breadcrumb')    
                             </div>
-                            <div id="main" >
+                            <div id="main">
                                 @yield('content')
                             </div>
                         </div>

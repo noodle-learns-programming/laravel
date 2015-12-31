@@ -153,6 +153,16 @@ var Product = React.createClass({
       'form',
       null,
       React.createElement(
+        'h2',
+        { className: 'ui header' },
+        React.createElement('img', { className: 'ui image', src: '/image/school.png' }),
+        React.createElement(
+          'div',
+          { className: 'content' },
+          Lang.get('product.add')
+        )
+      ),
+      React.createElement(
         'div',
         { className: 'ui form' },
         React.createElement(

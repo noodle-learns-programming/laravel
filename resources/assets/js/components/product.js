@@ -41,6 +41,12 @@ var Product = React.createClass({
   render: function() {
     return (
       <form>
+        <h2 className="ui header">
+          <img className="ui image" src="/image/school.png" />
+          <div className="content">
+            { Lang.get('product.add') }
+          </div>
+        </h2>
         <div className="ui form">
           <div className="field">
             <label>{ Lang.get('product.name') }</label>
