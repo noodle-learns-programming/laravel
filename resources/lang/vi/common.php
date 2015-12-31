@@ -8,7 +8,8 @@ return [
     |--------------------------------------------------------------------
     |
     */
-
+    'dashboard'     => 'Dashboard',
+    'product'       => 'Sản phẩm',
     'stock'         => 'Quản lý kho',
     'stock_sale'    => 'Xuất nhập hàng',
     'stock_internal'=> 'Xuất nhập nội bộ',

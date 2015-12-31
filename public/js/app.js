@@ -12,22 +12,20 @@ window.App = {
 	Router: {},
 	init: function init() {
 		this.router = new App.Router();
-		this.router.on("route", function (route, params) {
-			console.log("Different Page: " + route, params);
-		});
-		Backbone.history.start();
 		return this;
 	},
 	run: function run() {
+		ReactDOM.render(React.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
+		Backbone.history.start();
 		return this;
 	}
 };
 App.Router = Backbone.Router.extend({
 	routes: {
-		'': 'index',
-		'product': 'product'
+		'': 'dashboard',
+		'stock/product': 'product'
 	},
-	index: function index() {
+	dashboard: function dashboard() {
 		ReactDOM.render(React.createElement(Dashboard, null), document.getElementById('main'));
 	},
 	product: function product() {

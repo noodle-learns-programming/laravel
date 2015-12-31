@@ -1,5 +1,59 @@
 'use strict';
 
+var Breadcrumb = React.createClass({
+  displayName: 'Breadcrumb',
+  getInitialState: function getInitialState() {
+    return {
+      fragment: '',
+      route: 'Dashboard'
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    this.props.router.on("route", this.onRoute);
+  },
+  componentDidUpdate: function componentDidUpdate() {
+    //this.props.router.off("route");
+  },
+
+  onRoute: function onRoute(route, params) {
+    var fragment = Backbone.history.getFragment();
+    this.setState({
+      fragment: fragment,
+      route: route,
+      params: params
+    });
+  },
+  render: function render() {
+    var arrFragments = [];
+    if (this.state.fragment) {
+      arrFragments = this.state.fragment.split('/');
+    }
+    var href = '';
+    return React.createElement(
+      'div',
+      { className: 'ui breadcrumb' },
+      React.createElement(
+        'a',
+        { className: 'section', href: '#' },
+        Lang.get('common.dashboard')
+      ),
+      arrFragments.map(function (fragment, i) {
+        {
+          href += (href ? '/' : '') + fragment;
+        }
+        return [React.createElement(
+          'div',
+          { className: 'divider' },
+          ' / '
+        ), React.createElement(
+          'a',
+          { className: 'active section', href: "#" + href },
+          Lang.get('common.' + fragment)
+        )];
+      })
+    );
+  }
+});
 var Dashboard = React.createClass({
   displayName: 'Dashboard',
   getInitialState: function getInitialState() {
@@ -184,22 +238,20 @@ window.App = {
 	Router: {},
 	init: function init() {
 		this.router = new App.Router();
-		this.router.on("route", function (route, params) {
-			console.log("Different Page: " + route, params);
-		});
-		Backbone.history.start();
 		return this;
 	},
 	run: function run() {
+		ReactDOM.render(React.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
+		Backbone.history.start();
 		return this;
 	}
 };
 App.Router = Backbone.Router.extend({
 	routes: {
-		'': 'index',
-		'product': 'product'
+		'': 'dashboard',
+		'stock/product': 'product'
 	},
-	index: function index() {
+	dashboard: function dashboard() {
 		ReactDOM.render(React.createElement(Dashboard, null), document.getElementById('main'));
 	},
 	product: function product() {

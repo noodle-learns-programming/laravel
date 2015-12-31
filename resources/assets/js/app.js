@@ -10,24 +10,22 @@ window.App = {
 	Router: {},
 	init: function()
 	{
-		this.router = new App.Router;
-		this.router.on("route", function(route, params) {
-		    console.log("Different Page: " + route, params);
-		});
-		Backbone.history.start();
+		this.router 	= new App.Router;
 		return this;
 	},
 	run : function()
 	{
+		ReactDOM.render(<Breadcrumb router={this.router} />, document.getElementById('breadcrumb'))
+		Backbone.history.start();
 		return this;
 	}
 };
 App.Router = Backbone.Router.extend({
 	routes: {
-		''			: 'index',
-		'product'	: 'product'
+		''				: 'dashboard',
+		'stock/product'	: 'product'
 	},
-	index: function(){
+	dashboard: function(){
 		ReactDOM.render(<Dashboard />, document.getElementById('main'));
 	},
 	product: function(){
