@@ -1,113 +1,8 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var Breadcrumb = React.createClass({
-  displayName: 'Breadcrumb',
-  getInitialState: function getInitialState() {
-    return {
-      fragment: '',
-      route: 'Dashboard'
-    };
-  },
-  componentDidMount: function componentDidMount() {
-    this.props.router.on("route", this.onRoute);
-  },
-  componentDidUpdate: function componentDidUpdate() {
-    //this.props.router.off("route");
-  },
-
-  onRoute: function onRoute(route, params) {
-    var fragment = Backbone.history.getFragment();
-    this.setState({
-      fragment: fragment,
-      route: route,
-      params: params
-    });
-  },
-  render: function render() {
-    var arrFragments = [];
-    if (this.state.fragment) {
-      arrFragments = this.state.fragment.split('/');
-    }
-    var href = '';
-    return React.createElement(
-      'div',
-      { className: 'ui breadcrumb' },
-      React.createElement(
-        'a',
-        { className: 'section', href: '#' },
-        Lang.get('common.dashboard')
-      ),
-      arrFragments.map(function (fragment, i) {
-        {
-          href += (href ? '/' : '') + fragment;
-        }
-        return [React.createElement(
-          'div',
-          { className: 'divider' },
-          ' / '
-        ), React.createElement(
-          'a',
-          { className: 'active section', href: "#" + href },
-          Lang.get('common.' + fragment)
-        )];
-      })
-    );
-  }
-});
-var Dashboard = React.createClass({
-  displayName: 'Dashboard',
-  getInitialState: function getInitialState() {
-    return {
-      value: null
-    };
-  },
-  componentDidMount: function componentDidMount() {
-    var _this = this;
-
-    $('.ui.selection.dropdown').dropdown({
-      dataType: 'jsonp',
-      apiSettings: {
-        onResponse: function onResponse(githubResponse) {
-          var response = {
-            results: []
-          };
-          // translate github api response to work with dropdown
-          $.each(githubResponse.items, function (index, item) {
-            response.results.push({
-              name: item.name,
-              value: item.id
-            });
-          });
-          return response;
-        },
-        url: '//api.github.com/search/repositories?q={query}'
-      },
-      onChange: function onChange(value) {
-        _this.setState({
-          value: value
-        });
-      }
-    });
-  },
-  componentDidUpdate: function componentDidUpdate() {
-    $('.ui.dropdown').dropdown('refresh');
-  },
-
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'div',
-        null,
-        React.createElement(
-          'h2',
-          null,
-          'Dashboard page'
-        )
-      )
-    );
-  }
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
 var Product = React.createClass({
   displayName: 'Product',
@@ -245,4 +140,9 @@ var Product = React.createClass({
     );
   }
 });
-//# sourceMappingURL=[filename].js.map
+
+exports.Product = Product;
+
+},{}]},{},[1]);
+
+//# sourceMappingURL=product.js.map

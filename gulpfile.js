@@ -26,10 +26,7 @@ gulp.task('langJs',
 );
 
 elixir(function(mix) {
-    mix.babel('components/*.js', 'public/js/components.js', null, {
-        presets: ['react', 'es2015']
-    });
-    mix.babel(['app.js'], 'public/js/app.js');
+    mix.browserify('app.js', 'public/js/app.js');
     /*
     mix.webpack("app.js", {
         entry: {
@@ -50,7 +47,6 @@ elixir(function(mix) {
     });
     */
     mix.scripts([
-        'js/components.js',
         'js/app.js'
     ], 'public/js/bundle.js', 'public');
     mix.styles([

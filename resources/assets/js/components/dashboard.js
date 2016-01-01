@@ -1,4 +1,4 @@
-var Dashboard = React.createClass({
+module.exports = React.createClass({
     getInitialState() {
         return {
             value: null

@@ -1,5 +1,8 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 var Breadcrumb = React.createClass({
   displayName: 'Breadcrumb',
   getInitialState: function getInitialState() {
@@ -54,6 +57,9 @@ var Breadcrumb = React.createClass({
     );
   }
 });
+
+exports.Breadcrumb = Breadcrumb;
+
 var Dashboard = React.createClass({
   displayName: 'Dashboard',
   getInitialState: function getInitialState() {
@@ -109,6 +115,9 @@ var Dashboard = React.createClass({
     );
   }
 });
+
+exports.Dashboard = Dashboard;
+
 var Product = React.createClass({
   displayName: 'Product',
   getInitialState: function getInitialState() {
@@ -245,4 +254,6 @@ var Product = React.createClass({
     );
   }
 });
+
+exports.Product = Product;
 //# sourceMappingURL=components.js.map

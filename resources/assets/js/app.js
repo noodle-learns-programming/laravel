@@ -1,3 +1,7 @@
+var Breadcrumb 	= require('./components/breadcrumb');
+var Product	  	= require('./components/product');
+var Dashboard	= require('./components/dashboard');
+
 $('.ui.sidebar').sidebar({
 	context	: $('.bottom.segment'),
 	dimPage : false

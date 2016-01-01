@@ -1,7 +1,50 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var Breadcrumb = React.createClass({
-  displayName: 'Breadcrumb',
+var Breadcrumb = require('./components/breadcrumb');
+var Product = require('./components/product');
+var Dashboard = require('./components/dashboard');
+
+$('.ui.sidebar').sidebar({
+	context: $('.bottom.segment'),
+	dimPage: false
+}).sidebar('attach events', '#sidebar');
+
+Lang.setLocale('vi');
+
+window.App = {
+	Models: {},
+	Router: {},
+	init: function init() {
+		this.router = new App.Router();
+		return this;
+	},
+	run: function run() {
+		ReactDOM.render(React.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
+		Backbone.history.start();
+		return this;
+	}
+};
+App.Router = Backbone.Router.extend({
+	routes: {
+		'': 'dashboard',
+		'stock/product': 'product'
+	},
+	dashboard: function dashboard() {
+		ReactDOM.render(React.createElement(Dashboard, null), document.getElementById('main'));
+	},
+	product: function product() {
+		ReactDOM.render(React.createElement(Product, null), document.getElementById('main'));
+	}
+});
+
+App.init().run();
+
+},{"./components/breadcrumb":2,"./components/dashboard":3,"./components/product":4}],2:[function(require,module,exports){
+'use strict';
+
+module.exports = React.createClass({
+  displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
       fragment: '',
@@ -54,8 +97,12 @@ var Breadcrumb = React.createClass({
     );
   }
 });
-var Dashboard = React.createClass({
-  displayName: 'Dashboard',
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+module.exports = React.createClass({
+  displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
       value: null
@@ -109,8 +156,12 @@ var Dashboard = React.createClass({
     );
   }
 });
-var Product = React.createClass({
-  displayName: 'Product',
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+module.exports = React.createClass({
+  displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
       value: null
@@ -245,44 +296,9 @@ var Product = React.createClass({
     );
   }
 });
-//# sourceMappingURL=components.js.map
 
-'use strict';
+},{}]},{},[1]);
 
-$('.ui.sidebar').sidebar({
-	context: $('.bottom.segment'),
-	dimPage: false
-}).sidebar('attach events', '#sidebar');
-
-Lang.setLocale('vi');
-
-window.App = {
-	Models: {},
-	Router: {},
-	init: function init() {
-		this.router = new App.Router();
-		return this;
-	},
-	run: function run() {
-		ReactDOM.render(React.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
-		Backbone.history.start();
-		return this;
-	}
-};
-App.Router = Backbone.Router.extend({
-	routes: {
-		'': 'dashboard',
-		'stock/product': 'product'
-	},
-	dashboard: function dashboard() {
-		ReactDOM.render(React.createElement(Dashboard, null), document.getElementById('main'));
-	},
-	product: function product() {
-		ReactDOM.render(React.createElement(Product, null), document.getElementById('main'));
-	}
-});
-
-App.init().run();
 //# sourceMappingURL=app.js.map
 
 //# sourceMappingURL=bundle.js.map
