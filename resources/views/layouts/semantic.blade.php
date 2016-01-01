@@ -37,9 +37,9 @@
         </div>
     </div>
     <!-- JavaScripts -->
-    <script src="/js/vendor/react.js"></script>
-    <script src="/js/vendor/react-dom.js"></script>
-    <script src="/js/vendor/babel-core-browser.js"></script>
+    <!--<script src="/js/vendor/react.js"></script>-->
+    <!--<script src="/js/vendor/react-dom.js"></script>-->
+    <!--<script src="/js/vendor/babel-core-browser.js"></script>-->
     <script src="/js/vendor/jquery.min.js"></script>
     <script src="/js/vendor/underscore.min.js"></script>
     <script src="/js/vendor/backbone.min.js"></script>

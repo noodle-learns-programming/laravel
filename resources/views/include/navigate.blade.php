@@ -38,4 +38,11 @@
             <a class="item">{{ trans('common.hr_training') }}</a>
         </div>
     </div>
+    <div class="item">
+        <div class="header">{{ trans('common.test') }}</div>
+        <div class="menu">
+            <a class="item" href="#test/upload">{{ trans('common.test_upload_file') }}</a>
+            <a class="item" href="#test/material-ui">{{ trans('common.test_material_ui') }}</a>
+        </div>
+    </div>
 </div>

@@ -1,7 +1,13 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+var injectTapEventPlugin = require("react-tap-event-plugin");
 var Breadcrumb 	= require('./components/breadcrumb');
 var Product	  	= require('./components/product');
 var Dashboard	= require('./components/dashboard');
+var TestUpload	= require('./test/upload');
+var TestMaterial= require('./test/material');
 
+injectTapEventPlugin();
 $('.ui.sidebar').sidebar({
 	context	: $('.bottom.segment'),
 	dimPage : false
@@ -26,14 +32,22 @@ window.App = {
 };
 App.Router = Backbone.Router.extend({
 	routes: {
-		''				: 'dashboard',
-		'stock/product'	: 'product'
+		''					: 'dashboard',
+		'stock/product'		: 'product',
+		'test/upload'		: '_upload',
+		'test/material-ui'	: '_meterial'
 	},
 	dashboard: function(){
 		ReactDOM.render(<Dashboard />, document.getElementById('main'));
 	},
 	product: function(){
 		ReactDOM.render(<Product />, document.getElementById('main'));
+	},
+	_upload : function(){
+		ReactDOM.render(<TestUpload />, document.getElementById('main'));
+	},
+	_meterial: function(){
+		ReactDOM.render(<TestMaterial />, document.getElementById('main'));
 	}
 });
 
