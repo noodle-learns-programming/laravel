@@ -27,3 +27,8 @@ Route::group(['namespace' => 'Product', 'prefix' => 'product'], function()
 {
 	Route::resource('/', 'ProductController');
 });
+
+Route::group(['namespace' => 'Api', 'prefix' => 'api'], function()
+{
+	Route::resource('search', 'SearchController');
+});

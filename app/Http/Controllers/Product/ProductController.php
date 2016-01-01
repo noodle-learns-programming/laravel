@@ -36,8 +36,8 @@ class ProductController extends Controller
                 ->withInput();
         }
         $nerd = new Product;
-        $nerd->name       = $request->get('name');
-        $nerd->description      = $request->get('description');
+        $nerd->name         = $request->get('name');
+        $nerd->description  = $request->get('description');
         $nerd->save();
         
         return redirect('product');
