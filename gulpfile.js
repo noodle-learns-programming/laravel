@@ -1,5 +1,6 @@
 var elixir  = require('laravel-elixir');
     require("laravel-elixir-webpack");
+    require("babel-register");
 var gulp    = require('gulp');
 var shell   = require('gulp-shell');
 var path    = require('path');
@@ -15,12 +16,19 @@ var path    = require('path');
  |
  */
 
+elixir.config.js.browserify.transformers.push({
+    name: 'aliasify',
+    options: {}
+});
+
 gulp.task('langJs', 
     shell.task('php artisan lang:js -c public/js/lang.js')
 );
 
 elixir(function(mix) {
-    mix.babel('components/*.js', 'public/js/components.js');
+    mix.babel('components/*.js', 'public/js/components.js', null, {
+        presets: ['react', 'es2015']
+    });
     mix.babel(['app.js'], 'public/js/app.js');
     /*
     mix.webpack("app.js", {

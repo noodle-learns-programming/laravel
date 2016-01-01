@@ -116,42 +116,31 @@ var Product = React.createClass({
       value: null
     };
   },
-  componentDidMount: function componentDidMount() {
-    var _this2 = this;
+  componentDidMount: function componentDidMount() {},
 
-    $('.ui.selection.dropdown').dropdown({
-      dataType: 'jsonp',
-      apiSettings: {
-        onResponse: function onResponse(githubResponse) {
-          var response = {
-            results: []
-          };
-          // translate github api response to work with dropdown
-          $.each(githubResponse.items, function (index, item) {
-            response.results.push({
-              name: item.name,
-              value: item.id
-            });
-          });
-          return response;
-        },
-        url: '//api.github.com/search/repositories?q={query}'
-      },
-      onChange: function onChange(value) {
-        _this2.setState({
-          value: value
-        });
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    var fd = new FormData();
+    fd.append('file', this.refs.file.getDOMNode().files[0]);
+
+    $.ajax({
+      url: '/product',
+      data: fd,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function success(data) {
+        alert(data);
       }
     });
   },
-  componentDidUpdate: function componentDidUpdate() {
-    $('.ui.dropdown').dropdown('refresh');
-  },
+
+  componentDidUpdate: function componentDidUpdate() {},
 
   render: function render() {
     return React.createElement(
       'form',
-      null,
+      { onSubmit: this.handleSubmit },
       React.createElement(
         'h2',
         { className: 'ui header' },
@@ -221,6 +210,30 @@ var Product = React.createClass({
               Lang.get('product.unit')
             ),
             React.createElement('input', { placeholder: Lang.get('product.unit'), type: 'text' })
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'two fields' },
+          React.createElement(
+            'div',
+            { className: 'field' },
+            React.createElement(
+              'label',
+              null,
+              Lang.get('product.image')
+            ),
+            React.createElement('input', { ref: 'file', placeholder: Lang.get('product.image'), type: 'file' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'field' },
+            React.createElement(
+              'label',
+              null,
+              Lang.get('product.description')
+            ),
+            React.createElement('textarea', { placeholder: Lang.get('product.description') })
           )
         ),
         React.createElement(

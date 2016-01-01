@@ -1,4 +1,4 @@
-var Product = React.createClass({
+var Product   = React.createClass({
   getInitialState() {
     return {
         value: null
@@ -6,41 +6,32 @@ var Product = React.createClass({
   },
 
   componentDidMount() {
-    $('.ui.selection.dropdown').dropdown({
-      dataType: 'jsonp',
-      apiSettings   : {
-        onResponse: function(githubResponse) {
-          var
-            response = {
-              results : []
-            }
-          ;
-          // translate github api response to work with dropdown
-          $.each(githubResponse.items, function(index, item) {
-            response.results.push({
-              name: item.name,
-              value: item.id
-            });
-          });
-          return response;
-        },
-        url: '//api.github.com/search/repositories?q={query}'
-      },
-      onChange: (value) => {
-        this.setState({
-            value
-        });
+    
+  },
+
+  handleSubmit : function(e){
+    e.preventDefault();
+    var fd = new FormData();    
+    fd.append('file', this.refs.file.getDOMNode().files[0]);
+
+    $.ajax({
+      url : '/product',
+      data: fd,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function(data){
+        alert(data);
       }
     });
   },
 
   componentDidUpdate() {
-    $('.ui.dropdown').dropdown('refresh');
   },
 
   render: function() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <h2 className="ui header">
           <img className="ui image" src="/image/school.png" />
           <div className="content">
@@ -70,6 +61,16 @@ var Product = React.createClass({
             <div className="field">
               <label>{ Lang.get('product.unit') }</label>
               <input placeholder={Lang.get('product.unit')} type="text" />
+            </div>
+          </div>
+          <div className="two fields">
+            <div className="field">
+              <label>{ Lang.get('product.image') }</label>
+              <input ref="file" placeholder={Lang.get('product.image')} type="file" />
+            </div>
+            <div className="field">
+              <label>{ Lang.get('product.description') }</label>
+              <textarea placeholder={Lang.get('product.description')}></textarea>
             </div>
           </div>
           <div className="ui submit button">Submit</div>

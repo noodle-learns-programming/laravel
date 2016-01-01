@@ -245,4 +245,4 @@ var Product = React.createClass({
     );
   }
 });
-//# sourceMappingURL=components.js.map
+//# sourceMappingURL=[filename].js.map

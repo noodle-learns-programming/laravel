@@ -1,6 +1,7 @@
 {
   "private": true,
   "devDependencies": {
+    "aliasify": "^1.8.0",
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
     "gulp": "^3.8.8",
@@ -11,11 +12,14 @@
   "dependencies": {
     "babel-loader": "^6.2.0",
     "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "babelify": "^7.2.0",
     "bootstrap-sass": "^3.0.0",
     "jsx-loader": "^0.13.2",
     "laravel-elixir": "^4.0.0",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
+    "react-dropzone": "^3.3.0",
     "semantic-ui": "^2.1.7"
   }
 }
