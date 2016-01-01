@@ -34934,7 +34934,7 @@ module.exports = _react2.default.createClass({
   displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
-      value: null
+      brand: 0
     };
   },
   componentDidMount: function componentDidMount() {
@@ -34947,17 +34947,23 @@ module.exports = _react2.default.createClass({
         title: 'name'
       },
       minCharacters: 3,
-      onSelect: function onSelect(result, response) {
+      onSelect: (function (result, response) {
         console.log(result, response);
-      }
+        this.setState({
+          brand: result.id
+        });
+      }).bind(this)
     });
   },
 
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
     var fd = new FormData();
-    console.log('2222222:', $(_reactDom2.default.findDOMNode(this.refs.form)));
-    console.log('2222222:', $(_reactDom2.default.findDOMNode(this.refs.form)).serialize());
+    var data = _.object(_.map($(_reactDom2.default.findDOMNode(this.refs.form)).serializeArray(), _.values));
+    data['brand'] = this.state.brand;
+    for (var name in data) {
+      fd.append(name, data[name]);
+    }
     $.ajax({
       url: '/product',
       data: fd,
@@ -34969,6 +34975,8 @@ module.exports = _react2.default.createClass({
       }
     });
   },
+
+  handleBrand: function handleBrand(e) {},
 
   componentDidUpdate: function componentDidUpdate() {},
 
@@ -35040,8 +35048,9 @@ module.exports = _react2.default.createClass({
               _react2.default.createElement(
                 'div',
                 { className: 'ui icon input' },
-                _react2.default.createElement('input', { className: 'prompt', type: 'text', placeholder: Lang.get('product.brand'), value: this.state.brand }),
-                _react2.default.createElement('i', { className: 'github icon' })
+                _react2.default.createElement('input', { className: 'prompt', type: 'text', placeholder: Lang.get('product.brand'),
+                  ref: 'brand', name: 'brand', onChange: this.handleBrand }),
+                _react2.default.createElement('i', { className: 'search icon' })
               )
             )
           ),

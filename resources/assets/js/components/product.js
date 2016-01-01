@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 module.exports = React.createClass({
   getInitialState() {
     return {
-        value: null
+      brand: 0,
     };
   },
 
@@ -21,16 +21,24 @@ module.exports = React.createClass({
         minCharacters : 3,
         onSelect: function(result, response) {
           console.log(result, response)
-        }
+          this.setState({
+            brand: result.id
+          })
+        }.bind(this)
       })
     ;
   },
 
   handleSubmit : function(e){
     e.preventDefault();
-    var fd = new FormData();
-    console.log('2222222:', $(ReactDOM.findDOMNode(this.refs.form)));
-    console.log('2222222:', $(ReactDOM.findDOMNode(this.refs.form)).serialize());
+    var fd    = new FormData();
+    var data  = _.object(
+      _.map($(ReactDOM.findDOMNode(this.refs.form)).serializeArray(), _.values)
+    );
+    data['brand'] = this.state.brand;
+    for(var name in data){
+      fd.append(name, data[name]);
+    }
     $.ajax({
       url : '/product',
       data: fd,
@@ -41,6 +49,11 @@ module.exports = React.createClass({
         alert(data);
       }
     });
+  },
+
+  handleBrand : function(e)
+  {
+
   },
 
   componentDidUpdate() {
@@ -75,8 +88,9 @@ module.exports = React.createClass({
               <label>{ Lang.get('product.brand') }</label>
               <div ref="ui_brand" className="ui search">
                 <div className="ui icon input">
-                  <input className="prompt" type="text" placeholder={Lang.get('product.brand')} value={this.state.brand}/>
-                  <i className="github icon"></i>
+                  <input className="prompt" type="text" placeholder={Lang.get('product.brand')}
+                    ref="brand" name="brand" onChange={this.handleBrand} />
+                  <i className="search icon"></i>
                 </div>
               </div>
             </div>
