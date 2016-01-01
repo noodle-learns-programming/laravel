@@ -33,4 +33,8 @@ return [
     'hr_diagram'         => 'Sơ đồ tổ chức',
     'hr_employee'        => 'Quản lý nhân viên',
     'hr_training'        => 'Quản lý đào tạo',
+
+    'test'              => 'Test',
+    'test_upload_file'  => 'Upload',
+    'test_material_ui'  => 'Material UI'
 ];

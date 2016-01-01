@@ -1,4 +1,4 @@
-<div class="ui visible inverted left thin vertical sidebar menu">
+<div class="ui visible inverted left vertical sidebar menu">
     <div class="item">
         <div class="header">{{ trans('common.sale') }}</div>
         <div class="menu">
