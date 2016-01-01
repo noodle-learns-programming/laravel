@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 module.exports = React.createClass({
   getInitialState() {
     return {
-      brand: 0,
+      brand       : 0,
+      showMessage : false
     };
   },
 
@@ -20,7 +21,6 @@ module.exports = React.createClass({
         },
         minCharacters : 3,
         onSelect: function(result, response) {
-          console.log(result, response)
           this.setState({
             brand: result.id
           })
@@ -46,20 +46,41 @@ module.exports = React.createClass({
       contentType: false,
       type: 'POST',
       success: function(data){
-        alert(data);
-      }
+        this.setState({
+          showMessage : true
+        });
+      }.bind(this)
     });
   },
 
-  handleBrand : function(e)
-  {
+  handleBrand : function(e){
 
+  },
+
+  handleMessage: function(e){
+    /*$(e.target)
+      .closest('.message')
+      .transition('fade')
+    ;*/
+    this.setState({
+      showMessage : false
+    });
   },
 
   componentDidUpdate() {
   },
 
   render: function() {
+    var message = '';
+    if( this.state.showMessage ) {
+      message = (<div ref="message" className="ui success message">
+          <i className="close icon" onClick={this.handleMessage}></i>
+          <div className="header">
+            Message
+          </div>
+          <p>Save product is successful.</p>
+      </div>);
+    }
     return (
       <form ref="form" onSubmit={this.handleSubmit}>
         <h2 className="ui header">
@@ -68,6 +89,7 @@ module.exports = React.createClass({
             { Lang.get('product.add') }
           </div>
         </h2>
+        {message}
         <div className="ui form">
           <div className="field">
             <label>{ Lang.get('product.name') }</label>

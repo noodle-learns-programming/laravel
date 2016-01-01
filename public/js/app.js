@@ -34934,7 +34934,8 @@ module.exports = _react2.default.createClass({
   displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
-      brand: 0
+      brand: 0,
+      showMessage: false
     };
   },
   componentDidMount: function componentDidMount() {
@@ -34948,7 +34949,6 @@ module.exports = _react2.default.createClass({
       },
       minCharacters: 3,
       onSelect: (function (result, response) {
-        console.log(result, response);
         this.setState({
           brand: result.id
         });
@@ -34970,17 +34970,47 @@ module.exports = _react2.default.createClass({
       processData: false,
       contentType: false,
       type: 'POST',
-      success: function success(data) {
-        alert(data);
-      }
+      success: (function (data) {
+        this.setState({
+          showMessage: true
+        });
+      }).bind(this)
     });
   },
 
   handleBrand: function handleBrand(e) {},
 
+  handleMessage: function handleMessage(e) {
+    /*$(e.target)
+      .closest('.message')
+      .transition('fade')
+    ;*/
+    this.setState({
+      showMessage: false
+    });
+  },
+
   componentDidUpdate: function componentDidUpdate() {},
 
   render: function render() {
+    var message = '';
+    if (this.state.showMessage) {
+      message = _react2.default.createElement(
+        'div',
+        { ref: 'message', className: 'ui success message' },
+        _react2.default.createElement('i', { className: 'close icon', onClick: this.handleMessage }),
+        _react2.default.createElement(
+          'div',
+          { className: 'header' },
+          'Message'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'Save product is successful.'
+        )
+      );
+    }
     return _react2.default.createElement(
       'form',
       { ref: 'form', onSubmit: this.handleSubmit },
@@ -34994,6 +35024,7 @@ module.exports = _react2.default.createClass({
           Lang.get('product.add')
         )
       ),
+      message,
       _react2.default.createElement(
         'div',
         { className: 'ui form' },
