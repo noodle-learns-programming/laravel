@@ -19615,7 +19615,7 @@ module.exports = _react2.default.createClass({
       'form',
       { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
       _react2.default.createElement(
-        'h2',
+        'h3',
         { className: 'ui header' },
         _react2.default.createElement('i', { className: 'at icon' }),
         _react2.default.createElement(
@@ -19636,17 +19636,27 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'th',
               null,
-              'Name'
+              Lang.get('product.name')
             ),
             _react2.default.createElement(
               'th',
               null,
-              'SKU'
+              Lang.get('product.sku')
             ),
             _react2.default.createElement(
               'th',
               null,
-              'Series'
+              Lang.get('product.series')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.unit')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.brand')
             )
           )
         ),
@@ -19683,6 +19693,16 @@ module.exports = _react2.default.createClass({
           'td',
           null,
           product.get('series')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('unit')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('brand')
         )
       ));
     });
@@ -19697,7 +19717,7 @@ module.exports = _react2.default.createClass({
       null,
       _react2.default.createElement(
         'th',
-        { colSpan: '3' },
+        { colSpan: '5' },
         _react2.default.createElement(
           'div',
           { className: 'ui right floated pagination menu' },

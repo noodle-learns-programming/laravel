@@ -29,18 +29,20 @@ module.exports = React.createClass({
     var row = this.renderBody(this.props.collection);
     return (
       <form ref="form" onSubmit={this.handleSubmit} method="post">
-        <h2 className="ui header">
+        <h3 className="ui header">
           <i className="at icon"></i>
           <div className="content">
             { Lang.get('product.list') }
           </div>
-        </h2>
+        </h3>
         <table className="ui black table">
           <thead>
               <tr>
-                <th>Name</th>
-                <th>SKU</th>
-                <th>Series</th>
+                <th>{Lang.get('product.name')}</th>
+                <th>{Lang.get('product.sku')}</th>
+                <th>{Lang.get('product.series')}</th>
+                <th>{Lang.get('product.unit')}</th>
+                <th>{Lang.get('product.brand')}</th>
               </tr>
           </thead>
           <tbody>{row}</tbody>
@@ -57,6 +59,8 @@ module.exports = React.createClass({
           <td>{product.get('name')}</td>
           <td>{product.get('sku')}</td>
           <td>{product.get('series')}</td>
+          <td>{product.get('unit')}</td>
+          <td>{product.get('brand')}</td>
         </tr>
       ));
     });
@@ -68,7 +72,7 @@ module.exports = React.createClass({
     }
     return (
       <tr>
-        <th colSpan="3">
+        <th colSpan="5">
           <div className="ui right floated pagination menu">
             <a className="icon item" href="#stock/show-product?page=2">
               <i className="left chevron icon"></i>
