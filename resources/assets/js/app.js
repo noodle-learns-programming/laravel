@@ -17,6 +17,7 @@ var ProductShow	= require('./components/product-show');
 var TestMaterial= require('./test/material');*/
 
 injectTapEventPlugin();
+
 $('.ui.sidebar').sidebar({
 	context	: $('.bottom.segment'),
 	dimPage : false

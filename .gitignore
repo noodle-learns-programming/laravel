@@ -6,3 +6,4 @@ Homestead.json
 composer.lock
 composer.phar
 public/build
+/nbproject/private/
