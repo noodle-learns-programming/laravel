@@ -21,7 +21,8 @@ class ProductController extends Controller
 
   public function index()
   {
-    return view('product.create');  
+    $products = Product::paginate(10);
+    return $products;
   }
 
   public function store(Request $request)

@@ -10,11 +10,14 @@ return [
     */
     'dashboard'     => 'Dashboard',
     'product'       => 'Sản phẩm',
-    'stock'         => 'Quản lý kho',
-    'stock_sale'    => 'Xuất nhập hàng',
-    'stock_internal'=> 'Xuất nhập nội bộ',
-    'stock_categoy' => 'Danh mục sản phẩm',
-    'stock_audit'   => 'Kiểm kê',
+    'show-product'  => 'Danh sách sản phẩm',
+
+    'stock'                 => 'Quản lý kho',
+    'stock_sale'            => 'Xuất nhập hàng',
+    'stock_internal'        => 'Xuất nhập nội bộ',
+    'stock_categoy'         => 'Danh mục sản phẩm',
+    'stock_audit'           => 'Kiểm kê',
+    'stock_show_product'    => 'Danh sách sản phẩm',
 
     'sale'                  => 'Quản lý bán hàng',
     'sale_invoice'          => 'Đơn hàng',

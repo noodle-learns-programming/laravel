@@ -8,6 +8,7 @@ return [
     |---------------------------------------------------------------
     |
     */
+    'list'          => 'Danh sách sản phẩm',
    	'add'			=> 'Thêm sản phẩm',
     'name'			=> 'Tên sản phẩm',
     'brand'			=> 'Nhãn hiệu',

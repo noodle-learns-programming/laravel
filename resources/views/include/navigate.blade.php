@@ -10,6 +10,7 @@
         <div class="header">{{ trans('common.stock') }}</div>
         <div class="menu">
             <a class="item" href="#stock/product">{{ trans('common.stock_sale') }}</a>
+            <a class="item" href="#stock/show-product">{{ trans('common.stock_show_product') }}</a>
             <a class="item">{{ trans('common.stock_internal') }}</a>
             <a class="item">{{ trans('common.stock_categoy') }}</a>
             <a class="item">{{ trans('common.stock_audit') }}</a>
