@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Product;
 use App\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -26,15 +26,13 @@ class ProductController extends Controller
 
   public function store(Request $request)
   {
-    $rules = [
-      'name'  => 'required'
-    ];
-    $validator = $this->validate($request, $rules);
+    $product    = new Product();
+    $rules      = $product->getValidatorRules();
+    $validator  = $this->validate($request, $rules);
     if ($validator) {
       return response()->json($validator,'404');
     }
-    $input    = $request->all();
-    $product  = new Product($input);
+    $product->fill($request->all());
     $result   = $product->save();
 
     return response()->json([

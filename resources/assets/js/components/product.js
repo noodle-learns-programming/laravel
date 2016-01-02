@@ -27,21 +27,31 @@ module.exports = React.createClass({
         }.bind(this)
       })
     ;
-    $(ReactDOM.findDOMNode(this.refs.form))
+    /*$(ReactDOM.findDOMNode(this.refs.form))
       .form({
         on: 'blur',
         fields: {
-          name     : 'empty'
+          name    : 'empty',
+          sku     : 'empty',
+          series  : 'empty',
+          brand   : 'empty',
+          unit    : 'empty'
         }
       })
-    ;
+    ;*/
   },
 
   handleSubmit : function(e){
     e.preventDefault();
+    var formDOM = ReactDOM.findDOMNode(this.refs.form);
+    /*var isValid = $(formDOM)
+      .form('is valid');
+    if( !isValid ) {
+      return false;
+    }*/
     var fd    = new FormData();
     var data  = _.object(
-      _.map($(ReactDOM.findDOMNode(this.refs.form)).serializeArray(), _.values)
+      _.map($(formDOM).serializeArray(), _.values)
     );
     data['brand'] = this.state.brand;
     for(var name in data){
@@ -104,17 +114,17 @@ module.exports = React.createClass({
             <input ref="name" name="name" placeholder={Lang.get('product.name')} type="text" />
           </div>
           <div className="two fields">
-            <div className="field">
+            <div className="required field">
               <label>{ Lang.get('product.sku') }</label>
               <input ref="sku" name="sku" placeholder={Lang.get('product.sku')} type="text" />
             </div>
-            <div className="field">
+            <div className="required field">
               <label>{ Lang.get('product.series') }</label>
               <input ref="series" name="series" placeholder={Lang.get('product.series')} type="text" />
             </div>
           </div>
           <div className="two fields">
-            <div className="field">
+            <div className="required field">
               <label>{ Lang.get('product.brand') }</label>
               <div ref="ui_brand" className="ui search">
                 <div className="ui icon input">
@@ -124,9 +134,9 @@ module.exports = React.createClass({
                 </div>
               </div>
             </div>
-            <div className="field">
+            <div className="required field">
               <label>{ Lang.get('product.unit') }</label>
-              <input placeholder={Lang.get('product.unit')} type="text" />
+              <input ref="unit" name="unit" placeholder={Lang.get('product.unit')} type="text" />
             </div>
           </div>
           <div className="two fields">

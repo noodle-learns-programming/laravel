@@ -34954,18 +34954,30 @@ module.exports = _react2.default.createClass({
         });
       }).bind(this)
     });
-    $(_reactDom2.default.findDOMNode(this.refs.form)).form({
-      on: 'blur',
-      fields: {
-        name: 'empty'
-      }
-    });
+    /*$(ReactDOM.findDOMNode(this.refs.form))
+      .form({
+        on: 'blur',
+        fields: {
+          name    : 'empty',
+          sku     : 'empty',
+          series  : 'empty',
+          brand   : 'empty',
+          unit    : 'empty'
+        }
+      })
+    ;*/
   },
 
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
+    var formDOM = _reactDom2.default.findDOMNode(this.refs.form);
+    /*var isValid = $(formDOM)
+      .form('is valid');
+    if( !isValid ) {
+      return false;
+    }*/
     var fd = new FormData();
-    var data = _.object(_.map($(_reactDom2.default.findDOMNode(this.refs.form)).serializeArray(), _.values));
+    var data = _.object(_.map($(formDOM).serializeArray(), _.values));
     data['brand'] = this.state.brand;
     for (var name in data) {
       fd.append(name, data[name]);
@@ -35049,7 +35061,7 @@ module.exports = _react2.default.createClass({
           { className: 'two fields' },
           _react2.default.createElement(
             'div',
-            { className: 'field' },
+            { className: 'required field' },
             _react2.default.createElement(
               'label',
               null,
@@ -35059,7 +35071,7 @@ module.exports = _react2.default.createClass({
           ),
           _react2.default.createElement(
             'div',
-            { className: 'field' },
+            { className: 'required field' },
             _react2.default.createElement(
               'label',
               null,
@@ -35073,7 +35085,7 @@ module.exports = _react2.default.createClass({
           { className: 'two fields' },
           _react2.default.createElement(
             'div',
-            { className: 'field' },
+            { className: 'required field' },
             _react2.default.createElement(
               'label',
               null,
@@ -35093,13 +35105,13 @@ module.exports = _react2.default.createClass({
           ),
           _react2.default.createElement(
             'div',
-            { className: 'field' },
+            { className: 'required field' },
             _react2.default.createElement(
               'label',
               null,
               Lang.get('product.unit')
             ),
-            _react2.default.createElement('input', { placeholder: Lang.get('product.unit'), type: 'text' })
+            _react2.default.createElement('input', { ref: 'unit', name: 'unit', placeholder: Lang.get('product.unit'), type: 'text' })
           )
         ),
         _react2.default.createElement(
