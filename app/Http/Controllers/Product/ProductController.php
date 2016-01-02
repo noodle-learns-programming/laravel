@@ -32,8 +32,7 @@ class ProductController extends Controller
     if ($validator) {
       return response()->json($validator,'404');
     }
-    $product->fill($request->all());
-    $result   = $product->save();
+    $result     = $product->create($request->all());
 
     return response()->json([
       'result' => $result

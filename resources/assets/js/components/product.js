@@ -27,7 +27,7 @@ module.exports = React.createClass({
         }.bind(this)
       })
     ;
-    /*$(ReactDOM.findDOMNode(this.refs.form))
+    $(ReactDOM.findDOMNode(this.refs.form))
       .form({
         on: 'blur',
         fields: {
@@ -36,19 +36,23 @@ module.exports = React.createClass({
           series  : 'empty',
           brand   : 'empty',
           unit    : 'empty'
+        },
+        onSuccess : function(e, fields){
+          e.preventDefault();
+          return false;
         }
       })
-    ;*/
+    ;
   },
 
   handleSubmit : function(e){
     e.preventDefault();
     var formDOM = ReactDOM.findDOMNode(this.refs.form);
-    /*var isValid = $(formDOM)
+    var isValid = $(formDOM)
       .form('is valid');
     if( !isValid ) {
       return false;
-    }*/
+    }
     var fd    = new FormData();
     var data  = _.object(
       _.map($(formDOM).serializeArray(), _.values)
@@ -100,7 +104,7 @@ module.exports = React.createClass({
       </div>);
     }
     return (
-      <form ref="form" onSubmit={this.handleSubmit}>
+      <form ref="form" onSubmit={this.handleSubmit} method="post">
         <h2 className="ui header">
           <img className="ui image" src="/image/school.png" />
           <div className="content">

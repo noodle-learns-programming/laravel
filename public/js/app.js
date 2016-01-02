@@ -34954,28 +34954,29 @@ module.exports = _react2.default.createClass({
         });
       }).bind(this)
     });
-    /*$(ReactDOM.findDOMNode(this.refs.form))
-      .form({
-        on: 'blur',
-        fields: {
-          name    : 'empty',
-          sku     : 'empty',
-          series  : 'empty',
-          brand   : 'empty',
-          unit    : 'empty'
-        }
-      })
-    ;*/
+    $(_reactDom2.default.findDOMNode(this.refs.form)).form({
+      on: 'blur',
+      fields: {
+        name: 'empty',
+        sku: 'empty',
+        series: 'empty',
+        brand: 'empty',
+        unit: 'empty'
+      },
+      onSuccess: function onSuccess(e, fields) {
+        e.preventDefault();
+        return false;
+      }
+    });
   },
 
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
     var formDOM = _reactDom2.default.findDOMNode(this.refs.form);
-    /*var isValid = $(formDOM)
-      .form('is valid');
-    if( !isValid ) {
+    var isValid = $(formDOM).form('is valid');
+    if (!isValid) {
       return false;
-    }*/
+    }
     var fd = new FormData();
     var data = _.object(_.map($(formDOM).serializeArray(), _.values));
     data['brand'] = this.state.brand;
@@ -35031,7 +35032,7 @@ module.exports = _react2.default.createClass({
     }
     return _react2.default.createElement(
       'form',
-      { ref: 'form', onSubmit: this.handleSubmit },
+      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
       _react2.default.createElement(
         'h2',
         { className: 'ui header' },
