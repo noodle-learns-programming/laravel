@@ -19446,6 +19446,7 @@ module.exports = _react2.default.createClass({
 
   render: function render() {
     var rows = [];
+    var footer = '';
     var pagination = this.state.pagination;
     var product = null;
     if (pagination && pagination.data && pagination.data.length) {
@@ -19453,7 +19454,7 @@ module.exports = _react2.default.createClass({
         product = pagination.data[i];
         rows.push(_react2.default.createElement(
           'tr',
-          null,
+          { key: i },
           _react2.default.createElement(
             'td',
             null,
@@ -19471,6 +19472,48 @@ module.exports = _react2.default.createClass({
           )
         ));
       }
+      footer = _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'th',
+          { colSpan: '3' },
+          _react2.default.createElement(
+            'div',
+            { className: 'ui right floated pagination menu' },
+            _react2.default.createElement(
+              'a',
+              { className: 'icon item', href: '#stock/show-product?page=2' },
+              _react2.default.createElement('i', { className: 'left chevron icon' })
+            ),
+            _react2.default.createElement(
+              'a',
+              { className: 'item' },
+              '1'
+            ),
+            _react2.default.createElement(
+              'a',
+              { className: 'item' },
+              '2'
+            ),
+            _react2.default.createElement(
+              'a',
+              { className: 'item' },
+              '3'
+            ),
+            _react2.default.createElement(
+              'a',
+              { className: 'item' },
+              '4'
+            ),
+            _react2.default.createElement(
+              'a',
+              { className: 'icon item', href: '#stock/show-product?page=2' },
+              _react2.default.createElement('i', { className: 'right chevron icon' })
+            )
+          )
+        )
+      );
     }
     return _react2.default.createElement(
       'form',
@@ -19515,6 +19558,11 @@ module.exports = _react2.default.createClass({
           'tbody',
           null,
           rows
+        ),
+        _react2.default.createElement(
+          'tfoot',
+          null,
+          footer
         )
       )
     );
