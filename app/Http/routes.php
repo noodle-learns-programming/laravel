@@ -23,9 +23,9 @@ Route::get('/', 'HomeController@index');
 |
 */
 
-Route::group(['namespace' => 'Product', 'prefix' => 'product'], function()
+Route::group(['namespace' => 'Store', 'prefix' => 'store'], function()
 {
-	Route::resource('/', 'ProductController');
+	Route::resource('product', 'ProductController');
 });
 
 Route::group(['namespace' => 'Api', 'prefix' => 'api'], function()

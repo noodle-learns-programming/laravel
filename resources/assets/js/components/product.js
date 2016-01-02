@@ -62,7 +62,7 @@ module.exports = React.createClass({
       fd.append(name, data[name]);
     }
     $.ajax({
-      url : '/product',
+      url : '/store/product',
       data: fd,
       processData: false,
       contentType: false,

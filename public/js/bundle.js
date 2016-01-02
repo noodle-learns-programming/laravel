@@ -34984,7 +34984,7 @@ module.exports = _react2.default.createClass({
       fd.append(name, data[name]);
     }
     $.ajax({
-      url: '/product',
+      url: '/store/product',
       data: fd,
       processData: false,
       contentType: false,
