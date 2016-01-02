@@ -27,6 +27,14 @@ module.exports = React.createClass({
         }.bind(this)
       })
     ;
+    $(ReactDOM.findDOMNode(this.refs.form))
+      .form({
+        on: 'blur',
+        fields: {
+          name     : 'empty'
+        }
+      })
+    ;
   },
 
   handleSubmit : function(e){
@@ -91,7 +99,7 @@ module.exports = React.createClass({
         </h2>
         {message}
         <div className="ui form">
-          <div className="field">
+          <div className="required field">
             <label>{ Lang.get('product.name') }</label>
             <input ref="name" name="name" placeholder={Lang.get('product.name')} type="text" />
           </div>

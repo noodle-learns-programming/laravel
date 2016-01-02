@@ -34954,6 +34954,12 @@ module.exports = _react2.default.createClass({
         });
       }).bind(this)
     });
+    $(_reactDom2.default.findDOMNode(this.refs.form)).form({
+      on: 'blur',
+      fields: {
+        name: 'empty'
+      }
+    });
   },
 
   handleSubmit: function handleSubmit(e) {
@@ -35030,7 +35036,7 @@ module.exports = _react2.default.createClass({
         { className: 'ui form' },
         _react2.default.createElement(
           'div',
-          { className: 'field' },
+          { className: 'required field' },
           _react2.default.createElement(
             'label',
             null,
