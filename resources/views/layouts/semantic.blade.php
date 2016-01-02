@@ -28,8 +28,7 @@
                             </div>
                         </div>
                         <div class="six wide column">
-                            <h1>Feed</h1>
-                            @yield('feed')
+                            <div id="feed"></div>
                         </div>
                     </div>
                 </div>

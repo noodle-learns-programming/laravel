@@ -19257,9 +19257,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
 var Breadcrumb = require('./components/breadcrumb');
+var Feed = require('./components/feed');
+var Dashboard = require('./components/dashboard');
 var Product = require('./components/product');
 var ProductShow = require('./components/product-show');
-var Dashboard = require('./components/dashboard');
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -19285,6 +19286,7 @@ window.App = {
 	},
 	run: function run() {
 		_reactDom2.default.render(_react2.default.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
+		_reactDom2.default.render(_react2.default.createElement(Feed, null), document.getElementById('feed'));
 		Backbone.history.start();
 		return this;
 	}
@@ -19316,7 +19318,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":164,"./components/dashboard":165,"./components/product":167,"./components/product-show":166,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
+},{"./components/breadcrumb":164,"./components/dashboard":165,"./components/feed":166,"./components/product":168,"./components/product-show":167,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19417,6 +19419,166 @@ module.exports = _react2.default.createClass({
 });
 
 },{"react":162}],166:[function(require,module,exports){
+"use strict";
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
+  displayName: "exports",
+  getInitialState: function getInitialState() {
+    return {
+      value: null
+    };
+  },
+  componentDidMount: function componentDidMount() {},
+  componentDidUpdate: function componentDidUpdate() {},
+
+  render: function render() {
+    return _react2.default.createElement(
+      "div",
+      { className: "ui small feed" },
+      _react2.default.createElement(
+        "div",
+        { className: "event" },
+        _react2.default.createElement(
+          "div",
+          { className: "label" },
+          _react2.default.createElement("img", { src: "/image/avatar/small/elliot.jpg" })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "content" },
+          _react2.default.createElement(
+            "div",
+            { className: "summary" },
+            _react2.default.createElement(
+              "a",
+              { className: "user" },
+              "Elliot Fu"
+            ),
+            " added you as a friend",
+            _react2.default.createElement(
+              "div",
+              { className: "date" },
+              "1 Hour Ago"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "meta" },
+            _react2.default.createElement(
+              "a",
+              { className: "like" },
+              _react2.default.createElement("i", { className: "like icon" }),
+              " 4 Likes"
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "event" },
+        _react2.default.createElement(
+          "div",
+          { className: "label" },
+          _react2.default.createElement("i", { className: "pencil icon" })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "content" },
+          _react2.default.createElement(
+            "div",
+            { className: "summary" },
+            "You submitted a new post to the page",
+            _react2.default.createElement(
+              "div",
+              { className: "date" },
+              "3 days ago"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "extra text" },
+            "Im having a BBQ this weekend. Come by around 4pm if you can."
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "meta" },
+            _react2.default.createElement(
+              "a",
+              { className: "like" },
+              _react2.default.createElement("i", { className: "like icon" }),
+              " 11 Likes"
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { className: "event" },
+        _react2.default.createElement(
+          "div",
+          { className: "label" },
+          _react2.default.createElement("img", { src: "/image/avatar/small/helen.jpg" })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "content" },
+          _react2.default.createElement(
+            "div",
+            { className: "date" },
+            "4 days ago"
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "summary" },
+            _react2.default.createElement(
+              "a",
+              null,
+              "Helen Troy"
+            ),
+            " added ",
+            _react2.default.createElement(
+              "a",
+              null,
+              "2 new illustrations"
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "extra images" },
+            _react2.default.createElement(
+              "a",
+              null,
+              _react2.default.createElement("img", { src: "/image/wireframe/image.png" })
+            ),
+            _react2.default.createElement(
+              "a",
+              null,
+              _react2.default.createElement("img", { src: "/image/wireframe/image.png" })
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "meta" },
+            _react2.default.createElement(
+              "a",
+              { className: "like" },
+              _react2.default.createElement("i", { className: "like icon" }),
+              " 1 Like"
+            )
+          )
+        )
+      )
+    );
+  }
+});
+
+},{"react":162}],167:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19570,7 +19732,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/product":168,"react":162}],167:[function(require,module,exports){
+},{"./../models/product":169,"react":162}],168:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19809,7 +19971,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162,"react-dom":2}],168:[function(require,module,exports){
+},{"react":162,"react-dom":2}],169:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({

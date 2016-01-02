@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 var injectTapEventPlugin = require("react-tap-event-plugin");
 var Breadcrumb 	= require('./components/breadcrumb');
+var Feed 				= require('./components/feed');
+var Dashboard		= require('./components/dashboard');
 var Product	  	= require('./components/product');
 var ProductShow	= require('./components/product-show');
-var Dashboard	= require('./components/dashboard');
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -31,7 +32,8 @@ window.App = {
 	},
 	run : function()
 	{
-		ReactDOM.render(<Breadcrumb router={this.router} />, document.getElementById('breadcrumb'))
+		ReactDOM.render(<Breadcrumb router={this.router} />, document.getElementById('breadcrumb'));
+		ReactDOM.render(<Feed />, document.getElementById('feed'));
 		Backbone.history.start();
 		return this;
 	}
