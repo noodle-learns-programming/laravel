@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 var injectTapEventPlugin = require("react-tap-event-plugin");
+//View
 var Breadcrumb 	= require('./components/breadcrumb');
 var Feed 				= require('./components/feed');
 var Dashboard		= require('./components/dashboard');
 var Product	  	= require('./components/product');
 var ProductShow	= require('./components/product-show');
+//Model
 /**
  |-------------------------------------------------------
  | Only for testing

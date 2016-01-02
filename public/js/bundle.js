@@ -19256,11 +19256,13 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var injectTapEventPlugin = require("react-tap-event-plugin");
+//View
 var Breadcrumb = require('./components/breadcrumb');
 var Feed = require('./components/feed');
 var Dashboard = require('./components/dashboard');
 var Product = require('./components/product');
 var ProductShow = require('./components/product-show');
+//Model
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -19588,96 +19590,27 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ProductCollection = require('./../models/product').Collection;
+var BackboneModelMixin = require('./../util').BackboneModelMixin;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
-  getInitialState: function getInitialState() {
+
+  mixins: [BackboneModelMixin],
+  getDefaultProps: function getDefaultProps() {
     return {
-      collection: null
+      'collection': new ProductCollection()
     };
   },
   componentDidMount: function componentDidMount() {
-    var productCollection = new ProductCollection();
-    productCollection.fetch({
-      success: (function () {
-        this.setState({
-          collection: productCollection
-        });
-      }).bind(this)
-    });
+    this.props.collection.fetch();
   },
   componentDidUpdate: function componentDidUpdate() {},
   handleSubmit: function handleSubmit() {},
-
+  getBackboneModels: function getBackboneModels() {
+    return [this.props.collection];
+  },
   render: function render() {
-    var rows = [];
-    var footer = '';
-    var collection = this.state.collection;
-    if (collection && collection.length) {
-      collection.each(function (product, i) {
-        rows.push(_react2.default.createElement(
-          'tr',
-          { key: i },
-          _react2.default.createElement(
-            'td',
-            null,
-            product.get('name')
-          ),
-          _react2.default.createElement(
-            'td',
-            null,
-            product.get('sku')
-          ),
-          _react2.default.createElement(
-            'td',
-            null,
-            product.get('series')
-          )
-        ));
-      });
-      footer = _react2.default.createElement(
-        'tr',
-        null,
-        _react2.default.createElement(
-          'th',
-          { colSpan: '3' },
-          _react2.default.createElement(
-            'div',
-            { className: 'ui right floated pagination menu' },
-            _react2.default.createElement(
-              'a',
-              { className: 'icon item', href: '#stock/show-product?page=2' },
-              _react2.default.createElement('i', { className: 'left chevron icon' })
-            ),
-            _react2.default.createElement(
-              'a',
-              { className: 'item' },
-              '1'
-            ),
-            _react2.default.createElement(
-              'a',
-              { className: 'item' },
-              '2'
-            ),
-            _react2.default.createElement(
-              'a',
-              { className: 'item' },
-              '3'
-            ),
-            _react2.default.createElement(
-              'a',
-              { className: 'item' },
-              '4'
-            ),
-            _react2.default.createElement(
-              'a',
-              { className: 'icon item', href: '#stock/show-product?page=2' },
-              _react2.default.createElement('i', { className: 'right chevron icon' })
-            )
-          )
-        )
-      );
-    }
+    var row = this.renderBody(this.props.collection);
     return _react2.default.createElement(
       'form',
       { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
@@ -19720,19 +19653,91 @@ module.exports = _react2.default.createClass({
         _react2.default.createElement(
           'tbody',
           null,
-          rows
+          row
         ),
         _react2.default.createElement(
           'tfoot',
           null,
-          footer
+          this.renderFooter(this.props.collection)
+        )
+      )
+    );
+  },
+  renderBody: function renderBody(collection) {
+    var rows = [];
+    collection.each(function (product, i) {
+      rows.push(_react2.default.createElement(
+        'tr',
+        { key: i },
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('name')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('sku')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('series')
+        )
+      ));
+    });
+    return rows;
+  },
+  renderFooter: function renderFooter(collection) {
+    if (!collection.length) {
+      return '';
+    }
+    return _react2.default.createElement(
+      'tr',
+      null,
+      _react2.default.createElement(
+        'th',
+        { colSpan: '3' },
+        _react2.default.createElement(
+          'div',
+          { className: 'ui right floated pagination menu' },
+          _react2.default.createElement(
+            'a',
+            { className: 'icon item', href: '#stock/show-product?page=2' },
+            _react2.default.createElement('i', { className: 'left chevron icon' })
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '1'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '2'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '3'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '4'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'icon item', href: '#stock/show-product?page=2' },
+            _react2.default.createElement('i', { className: 'right chevron icon' })
+          )
         )
       )
     );
   }
 });
 
-},{"./../models/product":169,"react":162}],168:[function(require,module,exports){
+},{"./../models/product":169,"./../util":170,"react":162}],168:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19754,13 +19759,6 @@ module.exports = _react2.default.createClass({
     };
   },
   componentDidMount: function componentDidMount() {
-    var productCollection = new ProductCollection();
-    productCollection.fetch({
-      success: function success() {
-        console.log(productCollection.models);
-      }
-    });
-
     $(_reactDom2.default.findDOMNode(this.refs.ui_brand)).search({
       apiSettings: {
         url: '/api/search?q={query}&type=brand'
@@ -19989,6 +19987,25 @@ var Collection = Backbone.Collection.extend({
 
 exports.Model = Model;
 exports.Collection = Collection;
+
+},{}],170:[function(require,module,exports){
+'use strict';
+
+var BackboneModelMixin = {
+  componentDidMount: function componentDidMount() {
+    this.getBackboneModels().forEach(function (model) {
+      model.on('add change remove', this.forceUpdate.bind(this, null), this);
+    }, this);
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    this.getBackboneModels().forEach(function (model) {
+      model.off(null, null, this);
+    }, this);
+  }
+};
+
+exports.BackboneModelMixin = BackboneModelMixin;
 
 },{}]},{},[163]);
 
