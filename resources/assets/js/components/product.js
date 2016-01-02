@@ -10,6 +10,13 @@ module.exports = React.createClass({
   },
 
   componentDidMount() {
+    var productCollection = new ProductCollection();
+    productCollection.fetch({
+      success: function(){
+        console.log(productCollection.models);    
+      }
+    });
+    
     $(ReactDOM.findDOMNode(this.refs.ui_brand))
       .search({
         apiSettings: {
@@ -62,7 +69,7 @@ module.exports = React.createClass({
       fd.append(name, data[name]);
     }
     $.ajax({
-      url : '/store/product',
+      url : '/stock/product',
       data: fd,
       processData: false,
       contentType: false,

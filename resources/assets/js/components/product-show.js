@@ -1,19 +1,22 @@
 import React from 'react';
+var ProductCollection = require('./../models/product').Collection;
+
 module.exports = React.createClass({
   getInitialState() {
     return {
-      pagination : {}
+      collection : null
     };
   },
 
   componentDidMount() {
-    $.get('/store/product',{
-      page : 1
-    }, function(res){
-      this.setState({
-        pagination : res
-      });
-    }.bind(this));
+    var productCollection = new ProductCollection();
+    productCollection.fetch({
+      success: function(){
+        this.setState({
+          collection : productCollection
+        });
+      }.bind(this)
+    });
   },
 
   componentDidUpdate() {
@@ -27,20 +30,17 @@ module.exports = React.createClass({
   render: function() {
     var rows  = [];
     var footer= '';
-    var pagination = this.state.pagination;
-    var product = null;
-    if( pagination && pagination.data && pagination.data.length ){
-      for(var i = 0, n = pagination.data.length; i < n; i++ )
-      {
-        product = pagination.data[i];
+    var collection = this.state.collection;
+    if( collection && collection.length ){
+      collection.each(function(product, i){
         rows.push((
           <tr key={i}>
-            <td>{product.name}</td>
-            <td>{product.sku}</td>
-            <td>{product.series}</td>
+            <td>{product.get('name')}</td>
+            <td>{product.get('sku')}</td>
+            <td>{product.get('series')}</td>
           </tr>
         ));
-      }
+      });
       footer = (
         <tr>
           <th colSpan="3">

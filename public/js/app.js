@@ -19425,21 +19425,24 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var ProductCollection = require('./../models/product').Collection;
+
 module.exports = _react2.default.createClass({
   displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
-      pagination: {}
+      collection: null
     };
   },
   componentDidMount: function componentDidMount() {
-    $.get('/store/product', {
-      page: 1
-    }, (function (res) {
-      this.setState({
-        pagination: res
-      });
-    }).bind(this));
+    var productCollection = new ProductCollection();
+    productCollection.fetch({
+      success: (function () {
+        this.setState({
+          collection: productCollection
+        });
+      }).bind(this)
+    });
   },
   componentDidUpdate: function componentDidUpdate() {},
   handleSubmit: function handleSubmit() {},
@@ -19447,31 +19450,29 @@ module.exports = _react2.default.createClass({
   render: function render() {
     var rows = [];
     var footer = '';
-    var pagination = this.state.pagination;
-    var product = null;
-    if (pagination && pagination.data && pagination.data.length) {
-      for (var i = 0, n = pagination.data.length; i < n; i++) {
-        product = pagination.data[i];
+    var collection = this.state.collection;
+    if (collection && collection.length) {
+      collection.each(function (product, i) {
         rows.push(_react2.default.createElement(
           'tr',
           { key: i },
           _react2.default.createElement(
             'td',
             null,
-            product.name
+            product.get('name')
           ),
           _react2.default.createElement(
             'td',
             null,
-            product.sku
+            product.get('sku')
           ),
           _react2.default.createElement(
             'td',
             null,
-            product.series
+            product.get('series')
           )
         ));
-      }
+      });
       footer = _react2.default.createElement(
         'tr',
         null,
@@ -19569,7 +19570,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162}],167:[function(require,module,exports){
+},{"./../models/product":168,"react":162}],167:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19591,6 +19592,13 @@ module.exports = _react2.default.createClass({
     };
   },
   componentDidMount: function componentDidMount() {
+    var productCollection = new ProductCollection();
+    productCollection.fetch({
+      success: function success() {
+        console.log(productCollection.models);
+      }
+    });
+
     $(_reactDom2.default.findDOMNode(this.refs.ui_brand)).search({
       apiSettings: {
         url: '/api/search?q={query}&type=brand'
@@ -19636,7 +19644,7 @@ module.exports = _react2.default.createClass({
       fd.append(name, data[name]);
     }
     $.ajax({
-      url: '/store/product',
+      url: '/stock/product',
       data: fd,
       processData: false,
       contentType: false,
@@ -19801,6 +19809,25 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162,"react-dom":2}]},{},[163]);
+},{"react":162,"react-dom":2}],168:[function(require,module,exports){
+'use strict';
+
+var Model = Backbone.Model.extend({
+  initialize: function initialize() {}
+});
+
+var Collection = Backbone.Collection.extend({
+  url: '/stock/product',
+  model: Model,
+  parse: function parse(response) {
+    console.log('This is response from Product Collection');
+    return response.data;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
+
+},{}]},{},[163]);
 
 //# sourceMappingURL=app.js.map

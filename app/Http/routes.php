@@ -23,7 +23,7 @@ Route::get('/', 'HomeController@index');
 |
 */
 
-Route::group(['namespace' => 'Store', 'prefix' => 'store'], function()
+Route::group(['namespace' => 'Stock', 'prefix' => 'stock'], function()
 {
 	Route::resource('product', 'ProductController');
 });
