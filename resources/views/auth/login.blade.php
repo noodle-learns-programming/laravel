@@ -31,7 +31,7 @@
       </div>
     </h2>
 
-    <form class="ui large form" role="form" method="POST" action="{{ url('/login') }}">
+    <form class="ui large form" role="form" method="post" action="{{ url('/login') }}">
       {!! csrf_field() !!}
       <div class="ui stacked segment">
         <div class="field">
@@ -66,4 +66,37 @@
     </div>
   </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+  $(document)
+    .ready(function() {
+      $('.ui.form')
+        .form({
+          fields: {
+            email: {
+              identifier  : 'email',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your e-mail'
+                }
+              ]
+            },
+            password: {
+              identifier  : 'password',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'Please enter your password'
+                }
+              ]
+            }
+          }
+        })
+      ;
+    })
+  ;
+</script>
 @endsection
