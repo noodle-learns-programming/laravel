@@ -1,6 +1,6 @@
 import React from 'react';
 var ProductCollection   = require('./../models/product').Collection;
-var BackboneModelMixin  = require('./../util').BackboneModelMixin;
+var BackboneModelMixin  = require('./../mixins').BackboneModelMixin;
 
 
 module.exports = React.createClass({

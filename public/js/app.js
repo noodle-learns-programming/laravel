@@ -19590,7 +19590,7 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ProductCollection = require('./../models/product').Collection;
-var BackboneModelMixin = require('./../util').BackboneModelMixin;
+var BackboneModelMixin = require('./../mixins').BackboneModelMixin;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
@@ -19737,7 +19737,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/product":169,"./../util":170,"react":162}],168:[function(require,module,exports){
+},{"./../mixins":169,"./../models/product":170,"react":162}],168:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19972,25 +19972,6 @@ module.exports = _react2.default.createClass({
 },{"react":162,"react-dom":2}],169:[function(require,module,exports){
 'use strict';
 
-var Model = Backbone.Model.extend({
-  initialize: function initialize() {}
-});
-
-var Collection = Backbone.Collection.extend({
-  url: '/stock/product',
-  model: Model,
-  parse: function parse(response) {
-    console.log('This is response from Product Collection');
-    return response.data;
-  }
-});
-
-exports.Model = Model;
-exports.Collection = Collection;
-
-},{}],170:[function(require,module,exports){
-'use strict';
-
 var BackboneModelMixin = {
   componentDidMount: function componentDidMount() {
     this.getBackboneModels().forEach(function (model) {
@@ -20006,6 +19987,25 @@ var BackboneModelMixin = {
 };
 
 exports.BackboneModelMixin = BackboneModelMixin;
+
+},{}],170:[function(require,module,exports){
+'use strict';
+
+var Model = Backbone.Model.extend({
+  initialize: function initialize() {}
+});
+
+var Collection = Backbone.Collection.extend({
+  url: '/stock/product',
+  model: Model,
+  parse: function parse(response) {
+    console.log('This is response from Product Collection');
+    return response.data;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
 
 },{}]},{},[163]);
 
