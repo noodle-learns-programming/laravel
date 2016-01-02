@@ -15,9 +15,9 @@
       {{ Auth::user()->name }}
       <i class="dropdown icon"></i>
       <div class="menu">
-        <a class="item"><i class="edit icon"></i> Profile</a>
-        <a class="item"><i class="delete icon"></i> Settings</a>
-        <a href="{{ url('/logout') }}" class="item"><i class="hide icon"></i> Logout</a>
+        <a class="item"><i class="user icon"></i> Profile</a>
+        <a class="item"><i class="setting icon"></i> Settings</a>
+        <a href="{{ url('/logout') }}" class="item"><i class="sign out icon"></i> Logout</a>
       </div>
     </div>
   </div>
