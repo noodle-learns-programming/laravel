@@ -40,20 +40,28 @@ module.exports = React.createClass({
           <div className="right floated right aligned six wide column">
             <div className="ui secondary  menu">
               <div className="right menu">
-                <a className="item" data-view="add" onClick={this.handleMenu}>
-                  <i className="add square icon"></i>
-                  Add
-                </a>
-                <a className="item" data-view="list" onClick={this.handleMenu}>
-                  <i className="table icon"></i>
-                  List
-                </a>
+                {this.renderMenuItem("add", "Add", "add square")}
+                {this.renderMenuItem("list", "List", "table")}
               </div>
             </div>
           </div>
         </div>
         {subView}
       </div>
+    );
+  },
+
+  renderMenuItem(view, text, icon){
+    var className = "item";
+    if( this.state.subView === view){
+      className += " active"
+    }
+    icon = icon + " icon";
+    return (
+      <a className={className} data-view={view} onClick={this.handleMenu}>
+        <i className={icon}></i>
+        {text}
+      </a>
     );
   }
 });

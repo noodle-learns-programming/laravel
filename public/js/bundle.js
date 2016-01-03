@@ -19483,23 +19483,27 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'div',
               { className: 'right menu' },
-              _react2.default.createElement(
-                'a',
-                { className: 'item', 'data-view': 'add', onClick: this.handleMenu },
-                _react2.default.createElement('i', { className: 'add square icon' }),
-                'Add'
-              ),
-              _react2.default.createElement(
-                'a',
-                { className: 'item', 'data-view': 'list', onClick: this.handleMenu },
-                _react2.default.createElement('i', { className: 'table icon' }),
-                'List'
-              )
+              this.renderMenuItem("add", "Add", "add square"),
+              this.renderMenuItem("list", "List", "table")
             )
           )
         )
       ),
       subView
+    );
+  },
+
+  renderMenuItem: function renderMenuItem(view, text, icon) {
+    var className = "item";
+    if (this.state.subView === view) {
+      className += " active";
+    }
+    icon = icon + " icon";
+    return _react2.default.createElement(
+      'a',
+      { className: className, 'data-view': view, onClick: this.handleMenu },
+      _react2.default.createElement('i', { className: icon }),
+      text
     );
   }
 });
