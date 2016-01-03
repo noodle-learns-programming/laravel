@@ -19431,9 +19431,12 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var FileUploadMixin = require('./../mixins').FileUploadMixin;
+
 module.exports = _react2.default.createClass({
   displayName: 'exports',
 
+  mixins: [FileUploadMixin],
   filename: null,
   getInitialState: function getInitialState() {
     return {
@@ -19441,6 +19444,7 @@ module.exports = _react2.default.createClass({
     };
   },
   componentDidMount: function componentDidMount() {
+    this.setHandleUploadType('customer');
     $(_reactDom2.default.findDOMNode(this.refs.form)).form({
       on: 'blur',
       fields: {
@@ -19460,7 +19464,7 @@ module.exports = _react2.default.createClass({
       return false;
     }
     var fd = $(formDOM).serializeObject();
-    fd['image'] = this.filename;
+    fd['image'] = this.getUploadFilename();
     var collection = this.props.collection;
     var customer = collection.create(fd, {
       success: (function (res) {
@@ -19473,23 +19477,6 @@ module.exports = _react2.default.createClass({
           showMessage: true
         });
         formDOM.reset();
-      }).bind(this)
-    });
-  },
-
-  handleFile: function handleFile(e) {
-    var fd = new FormData();
-    fd.append('file', e.currentTarget.files[0]);
-    fd.append('type', 'customer');
-    $.ajax({
-      url: '/api/upload',
-      data: fd,
-      processData: false,
-      contentType: false,
-      enctype: 'multipart/form-data',
-      type: 'POST',
-      success: (function (res) {
-        this.filename = res.filename;
       }).bind(this)
     });
   },
@@ -19635,7 +19622,7 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.image')
             ),
-            _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleFile,
+            _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleUploadFile,
               placeholder: Lang.get('customer.image'), type: 'file' })
           ),
           _react2.default.createElement(
@@ -19659,7 +19646,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162,"react-dom":2}],166:[function(require,module,exports){
+},{"./../mixins":170,"react":162,"react-dom":2}],166:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20286,6 +20273,39 @@ var BackboneModelMixin = {
   }
 };
 
+var FileUploadMixin = {
+  _filename: null,
+  _handleUploadType: null,
+  _path: null,
+  setHandleUploadType: function setHandleUploadType(type) {
+    this._handleUploadType = type;
+  },
+  getUploadFilename: function getUploadFilename(fullpath) {
+    if (fullpath) {
+      return this._path + '/' + this._filename;
+    }
+    return this._filename;
+  },
+  handleUploadFile: function handleUploadFile(e) {
+    var fd = new FormData();
+    fd.append('file', e.currentTarget.files[0]);
+    fd.append('type', this._handleUploadType);
+    $.ajax({
+      url: '/api/upload',
+      data: fd,
+      processData: false,
+      contentType: false,
+      enctype: 'multipart/form-data',
+      type: 'POST',
+      success: (function (res) {
+        this._path = res.path;
+        this._filename = res.filename;
+      }).bind(this)
+    });
+  }
+};
+
+exports.FileUploadMixin = FileUploadMixin;
 exports.BackboneModelMixin = BackboneModelMixin;
 
 },{}],171:[function(require,module,exports){

@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+var FileUploadMixin  = require('./../mixins').FileUploadMixin;
 
 module.exports = React.createClass({
+  mixins : [FileUploadMixin],
   filename  : null,
   getInitialState() {
     return {
@@ -10,6 +12,7 @@ module.exports = React.createClass({
   },
 
   componentDidMount() {
+    this.setHandleUploadType('customer');
     $(ReactDOM.findDOMNode(this.refs.form))
       .form({
         on: 'blur',
@@ -31,7 +34,7 @@ module.exports = React.createClass({
       return false;
     }
     var fd          = $(formDOM).serializeObject();
-      fd['image']   = this.filename;
+      fd['image']   = this.getUploadFilename();
     var collection  = this.props.collection;
     var customer    = collection.create(fd,{
       success : function(res){
@@ -44,23 +47,6 @@ module.exports = React.createClass({
           showMessage : true
         });
         formDOM.reset();
-      }.bind(this)
-    });
-  },
-
-  handleFile : function(e) {
-    var fd    = new FormData();
-    fd.append('file', e.currentTarget.files[0]);
-    fd.append('type', 'customer');
-    $.ajax({
-      url : '/api/upload',
-      data: fd,
-      processData: false,
-      contentType: false,
-      enctype: 'multipart/form-data',
-      type: 'POST',
-      success: function(res){
-        this.filename = res.filename;
       }.bind(this)
     });
   },
@@ -130,7 +116,7 @@ module.exports = React.createClass({
           <div className="two fields">
             <div className="field">
               <label>{ Lang.get('customer.image') }</label>
-              <input ref="image" name="image" onChange={this.handleFile}
+              <input ref="image" name="image" onChange={this.handleUploadFile}
                 placeholder={Lang.get('customer.image')} type="file" />
             </div>
             <div className="field">
