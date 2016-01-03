@@ -10,8 +10,9 @@ module.exports = React.createClass({
     };
   },
 
-  componentDidMount() {
-    console.log('App:', App);   
+  componentWillMount() {
+    this.listView = <CustomerList collection={App.getModelCollection('product')} />;
+    this.formView = <CustomerForm collection={this.props.collection} />;
   },
 
   componentDidUpdate() {
@@ -27,9 +28,9 @@ module.exports = React.createClass({
   render: function() {
     var subView = null;
     if( this.state.subView === 'list'){
-      subView = <CustomerList collection={App.getModelCollection('product')} />;
+      subView = this.listView ;
     } else if (this.state.subView === 'add') {
-      subView = <CustomerForm collection={this.props.collection} />;
+      subView = this.formView;
     }
     return (
       <div>

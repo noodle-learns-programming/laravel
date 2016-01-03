@@ -19441,8 +19441,9 @@ module.exports = _react2.default.createClass({
       subView: 'list'
     };
   },
-  componentDidMount: function componentDidMount() {
-    console.log('App:', App);
+  componentWillMount: function componentWillMount() {
+    this.listView = _react2.default.createElement(CustomerList, { collection: App.getModelCollection('product') });
+    this.formView = _react2.default.createElement(CustomerForm, { collection: this.props.collection });
   },
   componentDidUpdate: function componentDidUpdate() {},
   handleMenu: function handleMenu(e) {
@@ -19455,9 +19456,9 @@ module.exports = _react2.default.createClass({
   render: function render() {
     var subView = null;
     if (this.state.subView === 'list') {
-      subView = _react2.default.createElement(CustomerList, { collection: App.getModelCollection('product') });
+      subView = this.listView;
     } else if (this.state.subView === 'add') {
-      subView = _react2.default.createElement(CustomerForm, { collection: this.props.collection });
+      subView = this.formView;
     }
     return _react2.default.createElement(
       'div',
