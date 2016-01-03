@@ -19255,6 +19255,8 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var App = window.App || {};
+
 var injectTapEventPlugin = require("react-tap-event-plugin");
 //View
 var Breadcrumb = require('./components/breadcrumb');
@@ -19263,6 +19265,7 @@ var Dashboard = require('./components/dashboard');
 var Product = require('./components/product');
 var ProductShow = require('./components/product-show');
 //Model
+var ProductCollection = require('./models/product').Collection;
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -19280,19 +19283,25 @@ $('.ui.sidebar').sidebar({
 
 Lang.setLocale('vi');
 
-window.App = {
-	Models: {},
-	Router: {},
-	init: function init() {
-		this.router = new App.Router();
-		return this;
-	},
-	run: function run() {
-		_reactDom2.default.render(_react2.default.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
-		_reactDom2.default.render(_react2.default.createElement(Feed, null), document.getElementById('feed'));
-		Backbone.history.start();
-		return this;
+App._modelCollections = {};
+App.getModelCollection = function (name) {
+	if (App._modelCollections[name]) {
+		return App._modelCollections[name];
 	}
+	if (name === 'product') {
+		App._modelCollections[name] = new ProductCollection();
+	}
+	return App._modelCollections[name];
+};
+App.init = function () {
+	this.router = new App.Router();
+	return this;
+};
+App.run = function () {
+	_reactDom2.default.render(_react2.default.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
+	_reactDom2.default.render(_react2.default.createElement(Feed, null), document.getElementById('feed'));
+	Backbone.history.start();
+	return this;
 };
 App.Router = Backbone.Router.extend({
 	routes: {
@@ -19309,7 +19318,7 @@ App.Router = Backbone.Router.extend({
 		_reactDom2.default.render(_react2.default.createElement(Product, null), document.getElementById('main'));
 	},
 	productShow: function productShow() {
-		_reactDom2.default.render(_react2.default.createElement(ProductShow, null), document.getElementById('main'));
+		_reactDom2.default.render(_react2.default.createElement(ProductShow, { collection: App.getModelCollection('product') }), document.getElementById('main'));
 	},
 	_upload: function _upload() {
 		_reactDom2.default.render(_react2.default.createElement(TestUpload, null), document.getElementById('main'));
@@ -19321,7 +19330,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":164,"./components/dashboard":165,"./components/feed":166,"./components/product":168,"./components/product-show":167,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
+},{"./components/breadcrumb":164,"./components/dashboard":165,"./components/feed":166,"./components/product":168,"./components/product-show":167,"./models/product":170,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19590,18 +19599,12 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ProductCollection = require('./../models/product').Collection;
 var BackboneModelMixin = require('./../mixins').BackboneModelMixin;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
 
   mixins: [BackboneModelMixin],
-  getDefaultProps: function getDefaultProps() {
-    return {
-      'collection': new ProductCollection()
-    };
-  },
   componentDidMount: function componentDidMount() {
     this.props.collection.fetch();
   },
@@ -19772,7 +19775,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":169,"./../models/product":170,"react":162}],168:[function(require,module,exports){
+},{"./../mixins":169,"react":162}],168:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');

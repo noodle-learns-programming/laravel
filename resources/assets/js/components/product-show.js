@@ -1,15 +1,8 @@
 import React from 'react';
-var ProductCollection   = require('./../models/product').Collection;
 var BackboneModelMixin  = require('./../mixins').BackboneModelMixin;
-
 
 module.exports = React.createClass({
   mixins : [BackboneModelMixin],
-  getDefaultProps (){
-    return {
-      'collection' : new ProductCollection()
-    };
-  },
   componentDidMount() {
     this.props.collection.fetch();
   },
