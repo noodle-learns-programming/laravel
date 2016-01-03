@@ -56,7 +56,17 @@ module.exports = React.createClass({
     collection.each(function(product, i){
       rows.push((
         <tr key={i}>
-          <td>{product.get('name')}</td>
+          <td>
+            <h4 className="ui image header">
+              <img src={"/upload/product/"+product.get('image')} className="ui mini rounded image" />
+              <div className="content">
+                {product.get('name')}
+                <div className="sub header">
+                {product.get('description')}
+                </div>
+              </div>
+            </h4>
+          </td>
           <td>{product.get('sku')}</td>
           <td>{product.get('series')}</td>
           <td>{product.get('unit')}</td>

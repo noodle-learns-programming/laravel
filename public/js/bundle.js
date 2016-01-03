@@ -19683,7 +19683,21 @@ module.exports = _react2.default.createClass({
         _react2.default.createElement(
           'td',
           null,
-          product.get('name')
+          _react2.default.createElement(
+            'h4',
+            { className: 'ui image header' },
+            _react2.default.createElement('img', { src: "/upload/product/" + product.get('image'), className: 'ui mini rounded image' }),
+            _react2.default.createElement(
+              'div',
+              { className: 'content' },
+              product.get('name'),
+              _react2.default.createElement(
+                'div',
+                { className: 'sub header' },
+                product.get('description')
+              )
+            )
+          )
         ),
         _react2.default.createElement(
           'td',
