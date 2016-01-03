@@ -31,6 +31,7 @@ Route::group(['middleware' => ['web']], function () {
 Route::group(['namespace' => 'Api', 'prefix' => 'api'], function()
 {
   Route::resource('search', 'SearchController');
+  Route::resource('upload', 'UploadController');
 });
 
 Route::group(['namespace' => 'Stock', 'prefix' => 'stock'], function()

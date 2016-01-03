@@ -19433,6 +19433,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
+
+  filename: null,
   getInitialState: function getInitialState() {
     return {
       showMessage: false
@@ -19458,6 +19460,7 @@ module.exports = _react2.default.createClass({
       return false;
     }
     var fd = $(formDOM).serializeObject();
+    fd['image'] = this.filename;
     var collection = this.props.collection;
     var customer = collection.create(fd, {
       success: (function (res) {
@@ -19470,6 +19473,23 @@ module.exports = _react2.default.createClass({
           showMessage: true
         });
         formDOM.reset();
+      }).bind(this)
+    });
+  },
+
+  handleFile: function handleFile(e) {
+    var fd = new FormData();
+    fd.append('file', e.currentTarget.files[0]);
+    fd.append('type', 'customer');
+    $.ajax({
+      url: '/api/upload',
+      data: fd,
+      processData: false,
+      contentType: false,
+      enctype: 'multipart/form-data',
+      type: 'POST',
+      success: (function (res) {
+        this.filename = res.filename;
       }).bind(this)
     });
   },
@@ -19615,7 +19635,8 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.image')
             ),
-            _react2.default.createElement('input', { ref: 'image', name: 'image', placeholder: Lang.get('customer.image'), type: 'file' })
+            _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleFile,
+              placeholder: Lang.get('customer.image'), type: 'file' })
           ),
           _react2.default.createElement(
             'div',

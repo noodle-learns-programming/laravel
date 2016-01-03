@@ -27,14 +27,14 @@ class CustomerController extends Controller
 
   public function store(Request $request)
   {
-    $product    = new Customer();
-    $rules      = $product->getValidatorRules();
+    $customer   = new Customer();
+    $rules      = $customer->getValidatorRules();
     $validator  = $this->validate($request, $rules);
     if ($validator) {
       return response()->json($validator,'404');
     }
-    $input      = $request->all();
-    $result     = $product->create($request->all());
+    $input    = $request->all();
+    $result   = $customer->create($input);
 
     return response()->json($result);
   }
