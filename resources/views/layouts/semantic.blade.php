@@ -36,9 +36,6 @@
         </div>
     </div>
     <!-- JavaScripts -->
-    <!--<script src="/js/vendor/react.js"></script>-->
-    <!--<script src="/js/vendor/react-dom.js"></script>-->
-    <!--<script src="/js/vendor/babel-core-browser.js"></script>-->
     <script type="text/javascript">
         var App = window.App = {
             'version' : '0.1'
