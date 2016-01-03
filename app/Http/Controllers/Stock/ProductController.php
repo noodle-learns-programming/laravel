@@ -33,13 +33,13 @@ class ProductController extends Controller
     if ($validator) {
       return response()->json($validator,'404');
     }
+    $input    = $request->all();
     $file     = $request->file('image');
-    $filename = time().'.'.$file->getClientOriginalExtension();
     if ($file->isValid()) {
-      $file->move(public_path().'/upload/product', $filename);
+      $filename = time().'.'.$file->getClientOriginalExtension();
+      $file->move(public_path('upload/product'), $filename);
+      $input['image'] = $filename;
     }
-    $input  = $request->all();
-    $input['image'] = $filename;
     $result = $product->create($input);
     return response()->json([
       'result' => $result
