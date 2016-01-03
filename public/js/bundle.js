@@ -19354,7 +19354,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":164,"./components/customer":165,"./components/dashboard":166,"./components/feed":167,"./components/product":169,"./components/product-show":168,"./models/customer":171,"./models/product":172,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
+},{"./components/breadcrumb":164,"./components/customer":165,"./components/dashboard":168,"./components/feed":169,"./components/product":171,"./components/product-show":170,"./models/customer":173,"./models/product":174,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19431,7 +19431,93 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var FileUploadMixin = require('./../mixins').FileUploadMixin;
+var CustomerForm = require('./customer/form');
+var CustomerList = require('./customer/list');
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+  getInitialState: function getInitialState() {
+    return {
+      subView: 'list'
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    console.log('App:', App);
+  },
+  componentDidUpdate: function componentDidUpdate() {},
+  handleMenu: function handleMenu(e) {
+    var view = $(e.currentTarget).data('view');
+    this.setState({
+      subView: view
+    });
+  },
+
+  render: function render() {
+    var subView = null;
+    if (this.state.subView === 'list') {
+      subView = _react2.default.createElement(CustomerList, { collection: App.getModelCollection('product') });
+    } else if (this.state.subView === 'add') {
+      subView = _react2.default.createElement(CustomerForm, { collection: this.props.collection });
+    }
+    return _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'div',
+        { className: 'ui right aligned grid' },
+        _react2.default.createElement(
+          'div',
+          { className: 'left floated middle aligned left aligned six wide column' },
+          _react2.default.createElement(
+            'h4',
+            { className: 'ui header' },
+            Lang.get('customer.add')
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'right floated right aligned six wide column' },
+          _react2.default.createElement(
+            'div',
+            { className: 'ui secondary  menu' },
+            _react2.default.createElement(
+              'div',
+              { className: 'right menu' },
+              _react2.default.createElement(
+                'a',
+                { className: 'item', 'data-view': 'add', onClick: this.handleMenu },
+                _react2.default.createElement('i', { className: 'add square icon' }),
+                'Add'
+              ),
+              _react2.default.createElement(
+                'a',
+                { className: 'item', 'data-view': 'list', onClick: this.handleMenu },
+                _react2.default.createElement('i', { className: 'table icon' }),
+                'List'
+              )
+            )
+          )
+        )
+      ),
+      subView
+    );
+  }
+});
+
+},{"./customer/form":166,"./customer/list":167,"react":162,"react-dom":2}],166:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FileUploadMixin = require('./../../mixins').FileUploadMixin;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
@@ -19512,126 +19598,75 @@ module.exports = _react2.default.createClass({
       );
     }
     return _react2.default.createElement(
-      'div',
-      null,
+      'form',
+      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
+      message,
       _react2.default.createElement(
         'div',
-        { className: 'ui right aligned grid' },
+        { className: 'ui form' },
         _react2.default.createElement(
           'div',
-          { className: 'left floated middle aligned left aligned six wide column' },
+          { className: 'required field' },
           _react2.default.createElement(
-            'h4',
-            { className: 'ui header' },
-            Lang.get('customer.add')
+            'label',
+            null,
+            Lang.get('customer.name')
+          ),
+          _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('customer.name'), type: 'text' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.mobile_phone')
+            ),
+            _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.home_phone')
+            ),
+            _react2.default.createElement('input', { ref: 'home_phone', name: 'home_phone', placeholder: Lang.get('customer.home_phone'), type: 'text' })
           )
         ),
         _react2.default.createElement(
           'div',
-          { className: 'right floated right aligned six wide column' },
-          _react2.default.createElement(
-            'div',
-            { className: 'ui secondary  menu' },
-            _react2.default.createElement(
-              'div',
-              { className: 'right menu' },
-              _react2.default.createElement(
-                'a',
-                { className: 'item' },
-                _react2.default.createElement('i', { className: 'add square icon' }),
-                'Add'
-              ),
-              _react2.default.createElement(
-                'a',
-                { className: 'item' },
-                _react2.default.createElement('i', { className: 'table icon' }),
-                'List'
-              )
-            )
-          )
-        )
-      ),
-      _react2.default.createElement(
-        'form',
-        { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
-        message,
-        _react2.default.createElement(
-          'div',
-          { className: 'ui form' },
+          { className: 'two fields' },
           _react2.default.createElement(
             'div',
             { className: 'required field' },
             _react2.default.createElement(
               'label',
               null,
-              Lang.get('customer.name')
-            ),
-            _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('customer.name'), type: 'text' })
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'two fields' },
-            _react2.default.createElement(
-              'div',
-              { className: 'required field' },
-              _react2.default.createElement(
-                'label',
-                null,
-                Lang.get('customer.mobile_phone')
-              ),
-              _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
+              Lang.get('customer.gender')
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'required field' },
+              'select',
+              { ref: 'gender', name: 'gender', className: 'ui fluid simple dropdown' },
               _react2.default.createElement(
-                'label',
-                null,
-                Lang.get('customer.home_phone')
-              ),
-              _react2.default.createElement('input', { ref: 'home_phone', name: 'home_phone', placeholder: Lang.get('customer.home_phone'), type: 'text' })
-            )
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'two fields' },
-            _react2.default.createElement(
-              'div',
-              { className: 'required field' },
-              _react2.default.createElement(
-                'label',
-                null,
+                'option',
+                { value: '' },
                 Lang.get('customer.gender')
               ),
               _react2.default.createElement(
-                'select',
-                { ref: 'gender', name: 'gender', className: 'ui fluid simple dropdown' },
-                _react2.default.createElement(
-                  'option',
-                  { value: '' },
-                  Lang.get('customer.gender')
-                ),
-                _react2.default.createElement(
-                  'option',
-                  { value: '1' },
-                  'Male'
-                ),
-                _react2.default.createElement(
-                  'option',
-                  { value: '2' },
-                  'Female'
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'required field' },
-              _react2.default.createElement(
-                'label',
-                null,
-                Lang.get('customer.dob')
+                'option',
+                { value: '1' },
+                'Male'
               ),
-              _react2.default.createElement('input', { ref: 'dob', name: 'dob', placeholder: Lang.get('customer.dob'), type: 'text' })
+              _react2.default.createElement(
+                'option',
+                { value: '2' },
+                'Female'
+              )
             )
           ),
           _react2.default.createElement(
@@ -19640,56 +19675,251 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'label',
               null,
-              Lang.get('customer.address')
+              Lang.get('customer.dob')
             ),
-            _react2.default.createElement('input', { ref: 'address', name: 'address', placeholder: Lang.get('customer.address'), type: 'text' })
+            _react2.default.createElement('input', { ref: 'dob', name: 'dob', placeholder: Lang.get('customer.dob'), type: 'text' })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'required field' },
+          _react2.default.createElement(
+            'label',
+            null,
+            Lang.get('customer.address')
           ),
+          _react2.default.createElement('input', { ref: 'address', name: 'address', placeholder: Lang.get('customer.address'), type: 'text' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
           _react2.default.createElement(
             'div',
-            { className: 'two fields' },
+            { className: 'field' },
             _react2.default.createElement(
               'div',
-              { className: 'field' },
+              { className: 'ui two column grid' },
               _react2.default.createElement(
                 'div',
-                { className: 'ui two column grid' },
+                { className: 'row' },
                 _react2.default.createElement(
                   'div',
-                  { className: 'row' },
+                  { className: 'column' },
+                  _react2.default.createElement('img', { className: 'ui top aligned small image', src: this.getImage() })
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'column' },
                   _react2.default.createElement(
-                    'div',
-                    { className: 'column' },
-                    _react2.default.createElement('img', { className: 'ui top aligned small image', src: this.getImage() })
+                    'label',
+                    null,
+                    Lang.get('customer.image')
                   ),
-                  _react2.default.createElement(
-                    'div',
-                    { className: 'column' },
-                    _react2.default.createElement(
-                      'label',
-                      null,
-                      Lang.get('customer.image')
-                    ),
-                    _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleUploadFile,
-                      placeholder: Lang.get('customer.image'), type: 'file' })
-                  )
+                  _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleUploadFile,
+                    placeholder: Lang.get('customer.image'), type: 'file' })
                 )
               )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'field' },
-              _react2.default.createElement(
-                'label',
-                null,
-                Lang.get('customer.description')
-              ),
-              _react2.default.createElement('textarea', { ref: 'description', name: 'description', placeholder: Lang.get('customer.description') })
             )
           ),
           _react2.default.createElement(
-            'button',
-            { className: 'ui submit button' },
-            'Submit'
+            'div',
+            { className: 'field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.description')
+            ),
+            _react2.default.createElement('textarea', { ref: 'description', name: 'description', placeholder: Lang.get('customer.description') })
+          )
+        ),
+        _react2.default.createElement(
+          'button',
+          { className: 'ui submit button' },
+          'Submit'
+        )
+      )
+    );
+  }
+});
+
+},{"./../../mixins":172,"react":162,"react-dom":2}],167:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+
+  mixins: [BackboneModelMixin],
+  componentDidMount: function componentDidMount() {
+    this.props.collection.fetch();
+  },
+  componentDidUpdate: function componentDidUpdate() {},
+  handleSubmit: function handleSubmit() {},
+  getBackboneModels: function getBackboneModels() {
+    return [this.props.collection];
+  },
+  render: function render() {
+    var row = this.renderBody(this.props.collection);
+    return _react2.default.createElement(
+      'form',
+      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
+      _react2.default.createElement(
+        'h3',
+        { className: 'ui header' },
+        _react2.default.createElement('i', { className: 'at icon' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'content' },
+          Lang.get('product.list')
+        )
+      ),
+      _react2.default.createElement(
+        'table',
+        { className: 'ui black table' },
+        _react2.default.createElement(
+          'thead',
+          null,
+          _react2.default.createElement(
+            'tr',
+            null,
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.name')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.sku')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.series')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.unit')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.brand')
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'tbody',
+          null,
+          row
+        ),
+        _react2.default.createElement(
+          'tfoot',
+          null,
+          this.renderFooter(this.props.collection)
+        )
+      )
+    );
+  },
+  renderBody: function renderBody(collection) {
+    var rows = [];
+    collection.each(function (product, i) {
+      rows.push(_react2.default.createElement(
+        'tr',
+        { key: i },
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(
+            'h4',
+            { className: 'ui image header' },
+            _react2.default.createElement('img', { src: "/upload/product/" + product.get('image'), className: 'ui mini rounded image' }),
+            _react2.default.createElement(
+              'div',
+              { className: 'content' },
+              product.get('name'),
+              _react2.default.createElement(
+                'div',
+                { className: 'sub header' },
+                product.get('description')
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('sku')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('series')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('unit')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('brand')
+        )
+      ));
+    });
+    return rows;
+  },
+  renderFooter: function renderFooter(collection) {
+    if (!collection.length) {
+      return '';
+    }
+    return _react2.default.createElement(
+      'tr',
+      null,
+      _react2.default.createElement(
+        'th',
+        { colSpan: '5' },
+        _react2.default.createElement(
+          'div',
+          { className: 'ui right floated pagination menu' },
+          _react2.default.createElement(
+            'a',
+            { className: 'icon item', href: '#stock/show-product?page=2' },
+            _react2.default.createElement('i', { className: 'left chevron icon' })
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '1'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '2'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '3'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '4'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'icon item', href: '#stock/show-product?page=2' },
+            _react2.default.createElement('i', { className: 'right chevron icon' })
           )
         )
       )
@@ -19697,7 +19927,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":170,"react":162,"react-dom":2}],166:[function(require,module,exports){
+},{"./../../mixins":172,"react":162}],168:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19733,7 +19963,7 @@ module.exports = _react2.default.createClass({
     }
 });
 
-},{"react":162}],167:[function(require,module,exports){
+},{"react":162}],169:[function(require,module,exports){
 "use strict";
 
 var _react = require("react");
@@ -19893,7 +20123,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162}],168:[function(require,module,exports){
+},{"react":162}],170:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20078,7 +20308,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":170,"react":162}],169:[function(require,module,exports){
+},{"./../mixins":172,"react":162}],171:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20307,7 +20537,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162,"react-dom":2}],170:[function(require,module,exports){
+},{"react":162,"react-dom":2}],172:[function(require,module,exports){
 'use strict';
 
 var BackboneModelMixin = {
@@ -20362,7 +20592,7 @@ var FileUploadMixin = {
 exports.FileUploadMixin = FileUploadMixin;
 exports.BackboneModelMixin = BackboneModelMixin;
 
-},{}],171:[function(require,module,exports){
+},{}],173:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({
@@ -20380,7 +20610,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],172:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({
