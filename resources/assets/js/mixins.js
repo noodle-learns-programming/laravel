@@ -39,6 +39,9 @@ var FileUploadMixin = {
       success: function(res){
         this._path = res.path;
         this._filename = res.filename;
+        this.setState({
+          uploadFilename : this.getUploadFilename(true)
+        });
       }.bind(this)
     });
   }

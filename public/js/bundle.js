@@ -19456,7 +19456,6 @@ module.exports = _react2.default.createClass({
       }
     });
   },
-
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
     var formDOM = _reactDom2.default.findDOMNode(this.refs.form);
@@ -19480,14 +19479,18 @@ module.exports = _react2.default.createClass({
       }).bind(this)
     });
   },
-
   handleMessage: function handleMessage(e) {
     this.setState({
       showMessage: false
     });
   },
-
   componentDidUpdate: function componentDidUpdate() {},
+  getImage: function getImage() {
+    if (this.state.uploadFilename) {
+      return this.state.uploadFilename;
+    }
+    return '/image/wireframe/square-image.png';
+  },
 
   render: function render() {
     var message = '';
@@ -19618,12 +19621,29 @@ module.exports = _react2.default.createClass({
             'div',
             { className: 'field' },
             _react2.default.createElement(
-              'label',
-              null,
-              Lang.get('customer.image')
-            ),
-            _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleUploadFile,
-              placeholder: Lang.get('customer.image'), type: 'file' })
+              'div',
+              { className: 'ui two column grid' },
+              _react2.default.createElement(
+                'div',
+                { className: 'row' },
+                _react2.default.createElement(
+                  'div',
+                  { className: 'column' },
+                  _react2.default.createElement('img', { className: 'ui top aligned small image', src: this.getImage() })
+                ),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'column' },
+                  _react2.default.createElement(
+                    'label',
+                    null,
+                    Lang.get('customer.image')
+                  ),
+                  _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleUploadFile,
+                    placeholder: Lang.get('customer.image'), type: 'file' })
+                )
+              )
+            )
           ),
           _react2.default.createElement(
             'div',
@@ -20300,6 +20320,9 @@ var FileUploadMixin = {
       success: (function (res) {
         this._path = res.path;
         this._filename = res.filename;
+        this.setState({
+          uploadFilename: this.getUploadFilename(true)
+        });
       }).bind(this)
     });
   }

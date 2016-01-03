@@ -1,2 +1,7 @@
-
+input[type=file] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 150px;
+}
 /*# sourceMappingURL=all.css.map */

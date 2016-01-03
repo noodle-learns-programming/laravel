@@ -27,7 +27,7 @@ module.exports = React.createClass({
     ;
   },
 
-  handleSubmit : function(e){
+  handleSubmit(e){
     e.preventDefault();
     var formDOM = ReactDOM.findDOMNode(this.refs.form);
     if( !$(formDOM).form('is valid') ) {
@@ -51,13 +51,21 @@ module.exports = React.createClass({
     });
   },
 
-  handleMessage: function(e){
+  handleMessage(e){
     this.setState({
       showMessage : false
     });
   },
 
   componentDidUpdate() {
+  },
+
+  getImage(){
+    if( this.state.uploadFilename )
+    {
+      return this.state.uploadFilename;
+    }
+    return '/image/wireframe/square-image.png';
   },
 
   render: function() {
@@ -115,9 +123,18 @@ module.exports = React.createClass({
           </div>
           <div className="two fields">
             <div className="field">
-              <label>{ Lang.get('customer.image') }</label>
-              <input ref="image" name="image" onChange={this.handleUploadFile}
-                placeholder={Lang.get('customer.image')} type="file" />
+              <div className="ui two column grid">
+                <div className="row">
+                  <div className="column">
+                    <img className="ui top aligned small image" src={this.getImage()} />
+                  </div>
+                  <div className="column">
+                    <label>{ Lang.get('customer.image') }</label>
+                    <input ref="image" name="image" onChange={this.handleUploadFile}
+                      placeholder={Lang.get('customer.image')} type="file" />
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="field">
               <label>{ Lang.get('customer.description') }</label>
