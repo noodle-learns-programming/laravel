@@ -19512,85 +19512,126 @@ module.exports = _react2.default.createClass({
       );
     }
     return _react2.default.createElement(
-      'form',
-      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
-      _react2.default.createElement(
-        'h2',
-        { className: 'ui header' },
-        _react2.default.createElement('img', { className: 'ui image', src: '/image/school.png' }),
-        _react2.default.createElement(
-          'div',
-          { className: 'content' },
-          Lang.get('customer.add')
-        )
-      ),
-      message,
+      'div',
+      null,
       _react2.default.createElement(
         'div',
-        { className: 'ui form' },
+        { className: 'ui right aligned grid' },
         _react2.default.createElement(
           'div',
-          { className: 'required field' },
+          { className: 'left floated middle aligned left aligned six wide column' },
           _react2.default.createElement(
-            'label',
-            null,
-            Lang.get('customer.name')
-          ),
-          _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('customer.name'), type: 'text' })
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'two fields' },
-          _react2.default.createElement(
-            'div',
-            { className: 'required field' },
-            _react2.default.createElement(
-              'label',
-              null,
-              Lang.get('customer.mobile_phone')
-            ),
-            _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'required field' },
-            _react2.default.createElement(
-              'label',
-              null,
-              Lang.get('customer.home_phone')
-            ),
-            _react2.default.createElement('input', { ref: 'home_phone', name: 'home_phone', placeholder: Lang.get('customer.home_phone'), type: 'text' })
+            'h4',
+            { className: 'ui header' },
+            Lang.get('customer.add')
           )
         ),
         _react2.default.createElement(
           'div',
-          { className: 'two fields' },
+          { className: 'right floated right aligned six wide column' },
+          _react2.default.createElement(
+            'div',
+            { className: 'ui secondary  menu' },
+            _react2.default.createElement(
+              'div',
+              { className: 'right menu' },
+              _react2.default.createElement(
+                'a',
+                { className: 'item' },
+                _react2.default.createElement('i', { className: 'add square icon' }),
+                'Add'
+              ),
+              _react2.default.createElement(
+                'a',
+                { className: 'item' },
+                _react2.default.createElement('i', { className: 'table icon' }),
+                'List'
+              )
+            )
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'form',
+        { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
+        message,
+        _react2.default.createElement(
+          'div',
+          { className: 'ui form' },
           _react2.default.createElement(
             'div',
             { className: 'required field' },
             _react2.default.createElement(
               'label',
               null,
-              Lang.get('customer.gender')
+              Lang.get('customer.name')
+            ),
+            _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('customer.name'), type: 'text' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'two fields' },
+            _react2.default.createElement(
+              'div',
+              { className: 'required field' },
+              _react2.default.createElement(
+                'label',
+                null,
+                Lang.get('customer.mobile_phone')
+              ),
+              _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
             ),
             _react2.default.createElement(
-              'select',
-              { ref: 'gender', name: 'gender', className: 'ui fluid simple dropdown' },
+              'div',
+              { className: 'required field' },
               _react2.default.createElement(
-                'option',
-                { value: '' },
+                'label',
+                null,
+                Lang.get('customer.home_phone')
+              ),
+              _react2.default.createElement('input', { ref: 'home_phone', name: 'home_phone', placeholder: Lang.get('customer.home_phone'), type: 'text' })
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'two fields' },
+            _react2.default.createElement(
+              'div',
+              { className: 'required field' },
+              _react2.default.createElement(
+                'label',
+                null,
                 Lang.get('customer.gender')
               ),
               _react2.default.createElement(
-                'option',
-                { value: '1' },
-                'Male'
-              ),
-              _react2.default.createElement(
-                'option',
-                { value: '2' },
-                'Female'
+                'select',
+                { ref: 'gender', name: 'gender', className: 'ui fluid simple dropdown' },
+                _react2.default.createElement(
+                  'option',
+                  { value: '' },
+                  Lang.get('customer.gender')
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '1' },
+                  'Male'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '2' },
+                  'Female'
+                )
               )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'required field' },
+              _react2.default.createElement(
+                'label',
+                null,
+                Lang.get('customer.dob')
+              ),
+              _react2.default.createElement('input', { ref: 'dob', name: 'dob', placeholder: Lang.get('customer.dob'), type: 'text' })
             )
           ),
           _react2.default.createElement(
@@ -19599,67 +19640,57 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'label',
               null,
-              Lang.get('customer.dob')
+              Lang.get('customer.address')
             ),
-            _react2.default.createElement('input', { ref: 'dob', name: 'dob', placeholder: Lang.get('customer.dob'), type: 'text' })
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'required field' },
-          _react2.default.createElement(
-            'label',
-            null,
-            Lang.get('customer.address')
+            _react2.default.createElement('input', { ref: 'address', name: 'address', placeholder: Lang.get('customer.address'), type: 'text' })
           ),
-          _react2.default.createElement('input', { ref: 'address', name: 'address', placeholder: Lang.get('customer.address'), type: 'text' })
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'two fields' },
           _react2.default.createElement(
             'div',
-            { className: 'field' },
+            { className: 'two fields' },
             _react2.default.createElement(
               'div',
-              { className: 'ui two column grid' },
+              { className: 'field' },
               _react2.default.createElement(
                 'div',
-                { className: 'row' },
+                { className: 'ui two column grid' },
                 _react2.default.createElement(
                   'div',
-                  { className: 'column' },
-                  _react2.default.createElement('img', { className: 'ui top aligned small image', src: this.getImage() })
-                ),
-                _react2.default.createElement(
-                  'div',
-                  { className: 'column' },
+                  { className: 'row' },
                   _react2.default.createElement(
-                    'label',
-                    null,
-                    Lang.get('customer.image')
+                    'div',
+                    { className: 'column' },
+                    _react2.default.createElement('img', { className: 'ui top aligned small image', src: this.getImage() })
                   ),
-                  _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleUploadFile,
-                    placeholder: Lang.get('customer.image'), type: 'file' })
+                  _react2.default.createElement(
+                    'div',
+                    { className: 'column' },
+                    _react2.default.createElement(
+                      'label',
+                      null,
+                      Lang.get('customer.image')
+                    ),
+                    _react2.default.createElement('input', { ref: 'image', name: 'image', onChange: this.handleUploadFile,
+                      placeholder: Lang.get('customer.image'), type: 'file' })
+                  )
                 )
               )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field' },
+              _react2.default.createElement(
+                'label',
+                null,
+                Lang.get('customer.description')
+              ),
+              _react2.default.createElement('textarea', { ref: 'description', name: 'description', placeholder: Lang.get('customer.description') })
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'field' },
-            _react2.default.createElement(
-              'label',
-              null,
-              Lang.get('customer.description')
-            ),
-            _react2.default.createElement('textarea', { ref: 'description', name: 'description', placeholder: Lang.get('customer.description') })
+            'button',
+            { className: 'ui submit button' },
+            'Submit'
           )
-        ),
-        _react2.default.createElement(
-          'button',
-          { className: 'ui submit button' },
-          'Submit'
         )
       )
     );
