@@ -26,23 +26,22 @@ module.exports = React.createClass({
   handleSubmit : function(e){
     e.preventDefault();
     var formDOM = ReactDOM.findDOMNode(this.refs.form);
-    var isValid = $(formDOM)
-      .form('is valid');
-    if( !isValid ) {
+    if( !$(formDOM).form('is valid') ) {
       return false;
     }
-    var fd    = new FormData(formDOM);
-    $.ajax({
-      url : '/sale/customer',
-      data: fd,
-      processData: false,
-      contentType: false,
-      enctype: 'multipart/form-data',
-      type: 'POST',
-      success: function(data){
+    var fd          = $(formDOM).serializeObject();
+    var collection  = this.props.collection;
+    var customer    = collection.create(fd,{
+      success : function(res){
+        /**
+         |------------------------------------------
+         | @note: res === customer
+         |------------------------------------------
+         */
         this.setState({
           showMessage : true
         });
+        formDOM.reset();
       }.bind(this)
     });
   },

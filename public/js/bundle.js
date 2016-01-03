@@ -19267,6 +19267,7 @@ var ProductShow = require('./components/product-show');
 var Customer = require('./components/customer');
 //Model
 var ProductCollection = require('./models/product').Collection;
+var CustomerCollection = require('./models/customer').Collection;
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -19276,6 +19277,22 @@ var ProductCollection = require('./models/product').Collection;
 var TestMaterial= require('./test/material');*/
 
 injectTapEventPlugin();
+
+$.fn.serializeObject = function () {
+  var o = {};
+  var a = this.serializeArray();
+  $.each(a, function () {
+    if (o[this.name] !== undefined) {
+      if (!o[this.name].push) {
+        o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || '');
+    } else {
+      o[this.name] = this.value || '';
+    }
+  });
+  return o;
+};
 
 $('.ui.sidebar').sidebar({
   context: $('.bottom.segment'),
@@ -19291,6 +19308,8 @@ App.getModelCollection = function (name) {
   }
   if (name === 'product') {
     App._modelCollections[name] = new ProductCollection();
+  } else if (name === 'customer') {
+    App._modelCollections[name] = new CustomerCollection();
   }
   return App._modelCollections[name];
 };
@@ -19323,7 +19342,7 @@ App.Router = Backbone.Router.extend({
     _reactDom2.default.render(_react2.default.createElement(ProductShow, { collection: App.getModelCollection('product') }), document.getElementById('main'));
   },
   customer: function customer() {
-    _reactDom2.default.render(_react2.default.createElement(Customer, null), document.getElementById('main'));
+    _reactDom2.default.render(_react2.default.createElement(Customer, { collection: App.getModelCollection('customer') }), document.getElementById('main'));
   },
   _upload: function _upload() {
     _reactDom2.default.render(_react2.default.createElement(TestUpload, null), document.getElementById('main'));
@@ -19335,7 +19354,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":164,"./components/customer":165,"./components/dashboard":166,"./components/feed":167,"./components/product":169,"./components/product-show":168,"./models/product":171,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
+},{"./components/breadcrumb":164,"./components/customer":165,"./components/dashboard":166,"./components/feed":167,"./components/product":169,"./components/product-show":168,"./models/customer":171,"./models/product":172,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19435,22 +19454,22 @@ module.exports = _react2.default.createClass({
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
     var formDOM = _reactDom2.default.findDOMNode(this.refs.form);
-    var isValid = $(formDOM).form('is valid');
-    if (!isValid) {
+    if (!$(formDOM).form('is valid')) {
       return false;
     }
-    var fd = new FormData(formDOM);
-    $.ajax({
-      url: '/sale/customer',
-      data: fd,
-      processData: false,
-      contentType: false,
-      enctype: 'multipart/form-data',
-      type: 'POST',
-      success: (function (data) {
+    var fd = $(formDOM).serializeObject();
+    var collection = this.props.collection;
+    var customer = collection.create(fd, {
+      success: (function (res) {
+        /**
+         |------------------------------------------
+         | @note: res === customer
+         |------------------------------------------
+         */
         this.setState({
           showMessage: true
         });
+        formDOM.reset();
       }).bind(this)
     });
   },
@@ -20256,10 +20275,27 @@ var Model = Backbone.Model.extend({
 });
 
 var Collection = Backbone.Collection.extend({
+  url: '/sale/customer',
+  model: Model,
+  parse: function parse(response) {
+    return response.data;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
+
+},{}],172:[function(require,module,exports){
+'use strict';
+
+var Model = Backbone.Model.extend({
+  initialize: function initialize() {}
+});
+
+var Collection = Backbone.Collection.extend({
   url: '/stock/product',
   model: Model,
   parse: function parse(response) {
-    console.log('This is response from Product Collection');
     return response.data;
   }
 });

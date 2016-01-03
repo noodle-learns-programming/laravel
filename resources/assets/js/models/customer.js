@@ -5,7 +5,7 @@ var Model = Backbone.Model.extend({
 });
 
 var Collection = Backbone.Collection.extend({
-  url   : '/stock/product',
+  url   : '/sale/customer',
   model : Model,
   parse(response) {
     return response.data;

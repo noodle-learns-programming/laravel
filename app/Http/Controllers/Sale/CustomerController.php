@@ -36,8 +36,6 @@ class CustomerController extends Controller
     $input      = $request->all();
     $result     = $product->create($request->all());
 
-    return response()->json([
-      'result' => $result
-    ]);
+    return response()->json($result);
   }
 }

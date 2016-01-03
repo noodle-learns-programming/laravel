@@ -12,6 +12,7 @@ var ProductShow = require('./components/product-show');
 var Customer    = require('./components/customer');
 //Model
 var ProductCollection   = require('./models/product').Collection;
+var CustomerCollection  = require('./models/customer').Collection;
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -21,6 +22,22 @@ var ProductCollection   = require('./models/product').Collection;
 var TestMaterial= require('./test/material');*/
 
 injectTapEventPlugin();
+
+$.fn.serializeObject = function(){
+  var o = {};
+  var a = this.serializeArray();
+  $.each(a, function() {
+    if (o[this.name] !== undefined) {
+      if (!o[this.name].push) {
+          o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || '');
+    } else {
+      o[this.name] = this.value || '';
+    }
+  });
+  return o;
+};
 
 $('.ui.sidebar').sidebar({
   context : $('.bottom.segment'),
@@ -36,6 +53,8 @@ App.getModelCollection = function(name){
   }
   if( name === 'product') {
     App._modelCollections[name] = new ProductCollection();
+  } else if(name === 'customer') {
+    App._modelCollections[name] = new CustomerCollection();
   }
   return App._modelCollections[name];
 };
@@ -68,7 +87,7 @@ App.Router = Backbone.Router.extend({
     ReactDOM.render(<ProductShow collection={App.getModelCollection('product')}/>, document.getElementById('main'));
   },
   customer(){
-    ReactDOM.render(<Customer />, document.getElementById('main'));
+    ReactDOM.render(<Customer collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
   },
   _upload(){
     ReactDOM.render(<TestUpload />, document.getElementById('main'));
