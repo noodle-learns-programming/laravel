@@ -28,12 +28,18 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/home', 'HomeController@index');
 });
 
+Route::group(['namespace' => 'Api', 'prefix' => 'api'], function()
+{
+  Route::resource('search', 'SearchController');
+});
+
 Route::group(['namespace' => 'Stock', 'prefix' => 'stock'], function()
 {
 	Route::resource('product', 'ProductController');
 });
 
-Route::group(['namespace' => 'Api', 'prefix' => 'api'], function()
+Route::group(['namespace' => 'Sale', 'prefix' => 'sale'], function()
 {
-	Route::resource('search', 'SearchController');
+  Route::resource('customer', 'CustomerController');
 });
+

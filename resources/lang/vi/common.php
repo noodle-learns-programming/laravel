@@ -22,6 +22,7 @@ return [
     'sale'                  => 'Quản lý bán hàng',
     'sale_invoice'          => 'Đơn hàng',
     'sale_total_revenue'    => 'Doanh số',
+    'sale_customer'         => 'Khách hàng',
 
     'marketing'         => 'Quản lý Marketing',
     'marketing_sale'    => 'Bán hàng',

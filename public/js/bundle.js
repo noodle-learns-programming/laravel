@@ -19264,6 +19264,7 @@ var Feed = require('./components/feed');
 var Dashboard = require('./components/dashboard');
 var Product = require('./components/product');
 var ProductShow = require('./components/product-show');
+var Customer = require('./components/customer');
 //Model
 var ProductCollection = require('./models/product').Collection;
 /**
@@ -19271,66 +19272,70 @@ var ProductCollection = require('./models/product').Collection;
  | Only for testing
  |-------------------------------------------------------
  */
-/*var TestUpload	= require('./test/upload');
+/*var TestUpload  = require('./test/upload');
 var TestMaterial= require('./test/material');*/
 
 injectTapEventPlugin();
 
 $('.ui.sidebar').sidebar({
-	context: $('.bottom.segment'),
-	dimPage: false
+  context: $('.bottom.segment'),
+  dimPage: false
 }).sidebar('attach events', '#sidebar');
 
 Lang.setLocale('vi');
 
 App._modelCollections = {};
 App.getModelCollection = function (name) {
-	if (App._modelCollections[name]) {
-		return App._modelCollections[name];
-	}
-	if (name === 'product') {
-		App._modelCollections[name] = new ProductCollection();
-	}
-	return App._modelCollections[name];
+  if (App._modelCollections[name]) {
+    return App._modelCollections[name];
+  }
+  if (name === 'product') {
+    App._modelCollections[name] = new ProductCollection();
+  }
+  return App._modelCollections[name];
 };
 App.init = function () {
-	this.router = new App.Router();
-	return this;
+  this.router = new App.Router();
+  return this;
 };
 App.run = function () {
-	_reactDom2.default.render(_react2.default.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
-	_reactDom2.default.render(_react2.default.createElement(Feed, null), document.getElementById('feed'));
-	Backbone.history.start();
-	return this;
+  _reactDom2.default.render(_react2.default.createElement(Breadcrumb, { router: this.router }), document.getElementById('breadcrumb'));
+  _reactDom2.default.render(_react2.default.createElement(Feed, null), document.getElementById('feed'));
+  Backbone.history.start();
+  return this;
 };
 App.Router = Backbone.Router.extend({
-	routes: {
-		'': 'dashboard',
-		'stock/product': 'product',
-		'stock/show-product': 'productShow',
-		'test/upload': '_upload',
-		'test/material-ui': '_meterial'
-	},
-	dashboard: function dashboard() {
-		_reactDom2.default.render(_react2.default.createElement(Dashboard, null), document.getElementById('main'));
-	},
-	product: function product() {
-		_reactDom2.default.render(_react2.default.createElement(Product, null), document.getElementById('main'));
-	},
-	productShow: function productShow() {
-		_reactDom2.default.render(_react2.default.createElement(ProductShow, { collection: App.getModelCollection('product') }), document.getElementById('main'));
-	},
-	_upload: function _upload() {
-		_reactDom2.default.render(_react2.default.createElement(TestUpload, null), document.getElementById('main'));
-	},
-	_meterial: function _meterial() {
-		_reactDom2.default.render(_react2.default.createElement(TestMaterial, null), document.getElementById('main'));
-	}
+  routes: {
+    '': 'dashboard',
+    'stock/product': 'product',
+    'stock/show-product': 'productShow',
+    'sale/customer': 'customer',
+    'test/upload': '_upload',
+    'test/material-ui': '_meterial'
+  },
+  dashboard: function dashboard() {
+    _reactDom2.default.render(_react2.default.createElement(Dashboard, null), document.getElementById('main'));
+  },
+  product: function product() {
+    _reactDom2.default.render(_react2.default.createElement(Product, null), document.getElementById('main'));
+  },
+  productShow: function productShow() {
+    _reactDom2.default.render(_react2.default.createElement(ProductShow, { collection: App.getModelCollection('product') }), document.getElementById('main'));
+  },
+  customer: function customer() {
+    _reactDom2.default.render(_react2.default.createElement(Customer, null), document.getElementById('main'));
+  },
+  _upload: function _upload() {
+    _reactDom2.default.render(_react2.default.createElement(TestUpload, null), document.getElementById('main'));
+  },
+  _meterial: function _meterial() {
+    _reactDom2.default.render(_react2.default.createElement(TestMaterial, null), document.getElementById('main'));
+  }
 });
 
 App.init().run();
 
-},{"./components/breadcrumb":164,"./components/dashboard":165,"./components/feed":166,"./components/product":168,"./components/product-show":167,"./models/product":170,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
+},{"./components/breadcrumb":164,"./components/customer":165,"./components/dashboard":166,"./components/feed":167,"./components/product":169,"./components/product-show":168,"./models/product":171,"react":162,"react-dom":2,"react-tap-event-plugin":6}],164:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19401,6 +19406,226 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+  getInitialState: function getInitialState() {
+    return {
+      showMessage: false
+    };
+  },
+  componentDidMount: function componentDidMount() {
+    $(_reactDom2.default.findDOMNode(this.refs.form)).form({
+      on: 'blur',
+      fields: {
+        name: 'empty'
+      },
+      onSuccess: function onSuccess(e, fields) {
+        e.preventDefault();
+        return false;
+      }
+    });
+  },
+
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    var formDOM = _reactDom2.default.findDOMNode(this.refs.form);
+    var isValid = $(formDOM).form('is valid');
+    if (!isValid) {
+      return false;
+    }
+    var fd = new FormData(formDOM);
+    $.ajax({
+      url: '/sale/customer',
+      data: fd,
+      processData: false,
+      contentType: false,
+      enctype: 'multipart/form-data',
+      type: 'POST',
+      success: (function (data) {
+        this.setState({
+          showMessage: true
+        });
+      }).bind(this)
+    });
+  },
+
+  handleMessage: function handleMessage(e) {
+    this.setState({
+      showMessage: false
+    });
+  },
+
+  componentDidUpdate: function componentDidUpdate() {},
+
+  render: function render() {
+    var message = '';
+    if (this.state.showMessage) {
+      message = _react2.default.createElement(
+        'div',
+        { ref: 'message', className: 'ui success message' },
+        _react2.default.createElement('i', { className: 'close icon', onClick: this.handleMessage }),
+        _react2.default.createElement(
+          'div',
+          { className: 'header' },
+          'Message'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'Save customer is successful.'
+        )
+      );
+    }
+    return _react2.default.createElement(
+      'form',
+      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
+      _react2.default.createElement(
+        'h2',
+        { className: 'ui header' },
+        _react2.default.createElement('img', { className: 'ui image', src: '/image/school.png' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'content' },
+          Lang.get('customer.add')
+        )
+      ),
+      message,
+      _react2.default.createElement(
+        'div',
+        { className: 'ui form' },
+        _react2.default.createElement(
+          'div',
+          { className: 'required field' },
+          _react2.default.createElement(
+            'label',
+            null,
+            Lang.get('customer.name')
+          ),
+          _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('customer.name'), type: 'text' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.mobile_phone')
+            ),
+            _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.home_phone')
+            ),
+            _react2.default.createElement('input', { ref: 'home_phone', name: 'home_phone', placeholder: Lang.get('customer.home_phone'), type: 'text' })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.gender')
+            ),
+            _react2.default.createElement(
+              'select',
+              { ref: 'gender', name: 'gender', className: 'ui fluid simple dropdown' },
+              _react2.default.createElement(
+                'option',
+                { value: '' },
+                Lang.get('customer.gender')
+              ),
+              _react2.default.createElement(
+                'option',
+                { value: '1' },
+                'Male'
+              ),
+              _react2.default.createElement(
+                'option',
+                { value: '2' },
+                'Female'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.dob')
+            ),
+            _react2.default.createElement('input', { ref: 'dob', name: 'dob', placeholder: Lang.get('customer.dob'), type: 'text' })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'required field' },
+          _react2.default.createElement(
+            'label',
+            null,
+            Lang.get('customer.address')
+          ),
+          _react2.default.createElement('input', { ref: 'address', name: 'address', placeholder: Lang.get('customer.address'), type: 'text' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
+          _react2.default.createElement(
+            'div',
+            { className: 'field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.image')
+            ),
+            _react2.default.createElement('input', { ref: 'image', name: 'image', placeholder: Lang.get('customer.image'), type: 'file' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.description')
+            ),
+            _react2.default.createElement('textarea', { ref: 'description', name: 'description', placeholder: Lang.get('customer.description') })
+          )
+        ),
+        _react2.default.createElement(
+          'button',
+          { className: 'ui submit button' },
+          'Submit'
+        )
+      )
+    );
+  }
+});
+
+},{"react":162,"react-dom":2}],166:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = _react2.default.createClass({
@@ -19430,7 +19655,7 @@ module.exports = _react2.default.createClass({
     }
 });
 
-},{"react":162}],166:[function(require,module,exports){
+},{"react":162}],167:[function(require,module,exports){
 "use strict";
 
 var _react = require("react");
@@ -19590,7 +19815,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162}],167:[function(require,module,exports){
+},{"react":162}],168:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -19775,7 +20000,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":169,"react":162}],168:[function(require,module,exports){
+},{"./../mixins":170,"react":162}],169:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20004,7 +20229,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":162,"react-dom":2}],169:[function(require,module,exports){
+},{"react":162,"react-dom":2}],170:[function(require,module,exports){
 'use strict';
 
 var BackboneModelMixin = {
@@ -20023,7 +20248,7 @@ var BackboneModelMixin = {
 
 exports.BackboneModelMixin = BackboneModelMixin;
 
-},{}],170:[function(require,module,exports){
+},{}],171:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({

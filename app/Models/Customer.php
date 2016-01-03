@@ -9,10 +9,12 @@ class Customer extends Model
   protected $fillable = [
     'name',
     'gender',
-    'date_of_birth',
+    'dob',
+    'email',
     'home_phone',
     'mobile_phone',
-    'avatar',
+    'image',
+    'description',
     'job',
     'education'
   ];
@@ -22,7 +24,7 @@ class Customer extends Model
     return [
       'name'          => 'required',
       'gender'        => 'required',
-      'mobile_phone'  => 'required';
+      'mobile_phone'  => 'required'
     ];
   }
 }

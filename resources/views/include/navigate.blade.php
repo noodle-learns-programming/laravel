@@ -4,6 +4,7 @@
         <div class="menu">
             <a class="item" href="#sale/invoice">{{ trans('common.sale_invoice') }}</a>
             <a class="item">{{ trans('common.sale_total_revenue') }}</a>
+            <a class="item" href="#sale/customer">{{ trans('common.sale_customer') }}</a>
         </div>
     </div>
     <div class="item">
