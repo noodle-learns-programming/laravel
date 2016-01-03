@@ -2,7 +2,7 @@
     <div class="item">
         <div class="header">{{ trans('common.sale') }}</div>
         <div class="menu">
-            <a class="item">{{ trans('common.sale_invoice') }}</a>
+            <a class="item" href="#sale/invoice">{{ trans('common.sale_invoice') }}</a>
             <a class="item">{{ trans('common.sale_total_revenue') }}</a>
         </div>
     </div>

@@ -19818,17 +19818,14 @@ module.exports = _react2.default.createClass({
     if (!isValid) {
       return false;
     }
-    var fd = new FormData();
-    var data = _.object(_.map($(formDOM).serializeArray(), _.values));
-    data['brand'] = this.state.brand;
-    for (var name in data) {
-      fd.append(name, data[name]);
-    }
+    var fd = new FormData(formDOM);
+    fd.append('brand_id', this.state.brand);
     $.ajax({
       url: '/stock/product',
       data: fd,
       processData: false,
       contentType: false,
+      enctype: 'multipart/form-data',
       type: 'POST',
       success: (function (data) {
         this.setState({

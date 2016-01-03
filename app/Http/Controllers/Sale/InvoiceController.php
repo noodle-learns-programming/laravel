@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Stock;
+namespace App\Http\Controllers\Sale;
 
 use App\User;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ProductController extends Controller
+class InvoiceController extends Controller
 {
   /**
    * Show the profile for the given user.
@@ -33,14 +33,8 @@ class ProductController extends Controller
     if ($validator) {
       return response()->json($validator,'404');
     }
-    $file     = $request->file('image');
-    $filename = time().'.'.$file->getClientOriginalExtension();
-    if ($file->isValid()) {
-      $file->move(public_path().'/upload/product', $filename);
-    }
-    $input  = $request->all();
-    $input['image'] = $filename;
-    $result = $product->create($input);
+    $result     = $product->create($request->all());
+
     return response()->json([
       'result' => $result
     ]);
