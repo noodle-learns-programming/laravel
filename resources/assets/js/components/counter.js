@@ -1,8 +1,13 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 class Counter extends Component {
+  handleAddMoreClick(e){
+    var addMoreVal = ReactDOM.findDOMNode(this.refs.counterVal).value|0;
+    this.props.addMore(addMoreVal);
+  }
   render() {
-    const { increment, incrementIfOdd, incrementAsync, decrement, counter } = this.props
+    const { increment, incrementIfOdd, incrementAsync, decrement, counter, addMore } = this.props
     return (
       <p>
         Clicked: {counter} times
@@ -14,6 +19,8 @@ class Counter extends Component {
         <button onClick={incrementIfOdd}>Increment if odd</button>
         {' '}
         <button onClick={() => incrementAsync()}>Increment async</button>
+        <input ref="counterVal" />
+        <button onClick={this.handleAddMoreClick.bind(this)}>Add more</button>
       </p>
     )
   }
@@ -24,7 +31,8 @@ Counter.propTypes = {
   incrementIfOdd: PropTypes.func.isRequired,
   incrementAsync: PropTypes.func.isRequired,
   decrement: PropTypes.func.isRequired,
-  counter: PropTypes.number.isRequired
+  counter: PropTypes.number.isRequired,
+  addMore : PropTypes.func.isRequired
 }
 
 export default Counter

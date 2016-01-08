@@ -1,5 +1,6 @@
-export const INCREMENT_COUNTER = 'INCREMENT_COUNTER'
-export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
+export const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
+export const DECREMENT_COUNTER = 'DECREMENT_COUNTER';
+export const ADDMORE_COUNTER = 'ADDMORE_COUNTER';
 
 export function increment() {
   return {
@@ -23,6 +24,13 @@ export function incrementIfOdd() {
 
     dispatch(increment())
   }
+}
+
+export function addMore(value) {
+  return {
+    type  : ADDMORE_COUNTER,
+    value : value
+  };
 }
 
 export function incrementAsync(delay = 1000) {
