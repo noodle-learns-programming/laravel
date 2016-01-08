@@ -19,26 +19,26 @@ module.exports = React.createClass({
   },
 
   render() {
-    var row = this.renderBody(this.props.collection);
+    var rows = this.renderBody(this.props.collection);
     return (
       <form ref="form" onSubmit={this.handleSubmit} method="post">
         <h3 className="ui header">
           <i className="at icon"></i>
           <div className="content">
-            { Lang.get('product.list') }
+            { Lang.get('customer.list') }
           </div>
         </h3>
         <table className="ui black table">
           <thead>
               <tr>
-                <th>{Lang.get('product.name')}</th>
-                <th>{Lang.get('product.sku')}</th>
-                <th>{Lang.get('product.series')}</th>
-                <th>{Lang.get('product.unit')}</th>
-                <th>{Lang.get('product.brand')}</th>
+                <th>{Lang.get('customer.name')}</th>
+                <th>{Lang.get('customer.phone')}</th>
+                <th>{Lang.get('customer.gender')}</th>
+                <th>{Lang.get('customer.dob')}</th>
+                <th>{Lang.get('customer.address')}</th>
               </tr>
           </thead>
-          <tbody>{row}</tbody>
+          <tbody>{rows}</tbody>
           <tfoot>{this.renderFooter(this.props.collection)}</tfoot>
         </table>
       </form>
@@ -46,24 +46,39 @@ module.exports = React.createClass({
   },
   renderBody (collection) {
     var rows = [];
-    collection.each(function(product, i){
+    collection.each(function(model, i){
       rows.push((
         <tr key={i}>
           <td>
             <h4 className="ui image header">
-              <img src={"/upload/product/"+product.get('image')} className="ui mini rounded image" />
+              <img src={"/upload/customer/"+model.get('image')} className="ui mini rounded image" />
               <div className="content">
-                {product.get('name')}
+                <a href={"#sale/customer/edit/" + model.get('id')}>{model.get('name')}</a>
                 <div className="sub header">
-                {product.get('description')}
+                {model.get('description')}
                 </div>
               </div>
             </h4>
           </td>
-          <td>{product.get('sku')}</td>
-          <td>{product.get('series')}</td>
-          <td>{product.get('unit')}</td>
-          <td>{product.get('brand')}</td>
+          <td>
+            <div className="ui list">
+              <div className="item">
+                <i className="phone square icon"></i>
+                <div className="content">
+                  {model.get('mobile_phone')}
+                </div>
+              </div>
+              <div className="item">
+                <i className="phone icon"></i>
+                <div className="content">
+                  {model.get('home_phone')}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>{model.get('gender')}</td>
+          <td>{model.get('dob')}</td>
+          <td>{model.get('address')}</td>
         </tr>
       ));
     });
@@ -77,14 +92,14 @@ module.exports = React.createClass({
       <tr>
         <th colSpan="5">
           <div className="ui right floated pagination menu">
-            <a className="icon item" href="#stock/show-product?page=2">
+            <a className="icon item" href="#sale/customer?page=2">
               <i className="left chevron icon"></i>
             </a>
             <a className="item">1</a>
             <a className="item">2</a>
             <a className="item">3</a>
             <a className="item">4</a>
-            <a className="icon item" href="#stock/show-product?page=2">
+            <a className="icon item" href="#sale/customer?page=2">
               <i className="right chevron icon"></i>
             </a>
           </div>

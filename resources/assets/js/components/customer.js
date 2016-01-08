@@ -6,12 +6,13 @@ var CustomerList = require('./customer/list');
 module.exports = React.createClass({
   getInitialState() {
     return {
-      subView : 'list'
+      action: this.props.action || 'list',
+      id    : this.props.id || 0,
     };
   },
 
   componentWillMount() {
-    this.listView = <CustomerList collection={App.getModelCollection('product')} />;
+    this.listView = <CustomerList collection={App.getModelCollection('customer')} />;
     this.formView = <CustomerForm collection={this.props.collection} />;
   },
 
@@ -21,17 +22,17 @@ module.exports = React.createClass({
   handleMenu(e) {
     var view = $(e.currentTarget).data('view');
     this.setState({
-      subView : view
+      action : view
     });
   },
 
   render: function() {
     var subView = null;
-    if( this.state.subView === 'list'){
-      subView = this.listView ;
-    } else if (this.state.subView === 'add') {
+    if( ['add', 'edit'].indexOf(this.state.action) >= 0 ){
       subView = this.formView;
-    }
+    } else if( this.state.action === 'list' ) {
+      subView = this.listView;
+    } 
     return (
       <div>
         <div className="ui right aligned grid">
@@ -54,7 +55,7 @@ module.exports = React.createClass({
 
   renderMenuItem(view, text, icon){
     var className = "item";
-    if( this.state.subView === view){
+    if( this.state.action === view){
       className += " active"
     }
     icon = icon + " icon";

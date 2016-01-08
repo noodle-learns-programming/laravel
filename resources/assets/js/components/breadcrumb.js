@@ -14,6 +14,7 @@ module.exports = React.createClass({
   },
   onRoute : function(route, params)
   {
+    console.log('on route: ', route, params);
     var fragment = Backbone.history.getFragment();
     this.setState({
       fragment  : fragment,

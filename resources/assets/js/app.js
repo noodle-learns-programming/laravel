@@ -1,6 +1,10 @@
 var App = window.App || {};
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM, { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import Page from './containers/page';
+import configureStore from './store/configureStore';
+
 var injectTapEventPlugin = require("react-tap-event-plugin");
 //View
 var Breadcrumb  = require('./components/breadcrumb');
@@ -72,12 +76,18 @@ App.Router = Backbone.Router.extend({
     '' : 'dashboard',
     'stock/product' : 'product',
     'stock/show-product' : 'productShow',
-    'sale/customer' : 'customer',
+    'sale/customer(/:action)(/:id)' : 'customer',
     'test/upload' : '_upload',
     'test/material-ui' : '_meterial',
   },
   dashboard(){
-    ReactDOM.render(<Dashboard />, document.getElementById('main'));
+    const store = configureStore();
+    render(
+      <Provider store={store}>
+        <Page />
+      </Provider>,
+      document.getElementById('main')
+    );
   },
   product(){
     ReactDOM.render(<Product />, document.getElementById('main'));
@@ -85,8 +95,8 @@ App.Router = Backbone.Router.extend({
   productShow(){
     ReactDOM.render(<ProductShow collection={App.getModelCollection('product')}/>, document.getElementById('main'));
   },
-  customer(){
-    ReactDOM.render(<Customer collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
+  customer(action, id){
+    ReactDOM.render(<Customer action={action} id={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
   },
   _upload(){
     ReactDOM.render(<TestUpload />, document.getElementById('main'));
