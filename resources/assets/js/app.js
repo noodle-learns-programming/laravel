@@ -71,6 +71,7 @@ App.run = function(){
   Backbone.history.start();
   return this;
 };
+const store   = configureStore();
 App.Router = Backbone.Router.extend({
   routes: {
     '' : 'dashboard',
@@ -94,7 +95,6 @@ App.Router = Backbone.Router.extend({
     ReactDOM.render(<Customer action={action} id={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
   },
   _redux(){
-    const store = configureStore();
     render(
       <Provider store={store}>
         <Page />
