@@ -77,17 +77,12 @@ App.Router = Backbone.Router.extend({
     'stock/product' : 'product',
     'stock/show-product' : 'productShow',
     'sale/customer(/:action)(/:id)' : 'customer',
+    'test/redux' : '_redux',
     'test/upload' : '_upload',
     'test/material-ui' : '_meterial',
   },
   dashboard(){
-    const store = configureStore();
-    render(
-      <Provider store={store}>
-        <Page />
-      </Provider>,
-      document.getElementById('main')
-    );
+    ReactDOM.render(<Dashboard />, document.getElementById('main'));
   },
   product(){
     ReactDOM.render(<Product />, document.getElementById('main'));
@@ -97,6 +92,15 @@ App.Router = Backbone.Router.extend({
   },
   customer(action, id){
     ReactDOM.render(<Customer action={action} id={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
+  },
+  _redux(){
+    const store = configureStore();
+    render(
+      <Provider store={store}>
+        <Page />
+      </Provider>,
+      document.getElementById('main')
+    );
   },
   _upload(){
     ReactDOM.render(<TestUpload />, document.getElementById('main'));

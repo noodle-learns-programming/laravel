@@ -40,5 +40,6 @@ return [
 
     'test'              => 'Test',
     'test_upload_file'  => 'Upload',
-    'test_material_ui'  => 'Material UI'
+    'test_material_ui'  => 'Material UI',
+    'test_redux'        => 'Redux'
 ];
