@@ -18,7 +18,7 @@ class Counter extends Component {
         {' '}
         <button onClick={incrementIfOdd}>Increment if odd</button>
         {' '}
-        <button onClick={() => incrementAsync()}>Increment async</button>
+        <button onClick={incrementAsync}>Increment async</button>
         <input ref="counterVal" />
         <button onClick={this.handleAddMoreClick.bind(this)}>Add more</button>
       </p>

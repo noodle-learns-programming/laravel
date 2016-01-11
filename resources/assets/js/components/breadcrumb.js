@@ -20,7 +20,7 @@ module.exports = React.createClass({
       fragment  : fragment,
       route     : route,
       params    : params
-    })
+    });
   },
   render: function() {
     var arrFragments = [];

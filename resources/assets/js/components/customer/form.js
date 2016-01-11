@@ -135,7 +135,10 @@ module.exports = React.createClass({
               <textarea ref="description" name="description" placeholder={Lang.get('customer.description')}></textarea>
             </div>
           </div>
-          <button className="ui submit button">Submit</button>
+          <div className="actions">
+            <button className="ui primary button">Save</button>
+            <div className="ui cancel button">Cancel</div>
+          </div>
         </div>
       </form>
     );

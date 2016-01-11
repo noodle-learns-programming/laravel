@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+var CustomerForm = require('./form');
 var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 
 module.exports = React.createClass({
@@ -14,6 +16,11 @@ module.exports = React.createClass({
 
   },
 
+  handleClick(){
+    var modal = ReactDOM.findDOMNode(this.refs.modal);
+    $(modal).modal('show');
+  },
+
   getBackboneModels(){
     return [this.props.collection];
   },
@@ -21,27 +28,35 @@ module.exports = React.createClass({
   render() {
     var rows = this.renderBody(this.props.collection);
     return (
-      <form ref="form" onSubmit={this.handleSubmit} method="post">
-        <h3 className="ui header">
-          <i className="at icon"></i>
+      <div>
+        <form ref="form" onSubmit={this.handleSubmit} method="post">
+          <h3 className="ui header">
+            <i className="at icon"></i>
+            <div className="content">
+              { Lang.get('customer.list') }
+            </div>
+          </h3>
+          <table className="ui black table">
+            <thead>
+                <tr>
+                  <th>{Lang.get('customer.name')}</th>
+                  <th>{Lang.get('customer.phone')}</th>
+                  <th>{Lang.get('customer.gender')}</th>
+                  <th>{Lang.get('customer.dob')}</th>
+                  <th>{Lang.get('customer.address')}</th>
+                </tr>
+            </thead>
+            <tbody>{rows}</tbody>
+            <tfoot>{this.renderFooter(this.props.collection)}</tfoot>
+          </table>
+        </form>
+        <div ref="modal" className="ui modal">
+          <div className="header">Header</div>
           <div className="content">
-            { Lang.get('customer.list') }
+            <CustomerForm collection={App.getModelCollection('customer')} />
           </div>
-        </h3>
-        <table className="ui black table">
-          <thead>
-              <tr>
-                <th>{Lang.get('customer.name')}</th>
-                <th>{Lang.get('customer.phone')}</th>
-                <th>{Lang.get('customer.gender')}</th>
-                <th>{Lang.get('customer.dob')}</th>
-                <th>{Lang.get('customer.address')}</th>
-              </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-          <tfoot>{this.renderFooter(this.props.collection)}</tfoot>
-        </table>
-      </form>
+        </div>
+      </div>
     );
   },
   renderBody (collection) {
@@ -53,7 +68,7 @@ module.exports = React.createClass({
             <h4 className="ui image header">
               <img src={"/upload/customer/"+model.get('image')} className="ui mini rounded image" />
               <div className="content">
-                <a href={"#sale/customer/edit/" + model.get('id')}>{model.get('name')}</a>
+                <a onClick={this.handleClick} href={"#sale/customer/edit/" + model.get('id')}>{model.get('name')}</a>
                 <div className="sub header">
                 {model.get('description')}
                 </div>
@@ -81,7 +96,7 @@ module.exports = React.createClass({
           <td>{model.get('address')}</td>
         </tr>
       ));
-    });
+    }.bind(this));
     return rows;
   },
   renderFooter (collection) {
