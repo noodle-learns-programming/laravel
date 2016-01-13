@@ -37,6 +37,13 @@ module.exports = React.createClass({
     var fd          = $(formDOM).serializeObject();
       fd['image']   = this.getUploadFilename();
     var model  = this.props.model;
+    /**
+     |----------------------------------------------
+     | Save model voi isNew = false (tuc la da ton tai)
+     | response khong tra ve do dung method PUT
+     | Can tim cach fix cho nay de show cai message
+     |----------------------------------------------
+     */
     model.save(fd,{
       success : function(res){
         /**
