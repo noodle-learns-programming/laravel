@@ -20,6 +20,26 @@ CREATE TABLE IF NOT EXISTS `brands` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table always.customers
+CREATE TABLE IF NOT EXISTS `customers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `gender` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `dob` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `home_phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `mobile_phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table always.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
