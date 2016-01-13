@@ -24,10 +24,9 @@ module.exports = React.createClass({
 
   handleClick(model, event){
     var modal = ReactDOM.findDOMNode(this.refs.modal);
-    $(modal).modal('show');
+        $(modal).modal('show');
     var content = ReactDOM.findDOMNode(this.refs.modalContent);
-    var f = <CustomerForm model={model} />;
-    ReactDOM.render(f, content);
+        ReactDOM.render(<CustomerForm model={model} />, content);
   },
 
   getBackboneModels(){

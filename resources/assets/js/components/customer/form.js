@@ -7,8 +7,7 @@ module.exports = React.createClass({
   filename  : null,
   getInitialState() {
     return {
-      showMessage : false,
-      model       : this.props.model
+      showMessage : false
     };
   },
 
@@ -37,7 +36,7 @@ module.exports = React.createClass({
     }
     var fd          = $(formDOM).serializeObject();
       fd['image']   = this.getUploadFilename();
-    var model  = this.state.model;
+    var model  = this.props.model;
     model.save(fd,{
       success : function(res){
         /**
@@ -70,19 +69,15 @@ module.exports = React.createClass({
     return '/image/wireframe/square-image.png';
   },
 
-  setModel(model){
-    this.setState({
-      model : model
-    });
-  },
-
   handleChange(e){
-
+    var el = e.target;
+    this.props.model.set(el.name, el.value);
+    this.forceUpdate();
   },
 
   render: function() {
     var message = (<div></div>);
-    var model   = this.state.model;
+    var model   = this.props.model;
     if( this.state.showMessage ) {
       message = (<div ref="message" className="ui success message">
           <i className="close icon" onClick={this.handleMessage}></i>
