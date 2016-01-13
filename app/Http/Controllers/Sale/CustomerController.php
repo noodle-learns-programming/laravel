@@ -38,4 +38,17 @@ class CustomerController extends Controller
 
     return response()->json($result);
   }
+
+  public function update($id, Request $request)
+  {
+    $customer   = Customer::find($id);
+    $rules      = $customer->getValidatorRules();
+    $validator  = $this->validate($request, $rules);
+    if ($validator) {
+      return response()->json($validator,'404');
+    }
+    $input    = $request->all();
+    $customer->update($input);
+    response()->json($customer->save());
+  }
 }

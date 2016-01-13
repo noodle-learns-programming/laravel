@@ -13,7 +13,7 @@ module.exports = React.createClass({
 
   componentWillMount() {
     this.listView = <CustomerList collection={this.props.collection} />;
-    this.formView = <CustomerForm model={new this.props.collection.model} />;
+    this.formView = <CustomerForm model={this.props.collection.create({}, {wait: true})} />;
   },
 
   componentDidUpdate() {
