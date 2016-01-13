@@ -20341,9 +20341,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.increment = increment;
 exports.decrement = decrement;
 exports.incrementIfOdd = incrementIfOdd;
+exports.addMore = addMore;
 exports.incrementAsync = incrementAsync;
 var INCREMENT_COUNTER = exports.INCREMENT_COUNTER = 'INCREMENT_COUNTER';
 var DECREMENT_COUNTER = exports.DECREMENT_COUNTER = 'DECREMENT_COUNTER';
+var ADDMORE_COUNTER = exports.ADDMORE_COUNTER = 'ADDMORE_COUNTER';
 
 function increment() {
   return {
@@ -20368,6 +20370,13 @@ function incrementIfOdd() {
     }
 
     dispatch(increment());
+  };
+}
+
+function addMore(value) {
+  return {
+    type: ADDMORE_COUNTER,
+    value: value
   };
 }
 
@@ -20472,22 +20481,19 @@ App.run = function () {
   Backbone.history.start();
   return this;
 };
+var store = (0, _configureStore2.default)();
 App.Router = Backbone.Router.extend({
   routes: {
     '': 'dashboard',
     'stock/product': 'product',
     'stock/show-product': 'productShow',
     'sale/customer(/:action)(/:id)': 'customer',
+    'test/redux': '_redux',
     'test/upload': '_upload',
     'test/material-ui': '_meterial'
   },
   dashboard: function dashboard() {
-    var store = (0, _configureStore2.default)();
-    (0, _reactDom.render)(_react2.default.createElement(
-      _reactRedux.Provider,
-      { store: store },
-      _react2.default.createElement(_page2.default, null)
-    ), document.getElementById('main'));
+    _reactDom2.default.render(_react2.default.createElement(Dashboard, null), document.getElementById('main'));
   },
   product: function product() {
     _reactDom2.default.render(_react2.default.createElement(Product, null), document.getElementById('main'));
@@ -20497,6 +20503,13 @@ App.Router = Backbone.Router.extend({
   },
   customer: function customer(action, id) {
     _reactDom2.default.render(_react2.default.createElement(Customer, { action: action, id: id, collection: App.getModelCollection('customer') }), document.getElementById('main'));
+  },
+  _redux: function _redux() {
+    (0, _reactDom.render)(_react2.default.createElement(
+      _reactRedux.Provider,
+      { store: store },
+      _react2.default.createElement(_page2.default, null)
+    ), document.getElementById('main'));
   },
   _upload: function _upload() {
     _reactDom2.default.render(_react2.default.createElement(TestUpload, null), document.getElementById('main'));
@@ -20586,6 +20599,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20604,6 +20621,12 @@ var Counter = (function (_Component) {
   }
 
   _createClass(Counter, [{
+    key: 'handleAddMoreClick',
+    value: function handleAddMoreClick(e) {
+      var addMoreVal = _reactDom2.default.findDOMNode(this.refs.counterVal).value | 0;
+      this.props.addMore(addMoreVal);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _props = this.props;
@@ -20612,6 +20635,7 @@ var Counter = (function (_Component) {
       var incrementAsync = _props.incrementAsync;
       var decrement = _props.decrement;
       var counter = _props.counter;
+      var addMore = _props.addMore;
 
       return _react2.default.createElement(
         'p',
@@ -20640,10 +20664,14 @@ var Counter = (function (_Component) {
         ' ',
         _react2.default.createElement(
           'button',
-          { onClick: function onClick() {
-              return incrementAsync();
-            } },
+          { onClick: incrementAsync },
           'Increment async'
+        ),
+        _react2.default.createElement('input', { ref: 'counterVal' }),
+        _react2.default.createElement(
+          'button',
+          { onClick: this.handleAddMoreClick.bind(this) },
+          'Add more'
         )
       );
     }
@@ -20657,12 +20685,13 @@ Counter.propTypes = {
   incrementIfOdd: _react.PropTypes.func.isRequired,
   incrementAsync: _react.PropTypes.func.isRequired,
   decrement: _react.PropTypes.func.isRequired,
-  counter: _react.PropTypes.number.isRequired
+  counter: _react.PropTypes.number.isRequired,
+  addMore: _react.PropTypes.func.isRequired
 };
 
 exports.default = Counter;
 
-},{"react":171}],186:[function(require,module,exports){
+},{"react":171,"react-dom":4}],186:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20687,8 +20716,8 @@ module.exports = _react2.default.createClass({
     };
   },
   componentWillMount: function componentWillMount() {
-    this.listView = _react2.default.createElement(CustomerList, { collection: App.getModelCollection('customer') });
-    this.formView = _react2.default.createElement(CustomerForm, { collection: this.props.collection });
+    this.listView = _react2.default.createElement(CustomerList, { collection: this.props.collection });
+    this.formView = _react2.default.createElement(CustomerForm, { model: this.props.collection.create({}, { wait: true }) });
   },
   componentDidUpdate: function componentDidUpdate() {},
   handleMenu: function handleMenu(e) {
@@ -20781,6 +20810,7 @@ module.exports = _react2.default.createClass({
   },
   componentDidMount: function componentDidMount() {
     this.setHandleUploadType('customer');
+
     $(_reactDom2.default.findDOMNode(this.refs.form)).form({
       on: 'blur',
       fields: {
@@ -20800,8 +20830,15 @@ module.exports = _react2.default.createClass({
     }
     var fd = $(formDOM).serializeObject();
     fd['image'] = this.getUploadFilename();
-    var collection = this.props.collection;
-    var customer = collection.create(fd, {
+    var model = this.props.model;
+    /**
+     |----------------------------------------------
+     | Save model voi isNew = false (tuc la da ton tai)
+     | response khong tra ve do dung method PUT
+     | Can tim cach fix cho nay de show cai message
+     |----------------------------------------------
+     */
+    model.save(fd, {
       success: (function (res) {
         /**
          |------------------------------------------
@@ -20827,9 +20864,15 @@ module.exports = _react2.default.createClass({
     }
     return '/image/wireframe/square-image.png';
   },
+  handleChange: function handleChange(e) {
+    var el = e.target;
+    this.props.model.set(el.name, el.value);
+    this.forceUpdate();
+  },
 
   render: function render() {
-    var message = '';
+    var message = _react2.default.createElement('div', null);
+    var model = this.props.model;
     if (this.state.showMessage) {
       message = _react2.default.createElement(
         'div',
@@ -20849,7 +20892,7 @@ module.exports = _react2.default.createClass({
     }
     return _react2.default.createElement(
       'form',
-      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
+      { ref: 'form', onSubmit: this.handleSubmit },
       message,
       _react2.default.createElement(
         'div',
@@ -20862,7 +20905,8 @@ module.exports = _react2.default.createClass({
             null,
             Lang.get('customer.name')
           ),
-          _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('customer.name'), type: 'text' })
+          _react2.default.createElement('input', { ref: 'name', name: 'name', value: model.get('name'), onChange: this.handleChange,
+            placeholder: Lang.get('customer.name'), type: 'text' })
         ),
         _react2.default.createElement(
           'div',
@@ -20875,7 +20919,8 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.mobile_phone')
             ),
-            _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
+            _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', value: model.get('mobile_phone'), onChange: this.handleChange,
+              placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
           ),
           _react2.default.createElement(
             'div',
@@ -20885,7 +20930,8 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.home_phone')
             ),
-            _react2.default.createElement('input', { ref: 'home_phone', name: 'home_phone', placeholder: Lang.get('customer.home_phone'), type: 'text' })
+            _react2.default.createElement('input', { ref: 'home_phone', name: 'home_phone', value: model.get('home_phone'), onChange: this.handleChange,
+              placeholder: Lang.get('customer.home_phone'), type: 'text' })
           )
         ),
         _react2.default.createElement(
@@ -20927,7 +20973,8 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.dob')
             ),
-            _react2.default.createElement('input', { ref: 'dob', name: 'dob', placeholder: Lang.get('customer.dob'), type: 'text' })
+            _react2.default.createElement('input', { ref: 'dob', name: 'dob', value: model.get('dob'), onChange: this.handleChange,
+              placeholder: Lang.get('customer.dob'), type: 'text' })
           )
         ),
         _react2.default.createElement(
@@ -20938,7 +20985,8 @@ module.exports = _react2.default.createClass({
             null,
             Lang.get('customer.address')
           ),
-          _react2.default.createElement('input', { ref: 'address', name: 'address', placeholder: Lang.get('customer.address'), type: 'text' })
+          _react2.default.createElement('input', { ref: 'address', name: 'address', value: model.get('address'), onChange: this.handleChange,
+            placeholder: Lang.get('customer.address'), type: 'text' })
         ),
         _react2.default.createElement(
           'div',
@@ -20979,13 +21027,23 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.description')
             ),
-            _react2.default.createElement('textarea', { ref: 'description', name: 'description', placeholder: Lang.get('customer.description') })
+            _react2.default.createElement('textarea', { ref: 'description', name: 'description', value: model.get('description'), onChange: this.handleChange,
+              placeholder: Lang.get('customer.description') })
           )
         ),
         _react2.default.createElement(
-          'button',
-          { className: 'ui submit button' },
-          'Submit'
+          'div',
+          { className: 'actions' },
+          _react2.default.createElement(
+            'button',
+            { className: 'ui primary button' },
+            'Save'
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'ui cancel button' },
+            'Cancel'
+          )
         )
       )
     );
@@ -20999,8 +21057,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var CustomerForm = require('./form');
 var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
 
 module.exports = _react2.default.createClass({
@@ -21008,80 +21071,106 @@ module.exports = _react2.default.createClass({
 
   mixins: [BackboneModelMixin],
   componentDidMount: function componentDidMount() {
+    console.log('componentDidMount');
     this.props.collection.fetch();
   },
-  componentDidUpdate: function componentDidUpdate() {},
+  componentDidUpdate: function componentDidUpdate() {
+    console.log('componentDidUpdate');
+  },
+  componentWillUnmount: function componentWillUnmount() {
+    console.log('componentWillUnmount');
+  },
   handleSubmit: function handleSubmit() {},
+  handleClick: function handleClick(model, event) {
+    var modal = _reactDom2.default.findDOMNode(this.refs.modal);
+    $(modal).modal('show');
+    var content = _reactDom2.default.findDOMNode(this.refs.modalContent);
+    _reactDom2.default.render(_react2.default.createElement(CustomerForm, { model: model }), content);
+  },
   getBackboneModels: function getBackboneModels() {
     return [this.props.collection];
   },
   render: function render() {
     var rows = this.renderBody(this.props.collection);
     return _react2.default.createElement(
-      'form',
-      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
+      'div',
+      null,
       _react2.default.createElement(
-        'h3',
-        { className: 'ui header' },
-        _react2.default.createElement('i', { className: 'at icon' }),
+        'div',
+        { ref: 'list' },
         _react2.default.createElement(
-          'div',
-          { className: 'content' },
-          Lang.get('customer.list')
-        )
-      ),
-      _react2.default.createElement(
-        'table',
-        { className: 'ui black table' },
-        _react2.default.createElement(
-          'thead',
-          null,
+          'h3',
+          { className: 'ui header' },
+          _react2.default.createElement('i', { className: 'at icon' }),
           _react2.default.createElement(
-            'tr',
-            null,
-            _react2.default.createElement(
-              'th',
-              null,
-              Lang.get('customer.name')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              Lang.get('customer.phone')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              Lang.get('customer.gender')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              Lang.get('customer.dob')
-            ),
-            _react2.default.createElement(
-              'th',
-              null,
-              Lang.get('customer.address')
-            )
+            'div',
+            { className: 'content' },
+            Lang.get('customer.list')
           )
         ),
         _react2.default.createElement(
-          'tbody',
-          null,
-          rows
-        ),
-        _react2.default.createElement(
-          'tfoot',
-          null,
-          this.renderFooter(this.props.collection)
+          'table',
+          { className: 'ui black table' },
+          _react2.default.createElement(
+            'thead',
+            null,
+            _react2.default.createElement(
+              'tr',
+              null,
+              _react2.default.createElement(
+                'th',
+                null,
+                Lang.get('customer.name')
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                Lang.get('customer.phone')
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                Lang.get('customer.gender')
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                Lang.get('customer.dob')
+              ),
+              _react2.default.createElement(
+                'th',
+                null,
+                Lang.get('customer.address')
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'tbody',
+            null,
+            rows
+          ),
+          _react2.default.createElement(
+            'tfoot',
+            null,
+            this.renderFooter(this.props.collection)
+          )
         )
+      ),
+      _react2.default.createElement(
+        'div',
+        { ref: 'modal', className: 'ui modal' },
+        _react2.default.createElement(
+          'div',
+          { className: 'header' },
+          'Header'
+        ),
+        _react2.default.createElement('div', { className: 'content', ref: 'modalContent' })
       )
     );
   },
   renderBody: function renderBody(collection) {
     var rows = [];
-    collection.each(function (model, i) {
+    collection.each((function (model, i) {
       rows.push(_react2.default.createElement(
         'tr',
         { key: i },
@@ -21097,7 +21186,7 @@ module.exports = _react2.default.createClass({
               { className: 'content' },
               _react2.default.createElement(
                 'a',
-                { href: "#sale/customer/edit/" + model.get('id') },
+                { onClick: this.handleClick.bind(this, model), href: "#sale/customer/edit/" + model.get('id') },
                 model.get('name')
               ),
               _react2.default.createElement(
@@ -21152,7 +21241,7 @@ module.exports = _react2.default.createClass({
           model.get('address')
         )
       ));
-    });
+    }).bind(this));
     return rows;
   },
   renderFooter: function renderFooter(collection) {
@@ -21204,7 +21293,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":194,"react":171}],189:[function(require,module,exports){
+},{"./../../mixins":194,"./form":187,"react":171,"react-dom":4}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21954,11 +22043,15 @@ function counter() {
   var state = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
   var action = arguments[1];
 
+  console.log('action: ', state, action);
   switch (action.type) {
     case _counter.INCREMENT_COUNTER:
-      return state + 1;
+      return state + (action.value || 1);
     case _counter.DECREMENT_COUNTER:
-      return state - 1;
+      return state - (action.value || 1);
+    case _counter.ADDMORE_COUNTER:
+
+      return state + (action.value || 10);
     default:
       return state;
   }
