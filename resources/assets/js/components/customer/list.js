@@ -6,19 +6,28 @@ var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 module.exports = React.createClass({
   mixins : [BackboneModelMixin],
   componentDidMount() {
+    console.log('componentDidMount');
     this.props.collection.fetch();
   },
 
   componentDidUpdate() {
+    console.log('componentDidUpdate');
+  },
+
+  componentWillUnmount(){
+    console.log('componentWillUnmount');
   },
 
   handleSubmit(){
 
   },
 
-  handleClick(){
+  handleClick(model, event){
     var modal = ReactDOM.findDOMNode(this.refs.modal);
     $(modal).modal('show');
+    var content = ReactDOM.findDOMNode(this.refs.modalContent);
+    var f = <CustomerForm model={model} />;
+    ReactDOM.render(f, content);
   },
 
   getBackboneModels(){
@@ -29,7 +38,7 @@ module.exports = React.createClass({
     var rows = this.renderBody(this.props.collection);
     return (
       <div>
-        <form ref="form" onSubmit={this.handleSubmit} method="post">
+        <div ref="list">
           <h3 className="ui header">
             <i className="at icon"></i>
             <div className="content">
@@ -49,11 +58,10 @@ module.exports = React.createClass({
             <tbody>{rows}</tbody>
             <tfoot>{this.renderFooter(this.props.collection)}</tfoot>
           </table>
-        </form>
+        </div>
         <div ref="modal" className="ui modal">
           <div className="header">Header</div>
-          <div className="content">
-            <CustomerForm collection={App.getModelCollection('customer')} />
+          <div className="content" ref="modalContent">
           </div>
         </div>
       </div>
@@ -68,7 +76,7 @@ module.exports = React.createClass({
             <h4 className="ui image header">
               <img src={"/upload/customer/"+model.get('image')} className="ui mini rounded image" />
               <div className="content">
-                <a onClick={this.handleClick} href={"#sale/customer/edit/" + model.get('id')}>{model.get('name')}</a>
+                <a onClick={this.handleClick.bind(this, model)} href={"#sale/customer/edit/" + model.get('id')}>{model.get('name')}</a>
                 <div className="sub header">
                 {model.get('description')}
                 </div>

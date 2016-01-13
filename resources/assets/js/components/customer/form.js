@@ -7,12 +7,14 @@ module.exports = React.createClass({
   filename  : null,
   getInitialState() {
     return {
-      showMessage : false
+      showMessage : false,
+      model       : this.props.model
     };
   },
 
   componentDidMount() {
     this.setHandleUploadType('customer');
+
     $(ReactDOM.findDOMNode(this.refs.form))
       .form({
         on: 'blur',
@@ -35,8 +37,8 @@ module.exports = React.createClass({
     }
     var fd          = $(formDOM).serializeObject();
       fd['image']   = this.getUploadFilename();
-    var collection  = this.props.collection;
-    var customer    = collection.create(fd,{
+    var model  = this.state.model;
+    model.save(fd,{
       success : function(res){
         /**
          |------------------------------------------
@@ -68,8 +70,19 @@ module.exports = React.createClass({
     return '/image/wireframe/square-image.png';
   },
 
+  setModel(model){
+    this.setState({
+      model : model
+    });
+  },
+
+  handleChange(e){
+
+  },
+
   render: function() {
-    var message = '';
+    var message = (<div></div>);
+    var model   = this.state.model;
     if( this.state.showMessage ) {
       message = (<div ref="message" className="ui success message">
           <i className="close icon" onClick={this.handleMessage}></i>
@@ -79,22 +92,24 @@ module.exports = React.createClass({
           <p>Save customer is successful.</p>
       </div>);
     }
-    return (
-      <form ref="form" onSubmit={this.handleSubmit} method="post">
+    return (<form ref="form" onSubmit={this.handleSubmit}>
         {message}
         <div className="ui form">
           <div className="required field">
             <label>{ Lang.get('customer.name') }</label>
-            <input ref="name" name="name" placeholder={Lang.get('customer.name')} type="text" />
+            <input ref="name" name="name" value={model.get('name')} onChange={this.handleChange}
+              placeholder={Lang.get('customer.name')} type="text" />
           </div>
           <div className="two fields">
             <div className="required field">
               <label>{ Lang.get('customer.mobile_phone') }</label>
-              <input ref="mobile_phone" name="mobile_phone" placeholder={Lang.get('customer.mobile_phone')} type="text" />
+              <input ref="mobile_phone" name="mobile_phone" value={model.get('mobile_phone')} onChange={this.handleChange}
+                placeholder={Lang.get('customer.mobile_phone')} type="text" />
             </div>
             <div className="required field">
               <label>{ Lang.get('customer.home_phone') }</label>
-              <input ref="home_phone" name="home_phone" placeholder={Lang.get('customer.home_phone')} type="text" />
+              <input ref="home_phone" name="home_phone" value={model.get('home_phone')} onChange={this.handleChange}
+                placeholder={Lang.get('customer.home_phone')} type="text" />
             </div>
           </div>
           <div className="two fields">
@@ -108,12 +123,14 @@ module.exports = React.createClass({
             </div>
             <div className="required field">
               <label>{ Lang.get('customer.dob') }</label>
-              <input ref="dob" name="dob" placeholder={Lang.get('customer.dob')} type="text" />
+              <input ref="dob" name="dob" value={model.get('dob')} onChange={this.handleChange}
+                placeholder={Lang.get('customer.dob')} type="text" />
             </div>
           </div>
           <div className="required field">
             <label>{ Lang.get('customer.address') }</label>
-            <input ref="address" name="address" placeholder={Lang.get('customer.address')} type="text" />
+            <input ref="address" name="address" value={model.get('address')} onChange={this.handleChange}
+              placeholder={Lang.get('customer.address')} type="text" />
           </div>
           <div className="two fields">
             <div className="field">
@@ -132,7 +149,8 @@ module.exports = React.createClass({
             </div>
             <div className="field">
               <label>{ Lang.get('customer.description') }</label>
-              <textarea ref="description" name="description" placeholder={Lang.get('customer.description')}></textarea>
+              <textarea ref="description" name="description" value={model.get('description')} onChange={this.handleChange}
+                placeholder={Lang.get('customer.description')}></textarea>
             </div>
           </div>
           <div className="actions">

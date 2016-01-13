@@ -12,8 +12,8 @@ module.exports = React.createClass({
   },
 
   componentWillMount() {
-    this.listView = <CustomerList collection={App.getModelCollection('customer')} />;
-    this.formView = <CustomerForm collection={this.props.collection} />;
+    this.listView = <CustomerList collection={this.props.collection} />;
+    this.formView = <CustomerForm model={new this.props.collection.model} />;
   },
 
   componentDidUpdate() {
