@@ -22184,9 +22184,14 @@ module.exports = _react2.default.createClass({
           'div',
           null,
           _react2.default.createElement(
-            'h1',
+            'h4',
             null,
-            Lang.get('item.list')
+            Lang.get('invoce.products')
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '@todo: Danh sach cac san pham'
           )
         ),
         _react2.default.createElement(
@@ -22232,6 +22237,43 @@ module.exports = _react2.default.createClass({
                   'Chuyển không thành công'
                 )
               )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'field' },
+              _react2.default.createElement(
+                'div',
+                { className: 'ui checkbox' },
+                _react2.default.createElement('input', { type: 'checkbox', tabindex: '0', className: 'hidden' }),
+                _react2.default.createElement(
+                  'label',
+                  null,
+                  'Mua tại công ty'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'required field' },
+              _react2.default.createElement(
+                'label',
+                null,
+                Lang.get('invoice.transfer')
+              ),
+              _react2.default.createElement(
+                'select',
+                { className: 'ui dropdown' },
+                _react2.default.createElement(
+                  'option',
+                  { value: '1' },
+                  'Bưu điện'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '2' },
+                  'Khac'
+                )
+              )
             )
           ),
           _react2.default.createElement(
@@ -22270,8 +22312,78 @@ module.exports = _react2.default.createClass({
                   '1.300.000d'
                 )
               )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'required field' },
+              _react2.default.createElement(
+                'label',
+                null,
+                Lang.get('invoice.payment_type')
+              ),
+              _react2.default.createElement(
+                'select',
+                { className: 'ui dropdown' },
+                _react2.default.createElement(
+                  'option',
+                  { value: '1' },
+                  'Chuyển khoản'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '2' },
+                  'Khac'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'required field' },
+              _react2.default.createElement(
+                'label',
+                null,
+                Lang.get('invoice.payment_state')
+              ),
+              _react2.default.createElement(
+                'select',
+                { className: 'ui dropdown' },
+                _react2.default.createElement(
+                  'option',
+                  { value: '1' },
+                  'Chưa thanh toán'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '2' },
+                  'Khac'
+                )
+              )
             )
           )
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h4',
+            null,
+            Lang.get('invoice.addresses')
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            '@todo: Danh sach dia chi'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'field' },
+          _react2.default.createElement(
+            'label',
+            null,
+            Lang.get('invoice.note')
+          ),
+          _react2.default.createElement('textarea', { rows: '2' })
         ),
         _react2.default.createElement(
           'div',
