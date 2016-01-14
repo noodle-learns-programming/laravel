@@ -57,6 +57,45 @@ module.exports = React.createClass({
                 placeholder={Lang.get('customer.fullname')} type="text" />
             </div>
           </div>
+          <div>
+            <h1>{Lang.get('item.list')}</h1>
+          </div>
+          <div className="ui two column grid">
+            <div className="column">
+              <div className="required field">
+                <label>{Lang.get('invoice.state')}</label>
+                <select className="ui dropdown">
+                  <option value="1">Đã chốt</option>
+                  <option value="2">Suy nghĩ thêm</option>
+                  <option value="3">Đổi trả</option>
+                  <option value="4">Đã Chuyển</option>
+                  <option value="5">Chuyển không thành công</option>
+                </select>
+              </div>
+            </div>
+            <div className="column">
+              <div className="ui list">
+                <div className="item">
+                  <i className="dollar icon"></i>
+                  <div className="ui right aligned content">
+                    1.400.000d
+                  </div>
+                </div>
+                <div className="item">
+                  <i className="gift icon"></i>
+                  <div className="ui right aligned content">
+                    100.000d
+                  </div>
+                </div>
+                <div className="item">
+                  <i className="payment icon"></i>
+                  <div className="ui right aligned content">
+                    1.300.000d
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="actions">
             <button className="ui primary button">Save</button>
             <div className="ui cancel button">Cancel</div>

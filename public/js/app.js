@@ -22182,6 +22182,99 @@ module.exports = _react2.default.createClass({
         ),
         _react2.default.createElement(
           'div',
+          null,
+          _react2.default.createElement(
+            'h1',
+            null,
+            Lang.get('item.list')
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'ui two column grid' },
+          _react2.default.createElement(
+            'div',
+            { className: 'column' },
+            _react2.default.createElement(
+              'div',
+              { className: 'required field' },
+              _react2.default.createElement(
+                'label',
+                null,
+                Lang.get('invoice.state')
+              ),
+              _react2.default.createElement(
+                'select',
+                { className: 'ui dropdown' },
+                _react2.default.createElement(
+                  'option',
+                  { value: '1' },
+                  'Đã chốt'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '2' },
+                  'Suy nghĩ thêm'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '3' },
+                  'Đổi trả'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '4' },
+                  'Đã Chuyển'
+                ),
+                _react2.default.createElement(
+                  'option',
+                  { value: '5' },
+                  'Chuyển không thành công'
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'column' },
+            _react2.default.createElement(
+              'div',
+              { className: 'ui list' },
+              _react2.default.createElement(
+                'div',
+                { className: 'item' },
+                _react2.default.createElement('i', { className: 'dollar icon' }),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'ui right aligned content' },
+                  '1.400.000d'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'item' },
+                _react2.default.createElement('i', { className: 'gift icon' }),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'ui right aligned content' },
+                  '100.000d'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'item' },
+                _react2.default.createElement('i', { className: 'payment icon' }),
+                _react2.default.createElement(
+                  'div',
+                  { className: 'ui right aligned content' },
+                  '1.300.000d'
+                )
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
           { className: 'actions' },
           _react2.default.createElement(
             'button',
