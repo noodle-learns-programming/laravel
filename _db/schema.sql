@@ -40,6 +40,49 @@ CREATE TABLE IF NOT EXISTS `customers` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table always.invoices
+CREATE TABLE IF NOT EXISTS `invoices` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `customer_id` int(10) unsigned NOT NULL,
+  `sale_user_id` int(10) unsigned NOT NULL,
+  `invoice_state` int(11) NOT NULL,
+  `invoice_status` int(11) NOT NULL,
+  `payment_total` float NOT NULL,
+  `payment_discount` float NOT NULL,
+  `payment_net` float NOT NULL,
+  `payment_type` int(11) NOT NULL,
+  `payment_status` int(11) NOT NULL,
+  `transfer_id` int(10) unsigned NOT NULL,
+  `buy_at_store` tinyint(1) unsigned NOT NULL,
+  `ship_address_id` int(10) unsigned NOT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`),
+  KEY `IDX_CUSTOMER` (`customer_id`),
+  KEY `IDX_TRANSFER` (`transfer_id`),
+  KEY `IDX_ADDRESS` (`ship_address_id`),
+  KEY `IDX_USER` (`sale_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table always.invoice_items
+CREATE TABLE IF NOT EXISTS `invoice_items` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `invoice_id` int(10) unsigned NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
+  `quality` int(10) unsigned NOT NULL,
+  `product_price` float unsigned NOT NULL,
+  `discount` int(10) unsigned NOT NULL,
+  `type` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_INVOICE` (`invoice_id`),
+  KEY `IDX_PRODUCT` (`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table always.migrations
 CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,

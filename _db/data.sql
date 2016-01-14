@@ -26,6 +26,16 @@ INSERT INTO `customers` (`id`, `name`, `gender`, `dob`, `email`, `home_phone`, `
 	(14, 'Tran Van F', '1', '1/1/2010', '', '123456789', '123456789', '', '1452705214.jpg', 'Sai Gon', '2016-01-13 17:13:38', '2016-01-13 17:13:38');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 
+-- Dumping data for table always.invoices: ~0 rows (approximately)
+/*!40000 ALTER TABLE `invoices` DISABLE KEYS */;
+INSERT INTO `invoices` (`id`, `customer_id`, `sale_user_id`, `invoice_state`, `invoice_status`, `payment_total`, `payment_discount`, `payment_net`, `payment_type`, `payment_status`, `transfer_id`, `buy_at_store`, `ship_address_id`, `note`) VALUES
+	(1, 10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, NULL);
+/*!40000 ALTER TABLE `invoices` ENABLE KEYS */;
+
+-- Dumping data for table always.invoice_items: ~0 rows (approximately)
+/*!40000 ALTER TABLE `invoice_items` DISABLE KEYS */;
+/*!40000 ALTER TABLE `invoice_items` ENABLE KEYS */;
+
 -- Dumping data for table always.migrations: ~3 rows (approximately)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`migration`, `batch`) VALUES
@@ -42,7 +52,12 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
 INSERT INTO `products` (`id`, `name`, `description`, `sku`, `series`, `unit`, `brand`, `image`, `created_at`, `updated_at`) VALUES
 	(55, 'San pham 40', 'Mo ta san pham 40', 'ip124', '999999999999999999', 'chiec', 'Apple', '1451804446.jpg', '2016-01-03 07:00:46', '2016-01-03 07:00:46'),
-	(56, 'San pham 41', 'Mo ta san pham 41', 'ip123', '999999999999999999', 'chiec', 'Apple', '1451805332.jpg', '2016-01-03 07:15:33', '2016-01-03 07:15:33');
+	(56, 'San pham 41', 'Mo ta san pham 41', 'ip123', '999999999999999999', 'chiec', 'Apple', '1451804446.jpg', '2016-01-03 07:15:33', '2016-01-03 07:15:33'),
+	(57, 'San pham 42', 'Mo ta san pham 42', 'ip42', '999999999999999999', 'chiec', 'Apple', '1451804446.jpg', '2016-01-03 07:00:46', '2016-01-03 07:00:46'),
+	(58, 'San pham 43', 'Mo ta san pham 43', 'ip43', '999999999999999999', 'chiec', 'Apple', '1451804446.jpg', '2016-01-03 07:00:46', '2016-01-03 07:00:46'),
+	(59, 'San pham 45', 'Mo ta san pham 45', 'ip45', '999999999999999999', 'chiec', 'Apple', '1451804446.jpg', '2016-01-03 07:00:46', '2016-01-03 07:00:46'),
+	(60, 'San pham 46', 'Mo ta san pham 46', 'ip46', '999999999999999999', 'chiec', 'Apple', '1451804446.jpg', '2016-01-03 07:00:46', '2016-01-03 07:00:46'),
+	(61, 'San pham 47', 'Mo ta san pham 47', 'ip47', '999999999999999999', 'chiec', 'Apple', '1451804446.jpg', '2016-01-03 07:00:46', '2016-01-03 07:00:46');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 
 -- Dumping data for table always.users: ~1 rows (approximately)
