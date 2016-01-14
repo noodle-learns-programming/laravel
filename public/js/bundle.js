@@ -20422,6 +20422,7 @@ var Feed = require('./components/feed');
 var Dashboard = require('./components/dashboard');
 var Product = require('./components/product');
 var ProductShow = require('./components/product-show');
+var Sale = require('./components/sale');
 var Customer = require('./components/customer');
 //Model
 var ProductCollection = require('./models/product').Collection;
@@ -20487,6 +20488,7 @@ App.Router = Backbone.Router.extend({
     '': 'dashboard',
     'stock/product': 'product',
     'stock/show-product': 'productShow',
+    'sale/invoice(/:id)': 'sale',
     'sale/customer(/:action)(/:id)': 'customer',
     'test/redux': '_redux',
     'test/upload': '_upload',
@@ -20500,6 +20502,10 @@ App.Router = Backbone.Router.extend({
   },
   productShow: function productShow() {
     _reactDom2.default.render(_react2.default.createElement(ProductShow, { collection: App.getModelCollection('product') }), document.getElementById('main'));
+  },
+  sale: function sale(id) {
+    console.log('Invoice id: ', id);
+    _reactDom2.default.render(_react2.default.createElement(Sale, { invoiceId: id, collection: App.getModelCollection('customer') }), document.getElementById('main'));
   },
   customer: function customer(action, id) {
     _reactDom2.default.render(_react2.default.createElement(Customer, { action: action, id: id, collection: App.getModelCollection('customer') }), document.getElementById('main'));
@@ -20521,7 +20527,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":184,"./components/customer":186,"./components/dashboard":189,"./components/feed":190,"./components/product":192,"./components/product-show":191,"./containers/page":193,"./models/customer":195,"./models/product":196,"./store/configureStore":199,"react":171,"react-dom":4,"react-redux":7,"react-tap-event-plugin":15}],184:[function(require,module,exports){
+},{"./components/breadcrumb":184,"./components/customer":186,"./components/dashboard":189,"./components/feed":190,"./components/product":192,"./components/product-show":191,"./components/sale":194,"./containers/page":196,"./models/customer":198,"./models/product":199,"./store/configureStore":202,"react":171,"react-dom":4,"react-redux":7,"react-tap-event-plugin":15}],184:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21050,7 +21056,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":194,"react":171,"react-dom":4}],188:[function(require,module,exports){
+},{"./../../mixins":197,"react":171,"react-dom":4}],188:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21293,7 +21299,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":194,"./form":187,"react":171,"react-dom":4}],189:[function(require,module,exports){
+},{"./../../mixins":197,"./form":187,"react":171,"react-dom":4}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21674,7 +21680,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":194,"react":171}],192:[function(require,module,exports){
+},{"./../mixins":197,"react":171}],192:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21906,6 +21912,296 @@ module.exports = _react2.default.createClass({
 },{"react":171,"react-dom":4}],193:[function(require,module,exports){
 'use strict';
 
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+
+  mixins: [BackboneModelMixin],
+  componentDidMount: function componentDidMount() {
+    this.props.collection.fetch();
+  },
+  componentDidUpdate: function componentDidUpdate() {},
+  handleSubmit: function handleSubmit() {},
+  getBackboneModels: function getBackboneModels() {
+    return [this.props.collection];
+  },
+  render: function render() {
+    var rows = this.renderBody(this.props.collection);
+    return _react2.default.createElement(
+      'form',
+      { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
+      _react2.default.createElement(
+        'div',
+        { className: 'ui search' },
+        _react2.default.createElement(
+          'div',
+          { className: 'ui icon input' },
+          _react2.default.createElement('input', { className: 'prompt', type: 'text', placeholder: Lang.get('product.search') }),
+          _react2.default.createElement('i', { className: 'search icon' })
+        ),
+        _react2.default.createElement('div', { className: 'results' })
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'ui two cards' },
+        rows
+      )
+    );
+  },
+  renderBody: function renderBody(collection) {
+    var rows = [];
+    collection.each(function (product, i) {
+      rows.push(_react2.default.createElement(
+        'div',
+        { className: 'card', key: i },
+        _react2.default.createElement(
+          'div',
+          { className: 'image' },
+          _react2.default.createElement('img', { src: "/upload/product/" + product.get('image'), className: 'ui mini rounded image' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'content' },
+          _react2.default.createElement(
+            'div',
+            { className: 'header' },
+            product.get('name')
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'meta' },
+            _react2.default.createElement(
+              'a',
+              null,
+              '100k'
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'description' },
+            product.get('description')
+          )
+        )
+      ));
+    });
+    return rows;
+  },
+  renderFooter: function renderFooter(collection) {
+    if (!collection.length) {
+      return '';
+    }
+    return _react2.default.createElement(
+      'tr',
+      null,
+      _react2.default.createElement(
+        'th',
+        { colSpan: '5' },
+        _react2.default.createElement(
+          'div',
+          { className: 'ui right floated pagination menu' },
+          _react2.default.createElement(
+            'a',
+            { className: 'icon item', href: '#stock/show-product?page=2' },
+            _react2.default.createElement('i', { className: 'left chevron icon' })
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '1'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '2'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '3'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'item' },
+            '4'
+          ),
+          _react2.default.createElement(
+            'a',
+            { className: 'icon item', href: '#stock/show-product?page=2' },
+            _react2.default.createElement('i', { className: 'right chevron icon' })
+          )
+        )
+      )
+    );
+  }
+});
+
+},{"./../../mixins":197,"react":171}],194:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SaleForm = require('./sale/form');
+var ProductList = require('./product/list');
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+  getInitialState: function getInitialState() {
+    return {
+      action: this.props.action || 'list',
+      id: this.props.invoiceId || 0
+    };
+  },
+  componentWillMount: function componentWillMount() {
+    this.listView = _react2.default.createElement(ProductList, { collection: App.getModelCollection('product') });
+    this.formView = _react2.default.createElement(SaleForm, { id: this.props.invoiceId });
+  },
+  componentDidUpdate: function componentDidUpdate() {},
+  handleMenu: function handleMenu(e) {
+    var view = $(e.currentTarget).data('view');
+    this.setState({
+      action: view
+    });
+  },
+
+  render: function render() {
+    return _react2.default.createElement(
+      'div',
+      { className: 'ui equal width grid' },
+      _react2.default.createElement(
+        'div',
+        { className: 'equal width row' },
+        _react2.default.createElement(
+          'div',
+          { className: 'column' },
+          this.formView
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'column' },
+          this.listView
+        )
+      )
+    );
+  }
+});
+
+},{"./product/list":193,"./sale/form":195,"react":171,"react-dom":4}],195:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FileUploadMixin = require('./../../mixins').FileUploadMixin;
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+
+  mixins: [FileUploadMixin],
+  filename: null,
+  getInitialState: function getInitialState() {
+    return {
+      showMessage: false
+    };
+  },
+  componentDidMount: function componentDidMount() {},
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+  },
+  handleMessage: function handleMessage(e) {
+    this.setState({
+      showMessage: false
+    });
+  },
+  componentDidUpdate: function componentDidUpdate() {},
+  getImage: function getImage() {
+    if (this.state.uploadFilename) {
+      return this.state.uploadFilename;
+    }
+    return '/image/wireframe/square-image.png';
+  },
+  handleChange: function handleChange(e) {
+    var el = e.target;
+    this.props.model.set(el.name, el.value);
+    this.forceUpdate();
+  },
+
+  render: function render() {
+    return _react2.default.createElement(
+      'form',
+      { ref: 'form', onSubmit: this.handleSubmit },
+      _react2.default.createElement(
+        'div',
+        { className: 'ui form' },
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.mobile_phone')
+            ),
+            _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone',
+              placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('customer.fullname')
+            ),
+            _react2.default.createElement('input', { ref: 'fullname', name: 'fullname',
+              placeholder: Lang.get('customer.fullname'), type: 'text' })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'actions' },
+          _react2.default.createElement(
+            'button',
+            { className: 'ui primary button' },
+            'Save'
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'ui cancel button' },
+            'Cancel'
+          )
+        )
+      )
+    );
+  }
+});
+
+},{"./../../mixins":197,"react":171,"react-dom":4}],196:[function(require,module,exports){
+'use strict';
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -21938,7 +22234,7 @@ function mapDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_counter2.default);
 
-},{"../actions/counter":182,"../components/counter":185,"react-redux":7,"redux":174}],194:[function(require,module,exports){
+},{"../actions/counter":182,"../components/counter":185,"react-redux":7,"redux":174}],197:[function(require,module,exports){
 'use strict';
 
 var BackboneModelMixin = {
@@ -21993,7 +22289,7 @@ var FileUploadMixin = {
 exports.FileUploadMixin = FileUploadMixin;
 exports.BackboneModelMixin = BackboneModelMixin;
 
-},{}],195:[function(require,module,exports){
+},{}],198:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({
@@ -22011,7 +22307,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],196:[function(require,module,exports){
+},{}],199:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({
@@ -22029,7 +22325,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],197:[function(require,module,exports){
+},{}],200:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22057,7 +22353,7 @@ function counter() {
   }
 }
 
-},{"../actions/counter":182}],198:[function(require,module,exports){
+},{"../actions/counter":182}],201:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22078,7 +22374,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./counter":197,"redux":174}],199:[function(require,module,exports){
+},{"./counter":200,"redux":174}],202:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22120,7 +22416,7 @@ function configureStore(initialState) {
   return store;
 }
 
-},{"../reducers":198,"redux":174,"redux-thunk":172}]},{},[183]);
+},{"../reducers":201,"redux":174,"redux-thunk":172}]},{},[183]);
 
 //# sourceMappingURL=app.js.map
 
