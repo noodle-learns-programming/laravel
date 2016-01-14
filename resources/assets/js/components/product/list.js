@@ -29,7 +29,7 @@ module.exports = React.createClass({
           </div>
           <div className="results"></div>
         </div>
-        <div className="ui two cards">
+        <div className="ui three cards">
           {rows}
         </div>
       </form>

@@ -21950,7 +21950,7 @@ module.exports = _react2.default.createClass({
       ),
       _react2.default.createElement(
         'div',
-        { className: 'ui two cards' },
+        { className: 'ui three cards' },
         rows
       )
     );
