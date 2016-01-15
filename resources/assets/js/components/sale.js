@@ -12,8 +12,16 @@ module.exports = React.createClass({
   },
 
   componentWillMount() {
+    var invoiceCollection = App.getModelCollection('invoice');
+    if( !this.props.invoiceId ) {
+      this.formView = <SaleForm invoice={invoiceCollection.create({}, {wait: true})} />;
+    } else {
+      invoiceCollection.add({id: this.props.invoiceId});
+      var invoice = invoiceCollection.get(this.props.invoiceId);
+          invoice.fetch();
+      this.formView = <SaleForm invoice={invoice} />;
+    }
     this.listView = <ProductList collection={App.getModelCollection('product')} />;
-    this.formView = <SaleForm id={this.props.invoiceId} />;
   },
 
   componentDidUpdate() {

@@ -20427,6 +20427,7 @@ var Customer = require('./components/customer');
 //Model
 var ProductCollection = require('./models/product').Collection;
 var CustomerCollection = require('./models/customer').Collection;
+var InvoiceCollection = require('./models/invoice').Collection;
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -20469,6 +20470,8 @@ App.getModelCollection = function (name) {
     App._modelCollections[name] = new ProductCollection();
   } else if (name === 'customer') {
     App._modelCollections[name] = new CustomerCollection();
+  } else if (name === 'invoice') {
+    App._modelCollections[name] = new InvoiceCollection();
   }
   return App._modelCollections[name];
 };
@@ -20527,7 +20530,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":184,"./components/customer":186,"./components/dashboard":189,"./components/feed":190,"./components/product":192,"./components/product-show":191,"./components/sale":194,"./containers/page":196,"./models/customer":198,"./models/product":199,"./store/configureStore":202,"react":171,"react-dom":4,"react-redux":7,"react-tap-event-plugin":15}],184:[function(require,module,exports){
+},{"./components/breadcrumb":184,"./components/customer":186,"./components/dashboard":189,"./components/feed":190,"./components/product":192,"./components/product-show":191,"./components/sale":194,"./containers/page":196,"./models/customer":198,"./models/invoice":199,"./models/product":200,"./store/configureStore":203,"react":171,"react-dom":4,"react-redux":7,"react-tap-event-plugin":15}],184:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22067,8 +22070,16 @@ module.exports = _react2.default.createClass({
     };
   },
   componentWillMount: function componentWillMount() {
+    var invoiceCollection = App.getModelCollection('invoice');
+    if (!this.props.invoiceId) {
+      this.formView = _react2.default.createElement(SaleForm, { invoice: invoiceCollection.create({}, { wait: true }) });
+    } else {
+      invoiceCollection.add({ id: this.props.invoiceId });
+      var invoice = invoiceCollection.get(this.props.invoiceId);
+      invoice.fetch();
+      this.formView = _react2.default.createElement(SaleForm, { invoice: invoice });
+    }
     this.listView = _react2.default.createElement(ProductList, { collection: App.getModelCollection('product') });
-    this.formView = _react2.default.createElement(SaleForm, { id: this.props.invoiceId });
   },
   componentDidUpdate: function componentDidUpdate() {},
   handleMenu: function handleMenu(e) {
@@ -22114,15 +22125,17 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var FileUploadMixin = require('./../../mixins').FileUploadMixin;
+var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
 
-  mixins: [FileUploadMixin],
+  mixins: [FileUploadMixin, BackboneModelMixin],
   filename: null,
   getInitialState: function getInitialState() {
     return {
-      showMessage: false
+      showMessage: false,
+      invoice: this.props.invoice
     };
   },
   componentDidMount: function componentDidMount() {},
@@ -22143,14 +22156,26 @@ module.exports = _react2.default.createClass({
   },
   handleChange: function handleChange(e) {
     var el = e.target;
-    this.props.model.set(el.name, el.value);
+    this.props.invoice.set(el.name, el.value);
     this.forceUpdate();
+  },
+  getBackboneModels: function getBackboneModels() {
+    return [this.props.invoice];
   },
 
   render: function render() {
+    var invoice = this.props.invoice;
     return _react2.default.createElement(
       'form',
       { ref: 'form', onSubmit: this.handleSubmit },
+      _react2.default.createElement(
+        'div',
+        null,
+        'Invoice : #',
+        invoice.get('id'),
+        ' | Customer: ',
+        invoice.get('customer_id')
+      ),
       _react2.default.createElement(
         'div',
         { className: 'ui form' },
@@ -22520,7 +22545,7 @@ var Model = Backbone.Model.extend({
 });
 
 var Collection = Backbone.Collection.extend({
-  url: '/stock/product',
+  url: '/sale/invoice',
   model: Model,
   parse: function parse(response) {
     return response.data;
@@ -22531,6 +22556,24 @@ exports.Model = Model;
 exports.Collection = Collection;
 
 },{}],200:[function(require,module,exports){
+'use strict';
+
+var Model = Backbone.Model.extend({
+  initialize: function initialize() {}
+});
+
+var Collection = Backbone.Collection.extend({
+  url: '/stock/product',
+  model: Model,
+  parse: function parse(response) {
+    return response.data;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
+
+},{}],201:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22558,7 +22601,7 @@ function counter() {
   }
 }
 
-},{"../actions/counter":182}],201:[function(require,module,exports){
+},{"../actions/counter":182}],202:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22579,7 +22622,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./counter":200,"redux":174}],202:[function(require,module,exports){
+},{"./counter":201,"redux":174}],203:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22621,6 +22664,6 @@ function configureStore(initialState) {
   return store;
 }
 
-},{"../reducers":201,"redux":174,"redux-thunk":172}]},{},[183]);
+},{"../reducers":202,"redux":174,"redux-thunk":172}]},{},[183]);
 
 //# sourceMappingURL=app.js.map

@@ -17,6 +17,7 @@ var Customer    = require('./components/customer');
 //Model
 var ProductCollection   = require('./models/product').Collection;
 var CustomerCollection  = require('./models/customer').Collection;
+var InvoiceCollection   = require('./models/invoice').Collection;
 /**
  |-------------------------------------------------------
  | Only for testing
@@ -59,6 +60,8 @@ App.getModelCollection = function(name){
     App._modelCollections[name] = new ProductCollection();
   } else if(name === 'customer') {
     App._modelCollections[name] = new CustomerCollection();
+  } else if(name === 'invoice') {
+    App._modelCollections[name] = new InvoiceCollection();
   }
   return App._modelCollections[name];
 };

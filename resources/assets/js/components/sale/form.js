@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-var FileUploadMixin   = require('./../../mixins').FileUploadMixin;
+var FileUploadMixin     = require('./../../mixins').FileUploadMixin;
+var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 
 module.exports = React.createClass({
-  mixins : [FileUploadMixin],
+  mixins : [FileUploadMixin, BackboneModelMixin],
   filename  : null,
   getInitialState() {
     return {
-      showMessage : false
+      showMessage : false,
+      invoice : this.props.invoice
     };
   },
 
@@ -38,12 +40,18 @@ module.exports = React.createClass({
 
   handleChange(e){
     var el = e.target;
-    this.props.model.set(el.name, el.value);
+    this.props.invoice.set(el.name, el.value);
     this.forceUpdate();
   },
 
+  getBackboneModels(){
+    return [this.props.invoice];
+  },
+
   render: function() {
+    var invoice = this.props.invoice;
     return (<form ref="form" onSubmit={this.handleSubmit}>
+        <div>Invoice : #{invoice.get('id')} | Customer: {invoice.get('customer_id')}</div>
         <div className="ui form">
           <div className="two fields">
             <div className="required field">

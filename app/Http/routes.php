@@ -42,5 +42,6 @@ Route::group(['namespace' => 'Stock', 'prefix' => 'stock'], function()
 Route::group(['namespace' => 'Sale', 'prefix' => 'sale'], function()
 {
   Route::resource('customer', 'CustomerController');
+  Route::resource('invoice', 'InvoiceController');
 });
 

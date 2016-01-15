@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Sale;
 
 use App\User;
-use App\Models\Product;
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -21,19 +21,25 @@ class InvoiceController extends Controller
 
   public function index()
   {
-    $products = Product::paginate(10);
-    return $products;
+    $invoices = Invoice::paginate(10);
+    return $invoices;
+  }
+
+  public function show($id)
+  {
+    $invoice = Invoice::find($id);
+    return $invoice;
   }
 
   public function store(Request $request)
   {
-    $product    = new Product();
-    $rules      = $product->getValidatorRules();
+    $invoice    = new Invoice();
+    $rules      = $invoice->getValidatorRules();
     $validator  = $this->validate($request, $rules);
     if ($validator) {
       return response()->json($validator,'404');
     }
-    $result     = $product->create($request->all());
+    $result     = $invoice->create($request->all());
 
     return response()->json([
       'result' => $result

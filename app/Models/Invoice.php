@@ -7,21 +7,26 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
   protected $fillable = [
-    'name',
-    'description',
-    'sku',
-    'series',
-    'unit',
-    'brand',
-    'image',
-    'created_at',
-    'updated_at'
+    'id',
+    'customer_id',
+    'sale_user_id',
+    'invoice_state',
+    'invoice_status',
+    'payment_total',
+    'payment_discount',
+    'payment_net',
+    'payment_type',
+    'payment_status',
+    'transfer_id',
+    'buy_at_store',
+    'ship_address_id',
+    'note'
   ];
 
   public function getValidatorRules()
   {
     return [
-    'name' => 'required'
+      'customer_id' => 'required'
     ];
   }
 }
