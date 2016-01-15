@@ -22,11 +22,16 @@ module.exports = React.createClass({
 
   },
 
+  hideModal(){
+    var modal = ReactDOM.findDOMNode(this.refs.modal);
+        $(modal).modal('hide');
+  },
+
   handleClick(model, event){
     var modal = ReactDOM.findDOMNode(this.refs.modal);
         $(modal).modal('show');
     var content = ReactDOM.findDOMNode(this.refs.modalContent);
-        ReactDOM.render(<CustomerForm model={model} />, content);
+        ReactDOM.render(<CustomerForm model={model} hideModal={this.hideModal}/>, content);
   },
 
   getBackboneModels(){

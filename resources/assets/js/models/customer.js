@@ -8,7 +8,11 @@ var Collection = Backbone.Collection.extend({
   url   : '/sale/customer',
   model : Model,
   parse(response) {
-    return response.data;
+    try {
+      return response.data;
+    } catch( e ) {
+      
+    }
   }
 });
 

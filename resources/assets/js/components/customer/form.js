@@ -7,7 +7,8 @@ module.exports = React.createClass({
   filename  : null,
   getInitialState() {
     return {
-      showMessage : false
+      showMessage : false,
+      loading     : ''
     };
   },
 
@@ -39,6 +40,9 @@ module.exports = React.createClass({
       fd['image']   = this.getUploadFilename();
     }
     var model  = this.props.model;
+    this.setState({
+      loading : 'loading'
+    });
     /**
      |----------------------------------------------
      | Save model voi isNew = false (tuc la da ton tai)
@@ -47,15 +51,20 @@ module.exports = React.createClass({
      |----------------------------------------------
      */
     model.save(fd,{
-      success : function(res){
-        /**
-         |------------------------------------------
-         | @note: res === customer
-         |------------------------------------------
-         */
+      success : function(model, res, xhr){
         this.setState({
+          loading     : '',
+          showMessage : false
+        });
+        this.props.hideModal();
+        formDOM.reset();
+      }.bind(this),
+      error : function(model, res, xhr){
+        this.setState({
+          loading     : '',
           showMessage : true
         });
+        this.props.hideModal();
         formDOM.reset();
       }.bind(this)
     });
@@ -162,7 +171,7 @@ module.exports = React.createClass({
             </div>
           </div>
           <div className="actions">
-            <button className="ui primary button">Save</button>
+            <button className={"ui primary " + this.state.loading + " button"}>Save</button>
             <div className="ui cancel button">Cancel</div>
           </div>
         </div>

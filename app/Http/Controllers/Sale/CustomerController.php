@@ -52,6 +52,7 @@ class CustomerController extends Controller
       unset($input['image']);
     }
     $customer->update($input);
-    response()->json($customer->save());
+    $customer->save();
+    return $customer;
   }
 }
