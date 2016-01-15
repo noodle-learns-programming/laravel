@@ -22269,7 +22269,7 @@ module.exports = _react2.default.createClass({
               _react2.default.createElement(
                 'div',
                 { className: 'ui checkbox' },
-                _react2.default.createElement('input', { type: 'checkbox', tabindex: '0', className: 'hidden' }),
+                _react2.default.createElement('input', { type: 'checkbox', tabIndex: '0', className: 'hidden' }),
                 _react2.default.createElement(
                   'label',
                   null,

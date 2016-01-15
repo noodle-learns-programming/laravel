@@ -83,7 +83,7 @@ module.exports = React.createClass({
               </div>
               <div className="field">
                 <div className="ui checkbox">
-                  <input type="checkbox" tabindex="0" className="hidden" />
+                  <input type="checkbox" tabIndex="0" className="hidden" />
                   <label>Mua tại công ty</label>
                 </div>
               </div>
