@@ -1,4 +1,14 @@
-var Model = Backbone.Model.extend({
+var Customer  = require('./customer').Model;
+var Model = Backbone.RelationalModel.extend({
+  urlRoot   : '/sale/invoice',
+  relations: [
+    {
+      type: Backbone.HasOne,
+      key: 'customer',
+      relatedModel: Customer,
+      autoFetch: true
+    }
+  ],
   initialize() {
 
   }
@@ -6,11 +16,10 @@ var Model = Backbone.Model.extend({
 
 var Collection = Backbone.Collection.extend({
   url   : '/sale/invoice',
-  model : Model,
-  parse(response) {
-    return response.data;
-  }
+  model : Model
 });
+
+
 
 exports.Model = Model;
 exports.Collection = Collection;

@@ -29,4 +29,9 @@ class Invoice extends Model
       'customer_id' => 'required'
     ];
   }
+
+  public function customer()
+  {
+    return $this->belongsTo('App\Models\Customer');
+  }
 }

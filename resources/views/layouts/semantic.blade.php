@@ -44,6 +44,7 @@
     <script src="/js/vendor/jquery.min.js"></script>
     <script src="/js/vendor/underscore.min.js"></script>
     <script src="/js/vendor/backbone.min.js"></script>
+    <script src="/js/vendor/backbone-relational.js"></script>
     <script src="/js/vendor/semantic.min.js"></script>
     <script src="{{ elixir('js/lang.js') }}"></script>
     <script src="{{ elixir('js/bundle.js') }}"></script>

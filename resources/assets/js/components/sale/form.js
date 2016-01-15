@@ -49,20 +49,21 @@ module.exports = React.createClass({
   },
 
   render: function() {
-    var invoice = this.props.invoice;
+    var invoice   = this.props.invoice;
+    var customer  = invoice.get('customer')?invoice.get('customer').toJSON():{};
     return (<form ref="form" onSubmit={this.handleSubmit}>
         <div>Invoice : #{invoice.get('id')} | Customer: {invoice.get('customer_id')}</div>
         <div className="ui form">
           <div className="two fields">
             <div className="required field">
               <label>{ Lang.get('customer.mobile_phone') }</label>
-              <input ref="mobile_phone" name="mobile_phone"
+              <input ref="mobile_phone" name="mobile_phone" value={customer['mobile_phone']}
                 placeholder={Lang.get('customer.mobile_phone')} type="text" />
             </div>
             <div className="required field">
-              <label>{ Lang.get('customer.fullname') }</label>
-              <input ref="fullname" name="fullname"
-                placeholder={Lang.get('customer.fullname')} type="text" />
+              <label>{ Lang.get('customer.name') }</label>
+              <input ref="name" name="name" value={customer['name']}
+                placeholder={Lang.get('customer.name')} type="text" />
             </div>
           </div>
           <div>

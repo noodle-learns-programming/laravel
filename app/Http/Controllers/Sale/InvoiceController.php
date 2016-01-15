@@ -28,7 +28,9 @@ class InvoiceController extends Controller
   public function show($id)
   {
     $invoice = Invoice::find($id);
-    return $invoice;
+    $data = $invoice->toArray();
+    $data['customer'] = $invoice->customer->toArray();
+    return $data;
   }
 
   public function store(Request $request)

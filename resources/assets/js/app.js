@@ -15,16 +15,19 @@ var ProductShow = require('./components/product-show');
 var Sale        = require('./components/sale');
 var Customer    = require('./components/customer');
 //Model
-var ProductCollection   = require('./models/product').Collection;
-var CustomerCollection  = require('./models/customer').Collection;
-var InvoiceCollection   = require('./models/invoice').Collection;
+App.Collection  = {
+  product   : require('./models/product').Collection,
+  customer  : require('./models/customer').Collection,
+  invoice   : require('./models/invoice').Collection
+};
+
 /**
  |-------------------------------------------------------
  | Only for testing
  |-------------------------------------------------------
  */
-/*var TestUpload  = require('./test/upload');
-var TestMaterial= require('./test/material');*/
+var TestUpload  = require('./test/upload');
+/*var TestMaterial= require('./test/material');*/
 
 injectTapEventPlugin();
 
@@ -56,13 +59,7 @@ App.getModelCollection = function(name){
   if( App._modelCollections[name] ){
     return App._modelCollections[name];
   }
-  if( name === 'product') {
-    App._modelCollections[name] = new ProductCollection();
-  } else if(name === 'customer') {
-    App._modelCollections[name] = new CustomerCollection();
-  } else if(name === 'invoice') {
-    App._modelCollections[name] = new InvoiceCollection();
-  }
+  App._modelCollections[name] = new App.Collection[name];
   return App._modelCollections[name];
 };
 App.init = function(){
@@ -97,7 +94,6 @@ App.Router = Backbone.Router.extend({
     ReactDOM.render(<ProductShow collection={App.getModelCollection('product')}/>, document.getElementById('main'));
   },
   sale(id){
-    console.log('Invoice id: ', id);
     ReactDOM.render(<Sale invoiceId={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
   },
   customer(action, id){
@@ -115,7 +111,7 @@ App.Router = Backbone.Router.extend({
     ReactDOM.render(<TestUpload />, document.getElementById('main'));
   },
   _meterial(){
-    ReactDOM.render(<TestMaterial />, document.getElementById('main'));
+    //ReactDOM.render(<TestMaterial />, document.getElementById('main'));
   }
 });
 
