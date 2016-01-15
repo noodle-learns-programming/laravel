@@ -122,7 +122,8 @@ module.exports = React.createClass({
           <div className="two fields">
             <div className="required field">
               <label>{ Lang.get('customer.gender') }</label>
-              <select ref="gender" name="gender" className="ui fluid simple dropdown">
+              <select ref="gender" name="gender" value={model.get('gender')}
+                className="ui fluid simple dropdown">
                 <option value="">{Lang.get('customer.gender')}</option>
                 <option value="1">Male</option>
                 <option value="2">Female</option>
