@@ -21094,7 +21094,8 @@ module.exports = _react2.default.createClass({
   filename: null,
   getInitialState: function getInitialState() {
     return {
-      showMessage: false
+      showMessage: false,
+      loading: ''
     };
   },
   componentDidMount: function componentDidMount() {
@@ -21118,8 +21119,13 @@ module.exports = _react2.default.createClass({
       return false;
     }
     var fd = $(formDOM).serializeObject();
-    fd['image'] = this.getUploadFilename();
+    if (this.getUploadFilename()) {
+      fd['image'] = this.getUploadFilename();
+    }
     var model = this.props.model;
+    this.setState({
+      loading: 'loading'
+    });
     /**
      |----------------------------------------------
      | Save model voi isNew = false (tuc la da ton tai)
@@ -21128,15 +21134,20 @@ module.exports = _react2.default.createClass({
      |----------------------------------------------
      */
     model.save(fd, {
-      success: (function (res) {
-        /**
-         |------------------------------------------
-         | @note: res === customer
-         |------------------------------------------
-         */
+      success: (function (model, res, xhr) {
         this.setState({
+          loading: '',
+          showMessage: false
+        });
+        this.props.hideModal();
+        formDOM.reset();
+      }).bind(this),
+      error: (function (model, res, xhr) {
+        this.setState({
+          loading: '',
           showMessage: true
         });
+        this.props.hideModal();
         formDOM.reset();
       }).bind(this)
     });
@@ -21150,6 +21161,10 @@ module.exports = _react2.default.createClass({
   getImage: function getImage() {
     if (this.state.uploadFilename) {
       return this.state.uploadFilename;
+    }
+    var model = this.props.model;
+    if (model.get('image')) {
+      return '/upload/customer/' + model.get('image');
     }
     return '/image/wireframe/square-image.png';
   },
@@ -21236,7 +21251,8 @@ module.exports = _react2.default.createClass({
             ),
             _react2.default.createElement(
               'select',
-              { ref: 'gender', name: 'gender', className: 'ui fluid simple dropdown' },
+              { ref: 'gender', name: 'gender', value: model.get('gender'), onChange: this.handleChange,
+                className: 'ui fluid simple dropdown' },
               _react2.default.createElement(
                 'option',
                 { value: '' },
@@ -21325,13 +21341,13 @@ module.exports = _react2.default.createClass({
           { className: 'actions' },
           _react2.default.createElement(
             'button',
-            { className: 'ui primary button' },
-            'Save'
+            { className: "ui primary " + this.state.loading + " button" },
+            Lang.get('form.save')
           ),
           _react2.default.createElement(
             'div',
             { className: 'ui cancel button' },
-            'Cancel'
+            Lang.get('form.cancel')
           )
         )
       )
@@ -21370,11 +21386,15 @@ module.exports = _react2.default.createClass({
     console.log('componentWillUnmount');
   },
   handleSubmit: function handleSubmit() {},
+  hideModal: function hideModal() {
+    var modal = _reactDom2.default.findDOMNode(this.refs.modal);
+    $(modal).modal('hide');
+  },
   handleClick: function handleClick(model, event) {
     var modal = _reactDom2.default.findDOMNode(this.refs.modal);
     $(modal).modal('show');
     var content = _reactDom2.default.findDOMNode(this.refs.modalContent);
-    _reactDom2.default.render(_react2.default.createElement(CustomerForm, { model: model }), content);
+    _reactDom2.default.render(_react2.default.createElement(CustomerForm, { model: model, hideModal: this.hideModal }), content);
   },
   getBackboneModels: function getBackboneModels() {
     return [this.props.collection];
@@ -22811,7 +22831,9 @@ var Collection = Backbone.Collection.extend({
   url: '/sale/customer',
   model: Model,
   parse: function parse(response) {
-    return response.data;
+    try {
+      return response.data;
+    } catch (e) {}
   }
 });
 

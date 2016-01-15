@@ -171,8 +171,8 @@ module.exports = React.createClass({
             </div>
           </div>
           <div className="actions">
-            <button className={"ui primary " + this.state.loading + " button"}>Save</button>
-            <div className="ui cancel button">Cancel</div>
+            <button className={"ui primary " + this.state.loading + " button"}>{Lang.get('form.save')}</button>
+            <div className="ui cancel button">{Lang.get('form.cancel')}</div>
           </div>
         </div>
       </form>
