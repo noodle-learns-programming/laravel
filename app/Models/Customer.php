@@ -13,6 +13,7 @@ class Customer extends Model
     'email',
     'home_phone',
     'mobile_phone',
+    'address',
     'image',
     'description',
     'job',

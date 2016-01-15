@@ -35,7 +35,9 @@ module.exports = React.createClass({
       return false;
     }
     var fd          = $(formDOM).serializeObject();
+    if( this.getUploadFilename() ){
       fd['image']   = this.getUploadFilename();
+    }
     var model  = this.props.model;
     /**
      |----------------------------------------------
@@ -69,9 +71,12 @@ module.exports = React.createClass({
   },
 
   getImage(){
-    if( this.state.uploadFilename )
-    {
+    if( this.state.uploadFilename ){
       return this.state.uploadFilename;
+    }
+    var model = this.props.model;
+    if( model.get('image') ){
+      return '/upload/customer/' + model.get('image');
     }
     return '/image/wireframe/square-image.png';
   },

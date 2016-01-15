@@ -48,6 +48,9 @@ class CustomerController extends Controller
       return response()->json($validator,'404');
     }
     $input    = $request->all();
+    if( isset($input['image']) && empty($input['image']) ) {
+      unset($input['image']);
+    }
     $customer->update($input);
     response()->json($customer->save());
   }
