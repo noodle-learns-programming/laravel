@@ -14,20 +14,29 @@ module.exports = React.createClass({
   componentWillMount() {
     this.listView = <CustomerList collection={this.props.collection}/>;
 
-    var model         = null;
     var defaultValue  = {};
     if( this.props.id ){
       defaultValue['id'] = this.props.id;
     }
-    model = new CustomerModel(defaultValue);
-    this.formView = <CustomerForm model={model} />;
+    this.formView = <CustomerForm model={new CustomerModel(defaultValue)} />;
   },
 
   handleMenu(e) {
+    /**
+     |------------------------------------------------------------
+     | @see: http://stackoverflow.com/questions/5921413/difference-between-e-target-and-e-currenttarget
+     | @issues: Neu xai target thi click vao icon no se khong hieu
+     |------------------------------------------------------------
+     */
     var action = $(e.currentTarget).data('action');
     var fragment = ['sale', 'customer'];
         fragment.push(action);
     App.router.navigate(fragment.join('/'), {trigger: true});
+    /**
+     |------------------------------------------------------------
+     | @warn: Thiet ke cho nay la mot thiet ke khong tot.
+     |------------------------------------------------------------
+     */
     if( action === 'add' ){
       this.formView = <CustomerForm model={new CustomerModel()} />;
     }
@@ -52,7 +61,7 @@ module.exports = React.createClass({
           <div className="right floated right aligned six wide column">
             <div className="ui secondary  menu">
               <div className="right menu">
-                {this.renderMenuItem("add", ["add"].indexOf(this.state.action) >= 0, "Add", "add square")}
+                {this.renderMenuItem("add", ["add", "edit"].indexOf(this.state.action) >= 0, "Add", "add square")}
                 {this.renderMenuItem("list", ["list"].indexOf(this.state.action) >= 0,"List", "table")}
               </div>
             </div>

@@ -6,16 +6,13 @@ var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 module.exports = React.createClass({
   mixins : [BackboneModelMixin],
   componentDidMount() {
-    console.log('componentDidMount');
     this.props.collection.fetch();
   },
 
   componentDidUpdate() {
-    console.log('componentDidUpdate');
   },
 
   componentWillUnmount(){
-    console.log('componentWillUnmount');
   },
 
   handleSubmit(){
