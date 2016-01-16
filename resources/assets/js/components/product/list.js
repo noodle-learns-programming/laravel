@@ -18,13 +18,27 @@ module.exports = React.createClass({
     return [this.props.collection];
   },
 
+  searchProductHandle(e){
+    var value = e.target.value;
+    var $container = $(e.target).parent();
+    $container.addClass('loading');
+    this.props.collection.fetch({
+      data: $.param({
+        q : value
+      })
+    }).done(function(){
+      $container.removeClass('loading');
+    });
+  },
+
   render() {
     var rows = this.renderBody(this.props.collection);
     return (
       <form ref="form" onSubmit={this.handleSubmit} method="post">
         <div className="ui search">
           <div className="ui icon input">
-            <input className="prompt" type="text" placeholder={Lang.get('product.search')} />
+            <input className="prompt" onChange={this.searchProductHandle}
+             placeholder={Lang.get('product.search')} />
             <i className="search icon"></i>
           </div>
           <div className="results"></div>

@@ -19,9 +19,10 @@ class ProductController extends Controller
     return view('product.create');
   }
 
-  public function index()
+  public function index(Request $request)
   {
-    $products = Product::paginate(10);
+    $q = $request->get('q');
+    $products = Product::where('name', 'LIKE', '%'.$q.'%')->paginate(6);
     return $products;
   }
 
