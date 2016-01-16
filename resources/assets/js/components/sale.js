@@ -40,7 +40,7 @@ module.exports = React.createClass({
   },
 
   notifyChooseAProduct(product){
-    console.log('notifyChooseAProduct: ', product);
+    product.set('quality', (product.get('quality') || 0) + 1);
     this.state.productCollection.push(product);
   },
 

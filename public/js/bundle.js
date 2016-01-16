@@ -22262,6 +22262,10 @@ module.exports = _react2.default.createClass({
       $container.removeClass('loading');
     });
   },
+  handleClick: function handleClick(product) {
+    console.log('You chose product: ', product);
+    this.props.notifyChooseAProduct(product);
+  },
   render: function render() {
     var rows = this.renderBody(this.props.collection);
     return _react2.default.createElement(
@@ -22288,10 +22292,10 @@ module.exports = _react2.default.createClass({
   },
   renderBody: function renderBody(collection) {
     var rows = [];
-    collection.each(function (product, i) {
+    collection.each((function (product, i) {
       rows.push(_react2.default.createElement(
         'div',
-        { className: 'card', key: i },
+        { className: 'card', key: i, onClick: this.handleClick.bind(this, product) },
         _react2.default.createElement(
           'div',
           { className: 'image' },
@@ -22321,7 +22325,7 @@ module.exports = _react2.default.createClass({
           )
         )
       ));
-    });
+    }).bind(this));
     return rows;
   },
   renderFooter: function renderFooter(collection) {
@@ -22388,26 +22392,31 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var SaleForm = require('./sale/form');
 var ProductList = require('./product/list');
+var ProductCollection = require('./../models/product').Collection;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
       action: this.props.action || 'list',
-      id: this.props.invoiceId || 0
+      id: this.props.invoiceId || 0,
+      productCollection: new ProductCollection()
     };
   },
   componentWillMount: function componentWillMount() {
     var invoiceCollection = App.getModelCollection('invoice');
+    var invoice = null;
     if (!this.props.invoiceId) {
-      this.formView = _react2.default.createElement(SaleForm, { invoice: invoiceCollection.create({}, { wait: true }) });
+      invoice = invoiceCollection.create({}, { wait: true });
     } else {
       invoiceCollection.add({ id: this.props.invoiceId });
-      var invoice = invoiceCollection.get(this.props.invoiceId);
+      invoice = invoiceCollection.get(this.props.invoiceId);
       invoice.fetch();
-      this.formView = _react2.default.createElement(SaleForm, { invoice: invoice });
     }
-    this.listView = _react2.default.createElement(ProductList, { collection: App.getModelCollection('product') });
+    this.formView = _react2.default.createElement(SaleForm, { invoice: invoice, productCollection: this.state.productCollection });
+    this.listView = _react2.default.createElement(ProductList, {
+      notifyChooseAProduct: this.notifyChooseAProduct,
+      collection: App.getModelCollection('product') });
   },
   componentDidUpdate: function componentDidUpdate() {},
   handleMenu: function handleMenu(e) {
@@ -22415,6 +22424,10 @@ module.exports = _react2.default.createClass({
     this.setState({
       action: view
     });
+  },
+  notifyChooseAProduct: function notifyChooseAProduct(product) {
+    product.set('quality', (product.get('quality') || 0) + 1);
+    this.state.productCollection.push(product);
   },
 
   render: function render() {
@@ -22439,7 +22452,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./product/list":195,"./sale/form":197,"react":173,"react-dom":4}],197:[function(require,module,exports){
+},{"./../models/product":202,"./product/list":195,"./sale/form":197,"react":173,"react-dom":4}],197:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22476,7 +22489,7 @@ module.exports = _react2.default.createClass({
   },
   componentDidUpdate: function componentDidUpdate() {},
   getBackboneModels: function getBackboneModels() {
-    return [this.props.invoice];
+    return [this.props.invoice, this.props.productCollection];
   },
   searchPhoneHandle: function searchPhoneHandle(e) {
     var value = e.target.value;
@@ -22548,9 +22561,41 @@ module.exports = _react2.default.createClass({
             Lang.get('invoce.products')
           ),
           _react2.default.createElement(
-            'p',
-            null,
-            '@todo: Danh sach cac san pham'
+            'table',
+            { className: 'ui black table' },
+            _react2.default.createElement(
+              'thead',
+              null,
+              _react2.default.createElement(
+                'tr',
+                null,
+                _react2.default.createElement(
+                  'th',
+                  null,
+                  Lang.get('product.name')
+                ),
+                _react2.default.createElement(
+                  'th',
+                  null,
+                  Lang.get('product.quality')
+                ),
+                _react2.default.createElement(
+                  'th',
+                  null,
+                  Lang.get('product.price')
+                ),
+                _react2.default.createElement(
+                  'th',
+                  null,
+                  Lang.get('product.total')
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'tbody',
+              null,
+              this.renderListProduct()
+            )
           )
         ),
         _react2.default.createElement(
@@ -22760,6 +22805,45 @@ module.exports = _react2.default.createClass({
         )
       )
     );
+  },
+  renderListProduct: function renderListProduct() {
+    var rows = [];
+    this.props.productCollection.each(function (product, i) {
+      rows.push(_react2.default.createElement(
+        'tr',
+        { key: i },
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(
+            'h4',
+            { className: 'ui image header' },
+            _react2.default.createElement('img', { src: "/upload/product/" + product.get('image'), className: 'ui mini rounded image' }),
+            _react2.default.createElement(
+              'div',
+              { className: 'content' },
+              product.get('name')
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('quality')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('price')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('total')
+        )
+      ));
+    });
+    return rows;
   }
 });
 

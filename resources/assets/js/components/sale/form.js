@@ -70,8 +70,17 @@ module.exports = React.createClass({
           </div>
           <div>
             <h4>{Lang.get('invoce.products')}</h4>
-            <p>@todo: Danh sach cac san pham</p>
-            {this.renderListProduct()}
+            <table className="ui black table">
+              <thead>
+                  <tr>
+                    <th>{Lang.get('product.name')}</th>
+                    <th>{Lang.get('product.quality')}</th>
+                    <th>{Lang.get('product.price')}</th>
+                    <th>{Lang.get('product.total')}</th>
+                  </tr>
+              </thead>
+              <tbody>{this.renderListProduct()}</tbody>
+            </table>
           </div>
           <div className="ui two column grid">
             <div className="column">
@@ -156,7 +165,19 @@ module.exports = React.createClass({
     var rows = [];
     this.props.productCollection.each(function(product, i){
       rows.push(
-        <p key={i}>{product.get('name')}</p>
+        <tr key={i}>
+          <td>
+            <h4 className="ui image header">
+              <img src={"/upload/product/"+product.get('image')} className="ui mini rounded image" />
+              <div className="content">
+                {product.get('name')}
+              </div>
+            </h4>
+          </td>
+          <td>{product.get('quality')}</td>
+          <td>{product.get('price')}</td>
+          <td>{product.get('total')}</td>
+        </tr>
       );
     });
     return rows;

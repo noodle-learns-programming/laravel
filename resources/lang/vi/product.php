@@ -17,4 +17,7 @@ return [
     'description'	=> 'Mô tả',
     'sku'           => 'Mã sản phẩm',
     'series'        => 'Số series',
+    'quality'       => 'SL',
+    'price'         => 'Giá tiền',
+    'total'         => 'Thành tiền'
 ];
