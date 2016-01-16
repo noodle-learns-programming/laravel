@@ -8,7 +8,8 @@ module.exports = React.createClass({
   getInitialState() {
     return {
       showMessage : false,
-      loading     : ''
+      loading     : '',
+      model       : this.props.model.clone()
     };
   },
 
@@ -61,7 +62,10 @@ module.exports = React.createClass({
     });
   },
 
-  componentDidUpdate() {
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      model : nextProps.model.clone()
+    });
   },
 
   getImage(){
@@ -77,13 +81,16 @@ module.exports = React.createClass({
 
   handleChange(e){
     var el = e.target;
-    this.props.model.set(el.name, el.value);
+    this.state.model.set(el.name, el.value);
     this.forceUpdate();
+  },
+  cancelForm(e){
+    return true;
   },
 
   render: function() {
     var message = (<div></div>);
-    var model   = this.props.model;
+    var model   = this.state.model;
     if( this.state.showMessage ) {
       message = (<div ref="message" className="ui success message">
           <i className="close icon" onClick={this.handleMessage}></i>
@@ -157,7 +164,7 @@ module.exports = React.createClass({
           </div>
           <div className="actions">
             <button className={"ui primary " + this.state.loading + " button"}>{Lang.get('form.save')}</button>
-            <div className="ui cancel button">{Lang.get('form.cancel')}</div>
+            <div className="ui cancel button" onClick={this.cancelForm}>{Lang.get('form.cancel')}</div>
           </div>
         </div>
       </form>
