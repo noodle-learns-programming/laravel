@@ -17,10 +17,10 @@ class CreateProductsTable extends Migration
             $table->string('sku');
             $table->string('name');
             $table->string('description');
-            $table->integer('brand_id');
-            $table->integer('supplier_id');
+            $table->integer('brand_id')->unsigned();
+            $table->integer('supplier_id')->unsigned();
             $table->boolean('is_active');
-            $table->enum('unit', ['unit', 'business', 'admin']);
+            $table->integer('unit')->unsigned();
             $table->timestamps();
         });
     }

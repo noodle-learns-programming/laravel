@@ -36,7 +36,7 @@ class ProductController extends Controller
     }
     $input    = $request->all();
     $file     = $request->file('image');
-    if ($file->isValid()) {
+    if ($file && $file->isValid()) {
       $filename = time().'.'.$file->getClientOriginalExtension();
       $file->move(public_path('upload/product'), $filename);
       $input['image'] = $filename;

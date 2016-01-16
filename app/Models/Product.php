@@ -12,7 +12,9 @@ class Product extends Model
     'sku',
     'series',
     'unit',
-    'brand',
+    'brand_id',
+    'supplier_id',
+    'is_active',
     'image',
     'created_at',
     'updated_at'
@@ -21,7 +23,7 @@ class Product extends Model
   public function getValidatorRules()
   {
     return [
-    'name' => 'required'
+      'name' => 'required'
     ];
   }
 }
