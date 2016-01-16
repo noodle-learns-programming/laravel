@@ -43,31 +43,16 @@ module.exports = React.createClass({
     this.setState({
       loading : 'loading'
     });
-    /**
-     |----------------------------------------------
-     | Save model voi isNew = false (tuc la da ton tai)
-     | response khong tra ve do dung method PUT
-     | Can tim cach fix cho nay de show cai message
-     |----------------------------------------------
-     */
-    model.save(fd,{
-      success : function(model, res, xhr){
+    model.save(fd)
+      .then(function(res, result, xhr){
+        var isSuccess = result==='success';
         this.setState({
           loading     : '',
-          showMessage : false
+          showMessage : !isSuccess
         });
         this.props.hideModal();
         formDOM.reset();
-      }.bind(this),
-      error : function(model, res, xhr){
-        this.setState({
-          loading     : '',
-          showMessage : true
-        });
-        this.props.hideModal();
-        formDOM.reset();
-      }.bind(this)
-    });
+      }.bind(this));
   },
 
   handleMessage(e){
