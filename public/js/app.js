@@ -20993,6 +20993,7 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var CustomerModel = require('./../models/customer').Model;
 var CustomerForm = require('./customer/form');
 var CustomerList = require('./customer/list');
 
@@ -21000,19 +21001,39 @@ module.exports = _react2.default.createClass({
   displayName: 'exports',
   getInitialState: function getInitialState() {
     return {
-      action: this.props.action || 'list',
-      id: this.props.id || 0
+      action: this.props.action || 'list'
     };
   },
   componentWillMount: function componentWillMount() {
     this.listView = _react2.default.createElement(CustomerList, { collection: this.props.collection });
-    this.formView = _react2.default.createElement(CustomerForm, { model: this.props.collection.create({}, { wait: true }) });
+
+    var defaultValue = {};
+    if (this.props.id) {
+      defaultValue['id'] = this.props.id;
+    }
+    this.formView = _react2.default.createElement(CustomerForm, { model: new CustomerModel(defaultValue) });
   },
-  componentDidUpdate: function componentDidUpdate() {},
   handleMenu: function handleMenu(e) {
-    var view = $(e.currentTarget).data('view');
+    /**
+     |------------------------------------------------------------
+     | @see: http://stackoverflow.com/questions/5921413/difference-between-e-target-and-e-currenttarget
+     | @issues: Neu xai target thi click vao icon no se khong hieu
+     |------------------------------------------------------------
+     */
+    var action = $(e.currentTarget).data('action');
+    var fragment = ['sale', 'customer'];
+    fragment.push(action);
+    App.router.navigate(fragment.join('/'), { trigger: true });
+    /**
+     |------------------------------------------------------------
+     | @warn: Thiet ke cho nay la mot thiet ke khong tot.
+     |------------------------------------------------------------
+     */
+    if (action === 'add') {
+      this.formView = _react2.default.createElement(CustomerForm, { model: new CustomerModel() });
+    }
     this.setState({
-      action: view
+      action: action
     });
   },
 
@@ -21047,8 +21068,8 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'div',
               { className: 'right menu' },
-              this.renderMenuItem("add", "Add", "add square"),
-              this.renderMenuItem("list", "List", "table")
+              this.renderMenuItem("add", ["add", "edit"].indexOf(this.state.action) >= 0, "Add", "add square"),
+              this.renderMenuItem("list", ["list"].indexOf(this.state.action) >= 0, "List", "table")
             )
           )
         )
@@ -21057,22 +21078,22 @@ module.exports = _react2.default.createClass({
     );
   },
 
-  renderMenuItem: function renderMenuItem(view, text, icon) {
+  renderMenuItem: function renderMenuItem(action, isActive, text, icon) {
     var className = "item";
-    if (this.state.action === view) {
+    if (isActive) {
       className += " active";
     }
     icon = icon + " icon";
     return _react2.default.createElement(
       'a',
-      { className: className, 'data-view': view, onClick: this.handleMenu },
+      { className: className, 'data-action': action, onClick: this.handleMenu },
       _react2.default.createElement('i', { className: icon }),
       text
     );
   }
 });
 
-},{"./customer/form":189,"./customer/list":190,"react":173,"react-dom":4}],189:[function(require,module,exports){
+},{"./../models/customer":200,"./customer/form":189,"./customer/list":190,"react":173,"react-dom":4}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21095,11 +21116,19 @@ module.exports = _react2.default.createClass({
   getInitialState: function getInitialState() {
     return {
       showMessage: false,
-      loading: ''
+      loading: '',
+      model: this.props.model.clone()
     };
   },
   componentDidMount: function componentDidMount() {
     this.setHandleUploadType('customer');
+
+    var model = this.state.model;
+    if (!model.isNew()) {
+      model.fetch().then((function (res, result, xhr) {
+        this.forceUpdate();
+      }).bind(this));
+    }
 
     $(_reactDom2.default.findDOMNode(this.refs.form)).form({
       on: 'blur',
@@ -21126,43 +21155,31 @@ module.exports = _react2.default.createClass({
     this.setState({
       loading: 'loading'
     });
-    /**
-     |----------------------------------------------
-     | Save model voi isNew = false (tuc la da ton tai)
-     | response khong tra ve do dung method PUT
-     | Can tim cach fix cho nay de show cai message
-     |----------------------------------------------
-     */
-    model.save(fd, {
-      success: (function (model, res, xhr) {
-        this.setState({
-          loading: '',
-          showMessage: false
-        });
-        this.props.hideModal();
-        formDOM.reset();
-      }).bind(this),
-      error: (function (model, res, xhr) {
-        this.setState({
-          loading: '',
-          showMessage: true
-        });
-        this.props.hideModal();
-        formDOM.reset();
-      }).bind(this)
-    });
+    model.save(fd).then((function (res, result, xhr) {
+      var isSuccess = result === 'success';
+      this.setState({
+        loading: '',
+        showMessage: !isSuccess
+      });
+      this.props.hideModal();
+      formDOM.reset();
+    }).bind(this));
   },
   handleMessage: function handleMessage(e) {
     this.setState({
       showMessage: false
     });
   },
-  componentDidUpdate: function componentDidUpdate() {},
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    this.setState({
+      model: nextProps.model.clone()
+    });
+  },
   getImage: function getImage() {
     if (this.state.uploadFilename) {
       return this.state.uploadFilename;
     }
-    var model = this.props.model;
+    var model = this.state.model;
     if (model.get('image')) {
       return '/upload/customer/' + model.get('image');
     }
@@ -21170,13 +21187,16 @@ module.exports = _react2.default.createClass({
   },
   handleChange: function handleChange(e) {
     var el = e.target;
-    this.props.model.set(el.name, el.value);
+    this.state.model.set(el.name, el.value);
     this.forceUpdate();
+  },
+  cancelForm: function cancelForm(e) {
+    return true;
   },
 
   render: function render() {
     var message = _react2.default.createElement('div', null);
-    var model = this.props.model;
+    var model = this.state.model;
     if (this.state.showMessage) {
       message = _react2.default.createElement(
         'div',
@@ -21346,7 +21366,7 @@ module.exports = _react2.default.createClass({
           ),
           _react2.default.createElement(
             'div',
-            { className: 'ui cancel button' },
+            { className: 'ui cancel button', onClick: this.cancelForm },
             Lang.get('form.cancel')
           )
         )
@@ -21376,15 +21396,10 @@ module.exports = _react2.default.createClass({
 
   mixins: [BackboneModelMixin],
   componentDidMount: function componentDidMount() {
-    console.log('componentDidMount');
     this.props.collection.fetch();
   },
-  componentDidUpdate: function componentDidUpdate() {
-    console.log('componentDidUpdate');
-  },
-  componentWillUnmount: function componentWillUnmount() {
-    console.log('componentWillUnmount');
-  },
+  componentDidUpdate: function componentDidUpdate() {},
+  componentWillUnmount: function componentWillUnmount() {},
   handleSubmit: function handleSubmit() {},
   hideModal: function hideModal() {
     var modal = _reactDom2.default.findDOMNode(this.refs.modal);
@@ -22235,6 +22250,18 @@ module.exports = _react2.default.createClass({
   getBackboneModels: function getBackboneModels() {
     return [this.props.collection];
   },
+  searchProductHandle: function searchProductHandle(e) {
+    var value = e.target.value;
+    var $container = $(e.target).parent();
+    $container.addClass('loading');
+    this.props.collection.fetch({
+      data: $.param({
+        q: value
+      })
+    }).done(function () {
+      $container.removeClass('loading');
+    });
+  },
   render: function render() {
     var rows = this.renderBody(this.props.collection);
     return _react2.default.createElement(
@@ -22246,7 +22273,8 @@ module.exports = _react2.default.createClass({
         _react2.default.createElement(
           'div',
           { className: 'ui icon input' },
-          _react2.default.createElement('input', { className: 'prompt', type: 'text', placeholder: Lang.get('product.search') }),
+          _react2.default.createElement('input', { className: 'prompt', onChange: this.searchProductHandle,
+            placeholder: Lang.get('product.search') }),
           _react2.default.createElement('i', { className: 'search icon' })
         ),
         _react2.default.createElement('div', { className: 'results' })
@@ -22434,8 +22462,7 @@ module.exports = _react2.default.createClass({
   filename: null,
   getInitialState: function getInitialState() {
     return {
-      showMessage: false,
-      invoice: this.props.invoice
+      showMessage: false
     };
   },
   componentDidMount: function componentDidMount() {},
@@ -22448,24 +22475,23 @@ module.exports = _react2.default.createClass({
     });
   },
   componentDidUpdate: function componentDidUpdate() {},
-  getImage: function getImage() {
-    if (this.state.uploadFilename) {
-      return this.state.uploadFilename;
-    }
-    return '/image/wireframe/square-image.png';
-  },
-  handleChange: function handleChange(e) {
-    var el = e.target;
-    this.props.invoice.set(el.name, el.value);
-    this.forceUpdate();
-  },
   getBackboneModels: function getBackboneModels() {
     return [this.props.invoice];
+  },
+  searchPhoneHandle: function searchPhoneHandle(e) {
+    var value = e.target.value;
+    $(e.target).parent().addClass('loading');
+    var customerCollection = App.getModelCollection('customer');
+    customerCollection.search(value, (function (res) {
+      var customer = res.data[0];
+      this.refs.customer_name.value = customer['name'];
+      $(e.target).parent().removeClass('loading');
+    }).bind(this));
   },
 
   render: function render() {
     var invoice = this.props.invoice;
-    var customer = invoice.get('customer') ? invoice.get('customer').toJSON() : {};
+    var customer = invoice.get('customer') ? invoice.getCustomer('customer').toJSON() : {};
     return _react2.default.createElement(
       'form',
       { ref: 'form', onSubmit: this.handleSubmit },
@@ -22491,8 +22517,15 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.mobile_phone')
             ),
-            _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone', value: customer['mobile_phone'],
-              placeholder: Lang.get('customer.mobile_phone'), type: 'text' })
+            _react2.default.createElement(
+              'div',
+              { className: 'ui icon input' },
+              _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone',
+                onChange: this.searchPhoneHandle,
+                defaultValue: customer['mobile_phone'],
+                placeholder: Lang.get('customer.mobile_phone') }),
+              _react2.default.createElement('i', { className: 'search icon' })
+            )
           ),
           _react2.default.createElement(
             'div',
@@ -22502,7 +22535,7 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.name')
             ),
-            _react2.default.createElement('input', { ref: 'name', name: 'name', value: customer['name'],
+            _react2.default.createElement('input', { ref: 'customer_name', name: 'customer_name', defaultValue: customer['name'],
               placeholder: Lang.get('customer.name'), type: 'text' })
           )
         ),
@@ -22823,17 +22856,26 @@ exports.BackboneModelMixin = BackboneModelMixin;
 },{}],200:[function(require,module,exports){
 'use strict';
 
-var Model = Backbone.RelationalModel.extend({
+var URL = '/sale/customer';
+var Model = Backbone.Model.extend({
+  urlRoot: URL,
   initialize: function initialize() {}
 });
 
 var Collection = Backbone.Collection.extend({
-  url: '/sale/customer',
+  url: URL,
   model: Model,
   parse: function parse(response) {
     try {
       return response.data;
     } catch (e) {}
+  },
+  search: function search(query, done) {
+    $.get(this.url + '/search', {
+      page: 1,
+      limit: 5,
+      q: query
+    }).done(done);
   }
 });
 
@@ -22844,19 +22886,17 @@ exports.Collection = Collection;
 'use strict';
 
 var Customer = require('./customer').Model;
-var Model = Backbone.RelationalModel.extend({
-  urlRoot: '/sale/invoice',
-  relations: [{
-    type: Backbone.HasOne,
-    key: 'customer',
-    relatedModel: Customer,
-    autoFetch: true
-  }],
-  initialize: function initialize() {}
+var URL = '/sale/invoice';
+var Model = Backbone.Model.extend({
+  urlRoot: URL,
+  initialize: function initialize() {},
+  getCustomer: function getCustomer() {
+    return new Customer(this.get('customer'));
+  }
 });
 
 var Collection = Backbone.Collection.extend({
-  url: '/sale/invoice',
+  url: URL,
   model: Model
 });
 
