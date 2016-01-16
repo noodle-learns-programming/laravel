@@ -15,6 +15,13 @@ var Collection = Backbone.Collection.extend({
     } catch( e ) {
       
     }
+  },
+  search(query, done){
+    $.get(this.url+'/search', {
+      page  : 1,
+      limit : 5,
+      q     : query
+    }).done(done);
   }
 });
 

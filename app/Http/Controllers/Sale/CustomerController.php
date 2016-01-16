@@ -62,4 +62,12 @@ class CustomerController extends Controller
     $customer->save();
     return $customer;
   }
+
+  public function getSearch(Request $request)
+  {
+    $q      = $request->get('q');
+    $limit  = $request->get('limit', 5);
+    $customers = Customer::where('mobile_phone', 'like', $q.'%')->paginate($limit);
+    return $customers;
+  }
 }

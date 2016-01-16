@@ -8,13 +8,11 @@ module.exports = React.createClass({
   filename  : null,
   getInitialState() {
     return {
-      showMessage : false,
-      invoice : this.props.invoice
+      showMessage : false
     };
   },
 
   componentDidMount() {
-    
   },
 
   handleSubmit(e){
@@ -30,39 +28,43 @@ module.exports = React.createClass({
   componentDidUpdate() {
   },
 
-  getImage(){
-    if( this.state.uploadFilename )
-    {
-      return this.state.uploadFilename;
-    }
-    return '/image/wireframe/square-image.png';
-  },
-
-  handleChange(e){
-    var el = e.target;
-    this.props.invoice.set(el.name, el.value);
-    this.forceUpdate();
-  },
-
   getBackboneModels(){
     return [this.props.invoice];
   },
 
+  searchPhoneHandle(e){
+    var value = e.target.value;
+    $(e.target).parent().addClass('loading');
+    var customerCollection = App.getModelCollection('customer');
+    customerCollection.search(value, function(res){
+      var customer = res.data[0];
+      this.refs.customer_name.value = customer['name'];
+      $(e.target).parent().removeClass('loading');
+    }.bind(this));
+  },
+
   render: function() {
     var invoice   = this.props.invoice;
-    var customer  = invoice.get('customer')?invoice.getCustomer('customer').toJSON():{};
+    var customer  = invoice.get('customer')
+        ? invoice.getCustomer('customer').toJSON()
+        : {};
     return (<form ref="form" onSubmit={this.handleSubmit}>
         <div>Invoice : #{invoice.get('id')} | Customer: {invoice.get('customer_id')}</div>
         <div className="ui form">
           <div className="two fields">
             <div className="required field">
               <label>{ Lang.get('customer.mobile_phone') }</label>
-              <input ref="mobile_phone" name="mobile_phone" value={customer['mobile_phone']}
-                placeholder={Lang.get('customer.mobile_phone')} type="text" />
+              <div className="ui icon input">
+                <input ref="mobile_phone" name="mobile_phone" 
+                  onChange={this.searchPhoneHandle}
+                  defaultValue={customer['mobile_phone']}
+                  placeholder={Lang.get('customer.mobile_phone')} />
+                <i className="search icon"></i>
+              </div>
             </div>
             <div className="required field">
               <label>{ Lang.get('customer.name') }</label>
-              <input ref="name" name="name" value={customer['name']}
+              <input ref="customer_name" name="customer_name" defaultValue={customer['name']}
                 placeholder={Lang.get('customer.name')} type="text" />
             </div>
           </div>
