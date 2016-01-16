@@ -4,3 +4,8 @@ input[type=file] {
   text-overflow: ellipsis;
   width: 150px;
 }
+/*.ui.header .sub.header, .ui.small.header .sub.header{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}*/

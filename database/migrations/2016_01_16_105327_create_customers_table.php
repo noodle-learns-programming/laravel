@@ -19,6 +19,8 @@ class CreateCustomersTable extends Migration
             $table->date('dob');
             $table->string('email');
             $table->string('mobile_phone');
+            $table->string('home_phone');
+            $table->string('address');
             $table->string('image');
             $table->string('description');
             $table->timestamps();
