@@ -1,28 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+var CustomerModel= require('./../models/customer').Model;
 var CustomerForm = require('./customer/form');
 var CustomerList = require('./customer/list');
 
 module.exports = React.createClass({
   getInitialState() {
     return {
-      action: this.props.action || 'list',
-      id    : this.props.id || 0,
+      action: this.props.action || 'list'
     };
   },
 
   componentWillMount() {
-    this.listView = <CustomerList collection={this.props.collection} />;
-    this.formView = <CustomerForm model={this.props.collection.create({}, {wait: true})} />;
-  },
+    this.listView = <CustomerList collection={this.props.collection}/>;
 
-  componentDidUpdate() {
+    var model         = null;
+    var defaultValue  = {};
+    if( this.props.id ){
+      defaultValue['id'] = this.props.id;
+    }
+    model = new CustomerModel(defaultValue);
+    this.formView = <CustomerForm model={model} />;
   },
 
   handleMenu(e) {
-    var view = $(e.currentTarget).data('view');
+    var action = $(e.currentTarget).data('action');
+    var fragment = ['sale', 'customer'];
+        fragment.push(action);
+    App.router.navigate(fragment.join('/'), {trigger: true});
+    if( action === 'add' ){
+      this.formView = <CustomerForm model={new CustomerModel()} />;
+    }
     this.setState({
-      action : view
+      action : action
     });
   },
 
@@ -42,8 +52,8 @@ module.exports = React.createClass({
           <div className="right floated right aligned six wide column">
             <div className="ui secondary  menu">
               <div className="right menu">
-                {this.renderMenuItem("add", "Add", "add square")}
-                {this.renderMenuItem("list", "List", "table")}
+                {this.renderMenuItem("add", ["add"].indexOf(this.state.action) >= 0, "Add", "add square")}
+                {this.renderMenuItem("list", ["list"].indexOf(this.state.action) >= 0,"List", "table")}
               </div>
             </div>
           </div>
@@ -53,14 +63,14 @@ module.exports = React.createClass({
     );
   },
 
-  renderMenuItem(view, text, icon){
+  renderMenuItem(action, isActive, text, icon){
     var className = "item";
-    if( this.state.action === view){
+    if( isActive ){
       className += " active"
     }
     icon = icon + " icon";
     return (
-      <a className={className} data-view={view} onClick={this.handleMenu}>
+      <a className={className} data-action={action} onClick={this.handleMenu}>
         <i className={icon}></i>
         {text}
       </a>

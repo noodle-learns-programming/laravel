@@ -1,11 +1,13 @@
-var Model = Backbone.RelationalModel.extend({
+var URL = '/sale/customer';
+var Model = Backbone.Model.extend({
+  urlRoot : URL,
   initialize() {
 
   }
 });
 
 var Collection = Backbone.Collection.extend({
-  url   : '/sale/customer',
+  url   : URL,
   model : Model,
   parse(response) {
     try {

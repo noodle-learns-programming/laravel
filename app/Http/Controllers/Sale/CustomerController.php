@@ -25,6 +25,13 @@ class CustomerController extends Controller
     return $customers;
   }
 
+  public function show($id)
+  {
+    $customer = Customer::find($id);
+    $data = $customer->toArray();
+    return $data;
+  }
+
   public function store(Request $request)
   {
     $customer   = new Customer();

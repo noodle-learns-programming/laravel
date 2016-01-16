@@ -16,6 +16,13 @@ module.exports = React.createClass({
   componentDidMount() {
     this.setHandleUploadType('customer');
 
+    var model = this.state.model;
+    if( !model.isNew() ) {
+      model.fetch().then(function(res, result, xhr){
+        this.forceUpdate();
+      }.bind(this));
+    }
+
     $(ReactDOM.findDOMNode(this.refs.form))
       .form({
         on: 'blur',
@@ -72,7 +79,7 @@ module.exports = React.createClass({
     if( this.state.uploadFilename ){
       return this.state.uploadFilename;
     }
-    var model = this.props.model;
+    var model = this.state.model;
     if( model.get('image') ){
       return '/upload/customer/' + model.get('image');
     }
