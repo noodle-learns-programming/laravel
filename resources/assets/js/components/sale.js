@@ -2,26 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 var SaleForm = require('./sale/form');
 var ProductList = require('./product/list');
+var ProductCollection = require('./../models/product').Collection;
 
 module.exports = React.createClass({
   getInitialState() {
     return {
-      action: this.props.action || 'list',
-      id    : this.props.invoiceId || 0,
+      action      : this.props.action || 'list',
+      id          : this.props.invoiceId || 0,
+      productCollection : new ProductCollection()
     };
   },
 
   componentWillMount() {
     var invoiceCollection = App.getModelCollection('invoice');
+    var invoice = null;
     if( !this.props.invoiceId ) {
-      this.formView = <SaleForm invoice={invoiceCollection.create({}, {wait: true})} />;
+      invoice= invoiceCollection.create({}, {wait: true});
     } else {
       invoiceCollection.add({id: this.props.invoiceId});
-      var invoice = invoiceCollection.get(this.props.invoiceId);
-          invoice.fetch();
-      this.formView = <SaleForm invoice={invoice} />;
+      invoice = invoiceCollection.get(this.props.invoiceId);
+      invoice.fetch();
     }
-    this.listView = <ProductList collection={App.getModelCollection('product')} />;
+    this.formView = <SaleForm invoice={invoice} productCollection={this.state.productCollection} />;
+    this.listView = <ProductList 
+      notifyChooseAProduct={this.notifyChooseAProduct}
+      collection={App.getModelCollection('product')} />;
   },
 
   componentDidUpdate() {
@@ -32,6 +37,11 @@ module.exports = React.createClass({
     this.setState({
       action : view
     });
+  },
+
+  notifyChooseAProduct(product){
+    console.log('notifyChooseAProduct: ', product);
+    this.state.productCollection.push(product);
   },
 
   render: function() {

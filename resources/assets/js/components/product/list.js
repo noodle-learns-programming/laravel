@@ -31,6 +31,11 @@ module.exports = React.createClass({
     });
   },
 
+  handleClick(product){
+    console.log('You chose product: ', product);
+    this.props.notifyChooseAProduct(product);
+  },
+
   render() {
     var rows = this.renderBody(this.props.collection);
     return (
@@ -53,7 +58,7 @@ module.exports = React.createClass({
     var rows = [];
     collection.each(function(product, i){
       rows.push((
-        <div className="card" key={i}>
+        <div className="card" key={i} onClick={this.handleClick.bind(this, product)}>
             <div className="image">
               <img src={"/upload/product/"+product.get('image')} className="ui mini rounded image" />
             </div>
@@ -68,7 +73,7 @@ module.exports = React.createClass({
             </div>
           </div>
       ));
-    });
+    }.bind(this));
     return rows;
   },
   renderFooter (collection) {

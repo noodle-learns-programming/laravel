@@ -29,7 +29,7 @@ module.exports = React.createClass({
   },
 
   getBackboneModels(){
-    return [this.props.invoice];
+    return [this.props.invoice, this.props.productCollection];
   },
 
   searchPhoneHandle(e){
@@ -71,6 +71,7 @@ module.exports = React.createClass({
           <div>
             <h4>{Lang.get('invoce.products')}</h4>
             <p>@todo: Danh sach cac san pham</p>
+            {this.renderListProduct()}
           </div>
           <div className="ui two column grid">
             <div className="column">
@@ -150,5 +151,14 @@ module.exports = React.createClass({
         </div>
       </form>
     );
+  },
+  renderListProduct(){
+    var rows = [];
+    this.props.productCollection.each(function(product, i){
+      rows.push(
+        <p key={i}>{product.get('name')}</p>
+      );
+    });
+    return rows;
   }
 });
