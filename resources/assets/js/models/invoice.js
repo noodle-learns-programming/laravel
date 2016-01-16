@@ -1,21 +1,17 @@
 var Customer  = require('./customer').Model;
-var Model = Backbone.RelationalModel.extend({
-  urlRoot   : '/sale/invoice',
-  relations: [
-    {
-      type: Backbone.HasOne,
-      key: 'customer',
-      relatedModel: Customer,
-      autoFetch: true
-    }
-  ],
+var URL   = '/sale/invoice';
+var Model = Backbone.Model.extend({
+  urlRoot   : URL,
   initialize() {
 
+  },
+  getCustomer(){
+    return new Customer(this.get('customer'));
   }
 });
 
 var Collection = Backbone.Collection.extend({
-  url   : '/sale/invoice',
+  url   : URL,
   model : Model
 });
 

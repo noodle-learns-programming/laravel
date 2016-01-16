@@ -1,4 +1,4 @@
-var Model = Backbone.RelationalModel.extend({
+var Model = Backbone.Model.extend({
   initialize() {
 
   }

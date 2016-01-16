@@ -50,7 +50,7 @@ module.exports = React.createClass({
 
   render: function() {
     var invoice   = this.props.invoice;
-    var customer  = invoice.get('customer')?invoice.get('customer').toJSON():{};
+    var customer  = invoice.get('customer')?invoice.getCustomer('customer').toJSON():{};
     return (<form ref="form" onSubmit={this.handleSubmit}>
         <div>Invoice : #{invoice.get('id')} | Customer: {invoice.get('customer_id')}</div>
         <div className="ui form">
