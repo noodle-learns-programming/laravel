@@ -191,6 +191,13 @@ module.exports = React.createClass({
         </tr>
       );
     });
+    if( !rows.length ){
+      return (
+        <tr>
+          <td colSpan="4">{Lang.get('invoice.products_list_empty')}</td>
+        </tr>
+      );
+    }
     return rows;
   },
   renderListAddresses(){
@@ -207,6 +214,13 @@ module.exports = React.createClass({
           </tr>
         );
       });
+    }
+    if( !rows.length ){
+      return (
+        <tr>
+          <td colSpan="2">{Lang.get('customer.addresses_list_empty')}</td>
+        </tr>
+      );
     }
     return rows;
   }

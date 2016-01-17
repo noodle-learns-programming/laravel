@@ -20810,7 +20810,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":186,"./components/customer":188,"./components/dashboard":191,"./components/feed":192,"./components/product":194,"./components/product-show":193,"./components/sale":196,"./containers/page":198,"./models/customer":200,"./models/invoice":201,"./models/product":202,"./store/configureStore":205,"./test/upload":206,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
+},{"./components/breadcrumb":186,"./components/customer":188,"./components/dashboard":191,"./components/feed":192,"./components/product":194,"./components/product-show":193,"./components/sale":196,"./containers/page":198,"./models/customer":201,"./models/invoice":202,"./models/product":203,"./store/configureStore":206,"./test/upload":207,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21093,7 +21093,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/customer":200,"./customer/form":189,"./customer/list":190,"react":173,"react-dom":4}],189:[function(require,module,exports){
+},{"./../models/customer":201,"./customer/form":189,"./customer/list":190,"react":173,"react-dom":4}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22259,6 +22259,7 @@ module.exports = _react2.default.createClass({
         q: value
       })
     }).done(function () {
+      console.log('Nen vao day!!!');
       $container.removeClass('loading');
     });
   },
@@ -22452,7 +22453,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/product":202,"./product/list":195,"./sale/form":197,"react":173,"react-dom":4}],197:[function(require,module,exports){
+},{"./../models/product":203,"./product/list":195,"./sale/form":197,"react":173,"react-dom":4}],197:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22497,14 +22498,17 @@ module.exports = _react2.default.createClass({
     var customerCollection = App.getModelCollection('customer');
     customerCollection.search(value, (function (res) {
       var customer = res.data[0];
-      this.refs.customer_name.value = customer['name'];
       $(e.target).parent().removeClass('loading');
+      if (customer) {
+        this.props.invoice.setCustomer(customer);
+        this.refs.customer_name.value = customer['name'];
+      }
     }).bind(this));
   },
 
   render: function render() {
     var invoice = this.props.invoice;
-    var customer = invoice.get('customer') ? invoice.getCustomer('customer').toJSON() : {};
+    var customer = invoice.get('customer') ? invoice.getCustomer().toJSON() : {};
     return _react2.default.createElement(
       'form',
       { ref: 'form', onSubmit: this.handleSubmit },
@@ -22774,9 +22778,31 @@ module.exports = _react2.default.createClass({
             Lang.get('invoice.addresses')
           ),
           _react2.default.createElement(
-            'p',
-            null,
-            '@todo: Danh sach dia chi'
+            'table',
+            { className: 'ui black table' },
+            _react2.default.createElement(
+              'thead',
+              null,
+              _react2.default.createElement(
+                'tr',
+                null,
+                _react2.default.createElement(
+                  'th',
+                  null,
+                  Lang.get('customer.address')
+                ),
+                _react2.default.createElement(
+                  'th',
+                  null,
+                  Lang.get('customer.address_is_active')
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'tbody',
+              null,
+              this.renderListAddresses()
+            )
           )
         ),
         _react2.default.createElement(
@@ -22843,6 +22869,52 @@ module.exports = _react2.default.createClass({
         )
       ));
     });
+    if (!rows.length) {
+      return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          { colSpan: '4' },
+          Lang.get('invoice.products_list_empty')
+        )
+      );
+    }
+    return rows;
+  },
+  renderListAddresses: function renderListAddresses() {
+    var invoice = this.props.invoice;
+    var rows = [];
+    if (invoice.get('customer')) {
+      var customer = invoice.get('customer');
+      customer.getAddresses().each(function (address, i) {
+        rows.push(_react2.default.createElement(
+          'tr',
+          { key: i },
+          _react2.default.createElement(
+            'td',
+            null,
+            address.get('address')
+          ),
+          _react2.default.createElement(
+            'td',
+            null,
+            address.get('is_active')
+          )
+        ));
+      });
+    }
+    if (!rows.length) {
+      return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          { colSpan: '2' },
+          Lang.get('customer.addresses_list_empty')
+        )
+      );
+    }
     return rows;
   }
 });
@@ -22940,10 +23012,34 @@ exports.BackboneModelMixin = BackboneModelMixin;
 },{}],200:[function(require,module,exports){
 'use strict';
 
-var URL = '/sale/customer';
+var URL = '/customer/address';
 var Model = Backbone.Model.extend({
   urlRoot: URL,
   initialize: function initialize() {}
+});
+
+var Collection = Backbone.Collection.extend({
+  url: URL,
+  model: Model,
+  parse: function parse(response) {
+    return response.data;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
+
+},{}],201:[function(require,module,exports){
+'use strict';
+
+var AddressCollection = require('./address').Collection;
+var URL = '/sale/customer';
+var Model = Backbone.Model.extend({
+  urlRoot: URL,
+  initialize: function initialize() {},
+  getAddresses: function getAddresses() {
+    return new AddressCollection(this.get('addresses'));
+  }
 });
 
 var Collection = Backbone.Collection.extend({
@@ -22966,7 +23062,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],201:[function(require,module,exports){
+},{"./address":200}],202:[function(require,module,exports){
 'use strict';
 
 var Customer = require('./customer').Model;
@@ -22976,6 +23072,10 @@ var Model = Backbone.Model.extend({
   initialize: function initialize() {},
   getCustomer: function getCustomer() {
     return new Customer(this.get('customer'));
+  },
+  setCustomer: function setCustomer(customer) {
+    this.set('customer', new Customer(customer));
+    return this;
   }
 });
 
@@ -22987,7 +23087,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./customer":200}],202:[function(require,module,exports){
+},{"./customer":201}],203:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({
@@ -23005,7 +23105,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],203:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23033,7 +23133,7 @@ function counter() {
   }
 }
 
-},{"../actions/counter":184}],204:[function(require,module,exports){
+},{"../actions/counter":184}],205:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23054,7 +23154,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./counter":203,"redux":176}],205:[function(require,module,exports){
+},{"./counter":204,"redux":176}],206:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23096,7 +23196,7 @@ function configureStore(initialState) {
   return store;
 }
 
-},{"../reducers":204,"redux":176,"redux-thunk":174}],206:[function(require,module,exports){
+},{"../reducers":205,"redux":176,"redux-thunk":174}],207:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
