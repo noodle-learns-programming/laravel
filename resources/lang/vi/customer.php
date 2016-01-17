@@ -12,5 +12,6 @@ return [
     'name'    => 'Khách hàng',
     'phone'   => 'Điện thoại',
     'dob'     => 'Ngày sinh',
-    'address' => 'Địa chỉ'
+    'address' => 'Địa chỉ',
+    'address_is_active' => 'Chọn'
 ];

@@ -1,8 +1,12 @@
+var AddressCollection = require('./address').Collection;
 var URL = '/sale/customer';
 var Model = Backbone.Model.extend({
   urlRoot : URL,
   initialize() {
 
+  },
+  getAddresses(){
+    return new AddressCollection(this.get('addresses'));
   }
 });
 

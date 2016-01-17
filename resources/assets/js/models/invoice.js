@@ -7,6 +7,10 @@ var Model = Backbone.Model.extend({
   },
   getCustomer(){
     return new Customer(this.get('customer'));
+  },
+  setCustomer(customer){
+    this.set('customer', new Customer(customer));
+    return this;
   }
 });
 

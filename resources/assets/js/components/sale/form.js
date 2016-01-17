@@ -38,15 +38,18 @@ module.exports = React.createClass({
     var customerCollection = App.getModelCollection('customer');
     customerCollection.search(value, function(res){
       var customer = res.data[0];
-      this.refs.customer_name.value = customer['name'];
       $(e.target).parent().removeClass('loading');
+      if( customer ) {
+        this.props.invoice.setCustomer(customer);
+        this.refs.customer_name.value = customer['name'];
+      }
     }.bind(this));
   },
 
   render: function() {
     var invoice   = this.props.invoice;
     var customer  = invoice.get('customer')
-        ? invoice.getCustomer('customer').toJSON()
+        ? invoice.getCustomer().toJSON()
         : {};
     return (<form ref="form" onSubmit={this.handleSubmit}>
         <div>Invoice : #{invoice.get('id')} | Customer: {invoice.get('customer_id')}</div>
@@ -147,7 +150,15 @@ module.exports = React.createClass({
           </div>
           <div>
             <h4>{Lang.get('invoice.addresses')}</h4>
-            <p>@todo: Danh sach dia chi</p>
+            <table className="ui black table">
+              <thead>
+                  <tr>
+                    <th>{Lang.get('customer.address')}</th>
+                    <th>{Lang.get('customer.address_is_active')}</th>
+                  </tr>
+              </thead>
+              <tbody>{this.renderListAddresses()}</tbody>
+            </table>
           </div>
           <div className="field">
             <label>{Lang.get('invoice.note')}</label>
@@ -180,6 +191,23 @@ module.exports = React.createClass({
         </tr>
       );
     });
+    return rows;
+  },
+  renderListAddresses(){
+    var invoice   = this.props.invoice;
+    var rows = [];
+    if( invoice.get('customer') )
+    {
+      var customer  = invoice.get('customer');
+      customer.getAddresses().each(function(address, i){
+        rows.push(
+          <tr key={i}>
+            <td>{address.get('address')}</td>
+            <td>{address.get('is_active')}</td>
+          </tr>
+        );
+      });
+    }
     return rows;
   }
 });
