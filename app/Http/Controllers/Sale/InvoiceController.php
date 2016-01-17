@@ -29,7 +29,8 @@ class InvoiceController extends Controller
   {
     $invoice = Invoice::find($id);
     $data = $invoice->toArray();
-    $data['customer'] = $invoice->customer->toArray();
+    $data['customer']   = $invoice->customer->toArray();
+    $data['addresses']  = $invoice->addresses->toArray();
     return $data;
   }
 

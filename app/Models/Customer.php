@@ -28,4 +28,9 @@ class Customer extends Model
       'mobile_phone'  => 'required'
     ];
   }
+
+  public function addresses()
+  {
+    return $this->hasMany('App\Models\Address');
+  }
 }

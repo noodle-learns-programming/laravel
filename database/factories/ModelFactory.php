@@ -33,6 +33,13 @@ $factory->define(App\Models\Customer::class, function (Faker\Generator $faker) {
   ];
 });
 
+$factory->define(App\Models\Address::class, function (Faker\Generator $faker) {
+  return [
+    'address'     => $faker->address,
+    'is_active'   => 0
+  ];
+});
+
 $factory->define(App\Models\Product::class, function (Faker\Generator $faker) {
   return [
     'name'        => $faker->name,

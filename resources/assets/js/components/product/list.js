@@ -27,6 +27,7 @@ module.exports = React.createClass({
         q : value
       })
     }).done(function(){
+      console.log('Nen vao day!!!');
       $container.removeClass('loading');
     });
   },
