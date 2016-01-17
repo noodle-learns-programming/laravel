@@ -11,8 +11,11 @@ class AddressesTableSeeder extends Seeder
    */
   public function run()
   {
-    factory(App\Models\Customer::class, 50)->create()->each(function($u) {
-      $u->addresses()->save(factory(App\Models\Address::class)->make());
+    App\Models\Customer::paginate(300)->each(function($u) {
+      $rand = rand(0, 3);
+      for($i = 0; $i < $rand; $i++){
+        $u->addresses()->save(factory(App\Models\Address::class)->make());
+      }
     });
   }
 }
