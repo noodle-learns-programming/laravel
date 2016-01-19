@@ -12,9 +12,11 @@ class ProductPricesTableSeeder extends Seeder
   public function run()
   {
     App\Models\Product::paginate(300)->each(function($p) {
-      $rand = rand(0, 3);
+      $rand = rand(1, 3);
       for($i = 0; $i < $rand; $i++){
-        $p->prices()->save(factory(App\Models\Product\Price::class)->make());
+        $values = factory(App\Models\Product\Price::class)->make();
+        $values['is_active'] = $i === 0;
+        $p->prices()->save($values);
       }
     });
   }

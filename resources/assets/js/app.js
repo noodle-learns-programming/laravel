@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import Page from './containers/page';
 import configureStore from './store/configureStore';
 
+require('./overhead/extend');
 var injectTapEventPlugin = require("react-tap-event-plugin");
 //View
 var Breadcrumb  = require('./components/breadcrumb');
@@ -30,22 +31,6 @@ var TestUpload  = require('./test/upload');
 /*var TestMaterial= require('./test/material');*/
 
 injectTapEventPlugin();
-
-$.fn.serializeObject = function(){
-  var o = {};
-  var a = this.serializeArray();
-  $.each(a, function() {
-    if (o[this.name] !== undefined) {
-      if (!o[this.name].push) {
-          o[this.name] = [o[this.name]];
-      }
-      o[this.name].push(this.value || '');
-    } else {
-      o[this.name] = this.value || '';
-    }
-  });
-  return o;
-};
 
 $('.ui.sidebar').sidebar({
   context : $('.bottom.segment'),

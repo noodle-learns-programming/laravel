@@ -66,7 +66,7 @@ module.exports = React.createClass({
             <div className="content">
               <div className="header">{product.get('name')}</div>
               <div className="meta">
-                <a>100k</a>
+                <a>{product.get('price')}</a>
               </div>
               <div className="description">
                 {product.get('description')}

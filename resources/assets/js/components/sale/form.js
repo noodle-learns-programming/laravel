@@ -116,19 +116,19 @@ module.exports = React.createClass({
                 <div className="item">
                   <i className="dollar icon"></i>
                   <div className="ui right aligned content">
-                    1.400.000d
+                    {this.getTotalPrice().format()}đ
                   </div>
                 </div>
                 <div className="item">
                   <i className="gift icon"></i>
                   <div className="ui right aligned content">
-                    100.000d
+                    {this.getDiscount().format()}đ
                   </div>
                 </div>
                 <div className="item">
                   <i className="payment icon"></i>
                   <div className="ui right aligned content">
-                    1.300.000d
+                    {this.getPaymentPrice().format()}đ
                   </div>
                 </div>
               </div>
@@ -172,6 +172,24 @@ module.exports = React.createClass({
       </form>
     );
   },
+  getTotalPrice(){
+    var value = 0;
+    this.props.productCollection.each(function(product, i){
+      value += product.get('price') * product.get('quality');
+    });
+    return value;
+  },
+  getDiscount(){
+    var value = 0;
+    /*this.props.productCollection.each(function(product, i){
+      value += product.get('price') * product.get('quality');
+    });*/
+    return value;
+  },
+  getPaymentPrice(){
+    var value = this.getTotalPrice() - this.getDiscount();
+    return value;
+  },
   renderListProduct(){
     var rows = [];
     this.props.productCollection.each(function(product, i){
@@ -187,7 +205,7 @@ module.exports = React.createClass({
           </td>
           <td>{product.get('quality')}</td>
           <td>{product.get('price')}</td>
-          <td>{product.get('total')}</td>
+          <td>{(product.get('quality')*product.get('price')).format()}</td>
         </tr>
       );
     });
