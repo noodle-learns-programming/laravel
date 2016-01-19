@@ -20795,7 +20795,106 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":186,"./components/customer":188,"./components/dashboard":191,"./components/feed":192,"./components/product":194,"./components/product-show":193,"./components/sale":196,"./containers/page":200,"./models/customer":203,"./models/invoice":204,"./models/product":205,"./overhead/extend":206,"./store/configureStore":209,"./test/upload":210,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
+},{"./components/breadcrumb":187,"./components/customer":189,"./components/dashboard":192,"./components/feed":193,"./components/product":195,"./components/product-show":194,"./components/sale":197,"./containers/page":201,"./models/customer":204,"./models/invoice":205,"./models/product":206,"./overhead/extend":207,"./store/configureStore":210,"./test/upload":211,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+  getInitialState: function getInitialState() {
+    return {
+      model: this.props.model
+    };
+  },
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    this.setState({
+      model: nextProps.model.clone()
+    });
+  },
+  componentDidMount: function componentDidMount() {
+    var model = this.state.model;
+
+    $(_reactDom2.default.findDOMNode(this.refs.form)).form({
+      on: 'blur',
+      fields: {
+        address: 'empty'
+      },
+      onSuccess: function onSuccess(e, fields) {
+        e.preventDefault();
+        return false;
+      }
+    });
+  },
+  handleSubmit: function handleSubmit(e) {
+    e.preventDefault();
+    var formDOM = this.refs.form;
+    if (!$(formDOM).form('is valid')) {
+      return false;
+    }
+    var fd = $(formDOM).serializeObject();
+    var model = this.props.model;
+    for (var name in fd) {
+      model.set(name, fd[name]);
+    }
+    model.save().then((function (res, result, xhr) {
+      var isSuccess = result === 'success';
+      this.props.hideModal(model);
+    }).bind(this));
+  },
+  handleChange: function handleChange(e) {
+    var el = e.target;
+    this.state.model.set(el.name, el.value);
+    this.forceUpdate();
+  },
+
+  render: function render() {
+    var model = this.state.model;
+    return _react2.default.createElement(
+      'form',
+      { ref: 'form', onSubmit: this.handleSubmit },
+      _react2.default.createElement(
+        'div',
+        { className: 'ui form' },
+        _react2.default.createElement(
+          'div',
+          { className: 'required field' },
+          _react2.default.createElement(
+            'label',
+            null,
+            Lang.get('customer.address')
+          ),
+          _react2.default.createElement('input', { ref: 'address', name: 'address', value: model.get('address'), onChange: this.handleChange,
+            placeholder: Lang.get('customer.address'), type: 'text' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'actions' },
+          _react2.default.createElement(
+            'button',
+            { className: "ui primary " + this.state.loading + " button" },
+            Lang.get('form.save')
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'ui cancel button' },
+            Lang.get('form.cancel')
+          )
+        )
+      )
+    );
+  }
+});
+
+},{"react":173,"react-dom":4}],187:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20860,7 +20959,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":173}],187:[function(require,module,exports){
+},{"react":173}],188:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -20965,7 +21064,7 @@ Counter.propTypes = {
 
 exports.default = Counter;
 
-},{"react":173,"react-dom":4}],188:[function(require,module,exports){
+},{"react":173,"react-dom":4}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21078,7 +21177,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/customer":203,"./customer/form":189,"./customer/list":190,"react":173,"react-dom":4}],189:[function(require,module,exports){
+},{"./../models/customer":204,"./customer/form":190,"./customer/list":191,"react":173,"react-dom":4}],190:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21360,7 +21459,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":201,"react":173,"react-dom":4}],190:[function(require,module,exports){
+},{"./../../mixins":202,"react":173,"react-dom":4}],191:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21602,7 +21701,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":201,"./form":189,"react":173,"react-dom":4}],191:[function(require,module,exports){
+},{"./../../mixins":202,"./form":190,"react":173,"react-dom":4}],192:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21638,7 +21737,7 @@ module.exports = _react2.default.createClass({
     }
 });
 
-},{"react":173}],192:[function(require,module,exports){
+},{"react":173}],193:[function(require,module,exports){
 "use strict";
 
 var _react = require("react");
@@ -21798,7 +21897,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":173}],193:[function(require,module,exports){
+},{"react":173}],194:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21983,7 +22082,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":201,"react":173}],194:[function(require,module,exports){
+},{"./../mixins":202,"react":173}],195:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22212,7 +22311,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":173,"react-dom":4}],195:[function(require,module,exports){
+},{"react":173,"react-dom":4}],196:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22363,7 +22462,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":201,"react":173}],196:[function(require,module,exports){
+},{"./../../mixins":202,"react":173}],197:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22438,7 +22537,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/product":205,"./product/list":195,"./sale/form":197,"react":173,"react-dom":4}],197:[function(require,module,exports){
+},{"./../models/product":206,"./product/list":196,"./sale/form":198,"react":173,"react-dom":4}],198:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22731,7 +22830,7 @@ module.exports = _react2.default.createClass({
             null,
             Lang.get('invoice.addresses')
           ),
-          _react2.default.createElement(ShippingAddresses, { invoice: this.props.invoice })
+          _react2.default.createElement(ShippingAddresses, { collection: this.props.invoice.getCustomer().getAddresses() })
         ),
         _react2.default.createElement(
           'div',
@@ -22815,7 +22914,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":201,"./items":198,"./shipping-addresses":199,"react":173,"react-dom":4}],198:[function(require,module,exports){
+},{"./../../mixins":202,"./items":199,"./shipping-addresses":200,"react":173,"react-dom":4}],199:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22954,113 +23053,137 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":201,"react":173}],199:[function(require,module,exports){
+},{"./../../mixins":202,"react":173}],200:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AddressForm = require('./../address/form');
+var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
+
+  mixins: [BackboneModelMixin],
+  getBackboneModels: function getBackboneModels() {
+    return [this.props.collection];
+  },
   componentDidUpdate: function componentDidUpdate() {
-    var listAddressesEl = this.refs.listAddresses.getDOMNode();
+    var listAddressesEl = this.refs.listAddresses;
     $(listAddressesEl).find('.ui.radio.checkbox').checkbox();
+  },
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    this.forceUpdate();
   },
   render: function render() {
     return _react2.default.createElement(
-      'table',
-      { ref: 'listAddresses', className: 'ui black table' },
+      'div',
+      null,
       _react2.default.createElement(
-        'thead',
-        null,
+        'table',
+        { ref: 'listAddresses', className: 'ui black table' },
         _react2.default.createElement(
-          'tr',
+          'thead',
           null,
           _react2.default.createElement(
-            'th',
+            'tr',
             null,
-            Lang.get('customer.address')
-          ),
-          _react2.default.createElement(
-            'th',
-            null,
-            Lang.get('customer.address_is_active')
-          )
-        )
-      ),
-      _react2.default.createElement(
-        'tbody',
-        null,
-        this.renderListAddresses()
-      ),
-      _react2.default.createElement(
-        'tfoot',
-        null,
-        _react2.default.createElement(
-          'tr',
-          null,
-          _react2.default.createElement(
-            'td',
-            { colSpan: '2', className: 'ui right aligned' },
             _react2.default.createElement(
-              'div',
-              { className: 'ui primary button' },
-              Lang.get('customer.add_an_address')
+              'th',
+              null,
+              Lang.get('customer.address')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('customer.address_is_active')
             )
           )
-        )
-      )
-    );
-  },
-  handleItem: function handleItem(product, action) {
-    var currentQty = product.get('quality') || 0;
-    if (action === 'incr') {
-      product.set('quality', ++currentQty);
-      this.props.collection.push(product);
-    } else if (action === 'decr') {
-      if (currentQty > 0) {
-        product.set('quality', --currentQty);
-        this.props.collection.push(product);
-      }
-    } else if (action === 'remove') {
-      this.props.collection.remove(product);
-    }
-  },
-  renderListAddresses: function renderListAddresses() {
-    var invoice = this.props.invoice;
-    var rows = [];
-    if (invoice.get('customer')) {
-      var customer = invoice.get('customer');
-      customer.getAddresses().each((function (address, i) {
-        console.log(address);
-        rows.push(_react2.default.createElement(
-          'tr',
-          { key: i },
+        ),
+        _react2.default.createElement(
+          'tbody',
+          null,
+          this.renderListAddresses()
+        ),
+        _react2.default.createElement(
+          'tfoot',
+          null,
           _react2.default.createElement(
-            'td',
-            null,
-            address.get('address')
-          ),
-          _react2.default.createElement(
-            'td',
+            'tr',
             null,
             _react2.default.createElement(
-              'div',
-              { className: 'field' },
+              'td',
+              { colSpan: '2', className: 'ui right aligned' },
               _react2.default.createElement(
                 'div',
-                { className: 'ui radio checkbox' },
-                _react2.default.createElement('input', { className: 'hidden', checked: address.get('is_active') | 0,
-                  type: 'radio', name: 'address[is_active]' })
+                { onClick: this.handleAddAnAddress, className: 'ui primary button' },
+                Lang.get('customer.add_an_address')
               )
             )
           )
-        ));
-      }).bind(this));
-    }
+        )
+      ),
+      _react2.default.createElement(
+        'div',
+        { ref: 'modal', className: 'ui modal' },
+        _react2.default.createElement(
+          'div',
+          { className: 'header' },
+          'Header'
+        ),
+        _react2.default.createElement('div', { className: 'content', ref: 'modalContent' })
+      )
+    );
+  },
+  hideModal: function hideModal(model) {
+    this.props.collection.push(model);
+    var modal = this.refs.modal;
+    $(modal).modal('hide');
+    this.forceUpdate();
+  },
+  handleAddAnAddress: function handleAddAnAddress(e) {
+    var model = this.props.collection.create({}, { wait: true });
+    var modal = this.refs.modal;
+    $(modal).modal('show');
+    var content = this.refs.modalContent;
+    _reactDom2.default.render(_react2.default.createElement(AddressForm, { model: model, hideModal: this.hideModal }), content);
+  },
+  renderListAddresses: function renderListAddresses() {
+    var rows = [];
+    this.props.collection.each((function (address, i) {
+      rows.push(_react2.default.createElement(
+        'tr',
+        { key: i },
+        _react2.default.createElement(
+          'td',
+          null,
+          address.get('address')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(
+            'div',
+            { className: 'field' },
+            _react2.default.createElement(
+              'div',
+              { className: 'ui radio checkbox' },
+              _react2.default.createElement('input', { className: 'hidden', checked: address.get('is_active') | 0,
+                type: 'radio', name: 'address[is_active]' })
+            )
+          )
+        )
+      ));
+    }).bind(this));
+
     if (!rows.length) {
       return _react2.default.createElement(
         'tr',
@@ -23072,11 +23195,12 @@ module.exports = _react2.default.createClass({
         )
       );
     }
+
     return rows;
   }
 });
 
-},{"react":173}],200:[function(require,module,exports){
+},{"./../../mixins":202,"./../address/form":186,"react":173,"react-dom":4}],201:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23111,7 +23235,7 @@ function mapDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_counter2.default);
 
-},{"../actions/counter":184,"../components/counter":187,"react-redux":9,"redux":176}],201:[function(require,module,exports){
+},{"../actions/counter":184,"../components/counter":188,"react-redux":9,"redux":176}],202:[function(require,module,exports){
 'use strict';
 
 var BackboneModelMixin = {
@@ -23166,13 +23290,21 @@ var FileUploadMixin = {
 exports.FileUploadMixin = FileUploadMixin;
 exports.BackboneModelMixin = BackboneModelMixin;
 
-},{}],202:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 'use strict';
 
-var URL = '/customer/address';
+var URL = '/sale/address';
 var Model = Backbone.Model.extend({
   urlRoot: URL,
-  initialize: function initialize() {}
+  initialize: function initialize() {},
+  setCustomer: function setCustomer(customer) {
+    this.customer = customer;
+    this.set('customer_id', customer.id);
+    return this;
+  },
+  getCustomer: function getCustomer(customer) {
+    return this.customer;
+  }
 });
 
 var Collection = Backbone.Collection.extend({
@@ -23180,13 +23312,27 @@ var Collection = Backbone.Collection.extend({
   model: Model,
   parse: function parse(response) {
     return response.data;
+  },
+  setCustomer: function setCustomer(customer) {
+    this.customer = customer;
+    return this;
+  },
+  getCustomer: function getCustomer(customer) {
+    return this.customer;
+  },
+  create: function create(attributes, options) {
+    var model = Backbone.Collection.prototype.create.apply(this, arguments);
+    if (this.getCustomer()) {
+      model.setCustomer(this.getCustomer());
+    }
+    return model;
   }
 });
 
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],203:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 'use strict';
 
 var AddressCollection = require('./address').Collection;
@@ -23195,7 +23341,9 @@ var Model = Backbone.Model.extend({
   urlRoot: URL,
   initialize: function initialize() {},
   getAddresses: function getAddresses() {
-    return new AddressCollection(this.get('addresses'));
+    var addressCollection = new AddressCollection(this.get('addresses'));
+    addressCollection.setCustomer(this);
+    return addressCollection;
   }
 });
 
@@ -23219,7 +23367,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./address":202}],204:[function(require,module,exports){
+},{"./address":203}],205:[function(require,module,exports){
 'use strict';
 
 var Customer = require('./customer').Model;
@@ -23228,6 +23376,9 @@ var Model = Backbone.Model.extend({
   urlRoot: URL,
   initialize: function initialize() {},
   getCustomer: function getCustomer() {
+    if (this.get('customer') instanceof Customer) {
+      return this.get('customer');
+    }
     return new Customer(this.get('customer'));
   },
   setCustomer: function setCustomer(customer) {
@@ -23244,7 +23395,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./customer":203}],205:[function(require,module,exports){
+},{"./customer":204}],206:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({
@@ -23262,7 +23413,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],206:[function(require,module,exports){
+},{}],207:[function(require,module,exports){
 'use strict';
 
 $.fn.serializeObject = function () {
@@ -23288,7 +23439,7 @@ Number.prototype.format = function (n, x, s, c) {
   return (c ? num.replace(',', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || '.'));
 };
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23316,7 +23467,7 @@ function counter() {
   }
 }
 
-},{"../actions/counter":184}],208:[function(require,module,exports){
+},{"../actions/counter":184}],209:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23337,7 +23488,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./counter":207,"redux":176}],209:[function(require,module,exports){
+},{"./counter":208,"redux":176}],210:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23379,7 +23530,7 @@ function configureStore(initialState) {
   return store;
 }
 
-},{"../reducers":208,"redux":176,"redux-thunk":174}],210:[function(require,module,exports){
+},{"../reducers":209,"redux":176,"redux-thunk":174}],211:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
