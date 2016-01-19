@@ -33,4 +33,5 @@ class Customer extends Model
   {
     return $this->hasMany('App\Models\Address');
   }
+  
 }

@@ -52,3 +52,11 @@ $factory->define(App\Models\Product::class, function (Faker\Generator $faker) {
     'description' => $faker->sentence($nbWords = 6, $variableNbWords = true)
   ];
 });
+
+$factory->define(App\Models\Product\Price::class, function (Faker\Generator $faker) {
+  return [
+    'price'           => $faker->numberBetween($min = 1000, $max = 9000),
+    'is_active'       => 0,
+    'created_user_id' => 1
+  ];
+});
