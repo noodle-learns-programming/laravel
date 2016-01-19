@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 var AddressForm = require('./../address/form');
+var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 
 module.exports = React.createClass({
+  mixins : [BackboneModelMixin],
+  getBackboneModels(){
+    return [this.props.collection];
+  },
   componentDidUpdate(){
     var listAddressesEl = this.refs.listAddresses;
     $(listAddressesEl)
@@ -10,7 +15,6 @@ module.exports = React.createClass({
       .checkbox();
   },
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     this.forceUpdate();
   },
   render() {
@@ -43,8 +47,11 @@ module.exports = React.createClass({
     );
   },
 
-  hideModal(){
-
+  hideModal(model){
+    this.props.collection.push(model);
+    var modal = this.refs.modal;
+        $(modal).modal('hide');
+    this.forceUpdate();
   },
 
   handleAddAnAddress(e){
@@ -58,7 +65,6 @@ module.exports = React.createClass({
   renderListAddresses(){
     var rows = [];
     this.props.collection.each(function(address, i){
-      console.log(address);
       rows.push(
         <tr key={i}>
           <td>{address.get('address')}</td>

@@ -45,7 +45,7 @@ module.exports = React.createClass({
     model.save()
       .then(function(res, result, xhr){
         var isSuccess = result==='success';
-        this.props.hideModal();
+        this.props.hideModal(model);
       }.bind(this));
   },
 
