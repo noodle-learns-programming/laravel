@@ -9,7 +9,7 @@ return [
     |
     */
     'list'          => 'Danh sách sản phẩm',
-   	'add'			=> 'Thêm sản phẩm',
+   	'add'			=> 'Thêm  phẩm',
     'name'			=> 'Tên sản phẩm',
     'brand'			=> 'Nhãn hiệu',
     'unit'			=> 'Đơn vị tính',
@@ -18,6 +18,6 @@ return [
     'sku'           => 'Mã sản phẩm',
     'series'        => 'Số series',
     'quality'       => 'SL',
-    'price'         => 'Giá tiền',
-    'total'         => 'Thành tiền'
+    'price'         => 'G.T',
+    'total'         => 'T.T'
 ];
