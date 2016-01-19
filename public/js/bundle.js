@@ -22995,6 +22995,23 @@ module.exports = _react2.default.createClass({
         'tbody',
         null,
         this.renderListAddresses()
+      ),
+      _react2.default.createElement(
+        'tfoot',
+        null,
+        _react2.default.createElement(
+          'tr',
+          null,
+          _react2.default.createElement(
+            'td',
+            { colSpan: '2', className: 'ui right aligned' },
+            _react2.default.createElement(
+              'div',
+              { className: 'ui primary button' },
+              Lang.get('customer.add_an_address')
+            )
+          )
+        )
       )
     );
   },

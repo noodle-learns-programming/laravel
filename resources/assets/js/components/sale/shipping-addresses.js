@@ -17,6 +17,15 @@ module.exports = React.createClass({
             </tr>
         </thead>
         <tbody>{this.renderListAddresses()}</tbody>
+        <tfoot>
+          <tr>
+            <td colSpan="2" className="ui right aligned">
+              <div className="ui primary button">
+                {Lang.get('customer.add_an_address')}
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     );
   },
