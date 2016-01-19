@@ -6,7 +6,9 @@ var Model = Backbone.Model.extend({
 
   },
   getAddresses(){
-    return new AddressCollection(this.get('addresses'));
+    var addressCollection = new AddressCollection(this.get('addresses'));
+    addressCollection.setCustomer(this);
+    return addressCollection;
   }
 });
 

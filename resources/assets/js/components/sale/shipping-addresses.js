@@ -4,10 +4,14 @@ var AddressForm = require('./../address/form');
 
 module.exports = React.createClass({
   componentDidUpdate(){
-    var listAddressesEl = this.refs.listAddresses.getDOMNode();
+    var listAddressesEl = this.refs.listAddresses;
     $(listAddressesEl)
       .find('.ui.radio.checkbox')
       .checkbox();
+  },
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    this.forceUpdate();
   },
   render() {
     return (

@@ -6,6 +6,9 @@ var Model = Backbone.Model.extend({
 
   },
   getCustomer(){
+    if( this.get('customer') instanceof Customer) {
+      return this.get('customer'); 
+    }
     return new Customer(this.get('customer'));
   },
   setCustomer(customer){

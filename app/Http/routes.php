@@ -43,6 +43,7 @@ Route::group(['namespace' => 'Sale', 'prefix' => 'sale'], function()
 {
   Route::get('customer/search', 'CustomerController@getSearch');
   Route::resource('customer', 'CustomerController');
+  Route::resource('address', 'AddressController');
   Route::resource('invoice', 'InvoiceController');
 });
 

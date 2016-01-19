@@ -8,28 +8,46 @@ module.exports = React.createClass({
     };
   },
 
-  handleSubmit(e){
-    e.preventDefault();
-    var formDOM = this.refs.form.getDOMNode();
-    if( !$(formDOM).form('is valid') ) {
-      return false;
-    }
-    var fd     = $(formDOM).serializeObject();
-    var model  = this.props.model;
-    model.save(fd)
-      .then(function(res, result, xhr){
-        var isSuccess = result==='success';
-        this.props.hideModal();
-      }.bind(this));
-  },
-
   componentWillReceiveProps(nextProps) {
     this.setState({
       model : nextProps.model.clone()
     });
   },
 
-  
+  componentDidMount() {
+    var model = this.state.model;
+
+    $(ReactDOM.findDOMNode(this.refs.form))
+      .form({
+        on: 'blur',
+        fields: {
+          address    : 'empty'
+        },
+        onSuccess : function(e, fields){
+          e.preventDefault();
+          return false;
+        }
+      })
+    ;
+  },
+
+  handleSubmit(e){
+    e.preventDefault();
+    var formDOM = this.refs.form;
+    if( !$(formDOM).form('is valid') ) {
+      return false;
+    }
+    var fd     = $(formDOM).serializeObject();
+    var model  = this.props.model;
+    for(var name in fd){
+      model.set(name, fd[name]);
+    }
+    model.save()
+      .then(function(res, result, xhr){
+        var isSuccess = result==='success';
+        this.props.hideModal();
+      }.bind(this));
+  },
 
   handleChange(e){
     var el = e.target;
