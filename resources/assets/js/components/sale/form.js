@@ -142,7 +142,7 @@ module.exports = React.createClass({
           </div>
           <div>
             <h4>{Lang.get('invoice.addresses')}</h4>
-            <ShippingAddresses invoice={this.props.invoice} />
+            <ShippingAddresses collection={this.props.invoice.getCustomer().getAddresses()} />
           </div>
           <div className="field">
             <label>{Lang.get('invoice.note')}</label>

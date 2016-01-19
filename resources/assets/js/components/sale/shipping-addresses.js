@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+var AddressForm = require('./../address/form');
 
 module.exports = React.createClass({
   componentDidUpdate(){
@@ -9,65 +11,65 @@ module.exports = React.createClass({
   },
   render() {
     return (
-      <table ref="listAddresses" className="ui black table">
-        <thead>
+      <div>
+        <table ref="listAddresses" className="ui black table">
+          <thead>
+              <tr>
+                <th>{Lang.get('customer.address')}</th>
+                <th>{Lang.get('customer.address_is_active')}</th>
+              </tr>
+          </thead>
+          <tbody>{this.renderListAddresses()}</tbody>
+          <tfoot>
             <tr>
-              <th>{Lang.get('customer.address')}</th>
-              <th>{Lang.get('customer.address_is_active')}</th>
+              <td colSpan="2" className="ui right aligned">
+                <div onClick={this.handleAddAnAddress} className="ui primary button">
+                  {Lang.get('customer.add_an_address')}
+                </div>
+              </td>
             </tr>
-        </thead>
-        <tbody>{this.renderListAddresses()}</tbody>
-        <tfoot>
-          <tr>
-            <td colSpan="2" className="ui right aligned">
-              <div className="ui primary button">
-                {Lang.get('customer.add_an_address')}
-              </div>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </tfoot>
+        </table>
+        <div ref="modal" className="ui modal">
+          <div className="header">Header</div>
+          <div className="content" ref="modalContent">
+          </div>
+        </div>
+      </div>
     );
   },
 
-  handleItem(product, action){
-    var currentQty = product.get('quality') || 0;
-    if( action === 'incr'){
-      product.set('quality', ++currentQty);
-      this.props.collection.push(product);
-    } else if( action === 'decr'){
-      if( currentQty > 0 ){
-        product.set('quality', --currentQty);  
-        this.props.collection.push(product);
-      }
-    } else if( action === 'remove' ){
-      this.props.collection.remove(product);
-    }
+  hideModal(){
+
+  },
+
+  handleAddAnAddress(e){
+    var model = this.props.collection.create({}, {wait: true});
+    var modal = this.refs.modal;
+        $(modal).modal('show');
+    var content = this.refs.modalContent;
+        ReactDOM.render(<AddressForm model={model} hideModal={this.hideModal}/>, content);
   },
 
   renderListAddresses(){
-    var invoice   = this.props.invoice;
     var rows = [];
-    if( invoice.get('customer') )
-    {
-      var customer  = invoice.get('customer');
-      customer.getAddresses().each(function(address, i){
-        console.log(address);
-        rows.push(
-          <tr key={i}>
-            <td>{address.get('address')}</td>
-            <td>
-              <div className="field">
-                <div className="ui radio checkbox">
-                  <input className="hidden" checked={address.get('is_active')|0}
-                    type="radio" name="address[is_active]" />
-                </div>
+    this.props.collection.each(function(address, i){
+      console.log(address);
+      rows.push(
+        <tr key={i}>
+          <td>{address.get('address')}</td>
+          <td>
+            <div className="field">
+              <div className="ui radio checkbox">
+                <input className="hidden" checked={address.get('is_active')|0}
+                  type="radio" name="address[is_active]" />
               </div>
-            </td>
-          </tr>
-        );
-      }.bind(this));
-    }
+            </div>
+          </td>
+        </tr>
+      );
+    }.bind(this));
+
     if( !rows.length ){
       return (
         <tr>
@@ -75,6 +77,7 @@ module.exports = React.createClass({
         </tr>
       );
     }
+
     return rows;
   }
 });
