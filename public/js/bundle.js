@@ -20699,6 +20699,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var App = window.App || {};
 
+require('./overhead/extend');
 var injectTapEventPlugin = require("react-tap-event-plugin");
 //View
 var Breadcrumb = require('./components/breadcrumb');
@@ -20724,22 +20725,6 @@ var TestUpload = require('./test/upload');
 /*var TestMaterial= require('./test/material');*/
 
 injectTapEventPlugin();
-
-$.fn.serializeObject = function () {
-  var o = {};
-  var a = this.serializeArray();
-  $.each(a, function () {
-    if (o[this.name] !== undefined) {
-      if (!o[this.name].push) {
-        o[this.name] = [o[this.name]];
-      }
-      o[this.name].push(this.value || '');
-    } else {
-      o[this.name] = this.value || '';
-    }
-  });
-  return o;
-};
 
 $('.ui.sidebar').sidebar({
   context: $('.bottom.segment'),
@@ -20810,7 +20795,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":186,"./components/customer":188,"./components/dashboard":191,"./components/feed":192,"./components/product":194,"./components/product-show":193,"./components/sale":196,"./containers/page":198,"./models/customer":201,"./models/invoice":202,"./models/product":203,"./store/configureStore":206,"./test/upload":207,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
+},{"./components/breadcrumb":186,"./components/customer":188,"./components/dashboard":191,"./components/feed":192,"./components/product":194,"./components/product-show":193,"./components/sale":196,"./containers/page":200,"./models/customer":203,"./models/invoice":204,"./models/product":205,"./overhead/extend":206,"./store/configureStore":209,"./test/upload":210,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21093,7 +21078,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/customer":201,"./customer/form":189,"./customer/list":190,"react":173,"react-dom":4}],189:[function(require,module,exports){
+},{"./../models/customer":203,"./customer/form":189,"./customer/list":190,"react":173,"react-dom":4}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21375,7 +21360,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":199,"react":173,"react-dom":4}],190:[function(require,module,exports){
+},{"./../../mixins":201,"react":173,"react-dom":4}],190:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21617,7 +21602,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":199,"./form":189,"react":173,"react-dom":4}],191:[function(require,module,exports){
+},{"./../../mixins":201,"./form":189,"react":173,"react-dom":4}],191:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21998,7 +21983,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":199,"react":173}],194:[function(require,module,exports){
+},{"./../mixins":201,"react":173}],194:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22316,7 +22301,7 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'a',
               null,
-              '100k'
+              product.get('price')
             )
           ),
           _react2.default.createElement(
@@ -22378,7 +22363,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":199,"react":173}],196:[function(require,module,exports){
+},{"./../../mixins":201,"react":173}],196:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22453,7 +22438,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/product":203,"./product/list":195,"./sale/form":197,"react":173,"react-dom":4}],197:[function(require,module,exports){
+},{"./../models/product":205,"./product/list":195,"./sale/form":197,"react":173,"react-dom":4}],197:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22468,6 +22453,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var FileUploadMixin = require('./../../mixins').FileUploadMixin;
 var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
+var SaleItems = require('./items');
+var ShippingAddresses = require('./shipping-addresses');
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
@@ -22564,43 +22551,7 @@ module.exports = _react2.default.createClass({
             null,
             Lang.get('invoce.products')
           ),
-          _react2.default.createElement(
-            'table',
-            { className: 'ui black table' },
-            _react2.default.createElement(
-              'thead',
-              null,
-              _react2.default.createElement(
-                'tr',
-                null,
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  Lang.get('product.name')
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  Lang.get('product.quality')
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  Lang.get('product.price')
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  Lang.get('product.total')
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'tbody',
-              null,
-              this.renderListProduct()
-            )
-          )
+          _react2.default.createElement(SaleItems, { collection: this.props.productCollection })
         ),
         _react2.default.createElement(
           'div',
@@ -22697,7 +22648,8 @@ module.exports = _react2.default.createClass({
                 _react2.default.createElement(
                   'div',
                   { className: 'ui right aligned content' },
-                  '1.400.000d'
+                  this.getTotalPrice().format(),
+                  'đ'
                 )
               ),
               _react2.default.createElement(
@@ -22707,7 +22659,8 @@ module.exports = _react2.default.createClass({
                 _react2.default.createElement(
                   'div',
                   { className: 'ui right aligned content' },
-                  '100.000d'
+                  this.getDiscount().format(),
+                  'đ'
                 )
               ),
               _react2.default.createElement(
@@ -22717,7 +22670,8 @@ module.exports = _react2.default.createClass({
                 _react2.default.createElement(
                   'div',
                   { className: 'ui right aligned content' },
-                  '1.300.000d'
+                  this.getPaymentPrice().format(),
+                  'đ'
                 )
               )
             ),
@@ -22777,33 +22731,7 @@ module.exports = _react2.default.createClass({
             null,
             Lang.get('invoice.addresses')
           ),
-          _react2.default.createElement(
-            'table',
-            { className: 'ui black table' },
-            _react2.default.createElement(
-              'thead',
-              null,
-              _react2.default.createElement(
-                'tr',
-                null,
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  Lang.get('customer.address')
-                ),
-                _react2.default.createElement(
-                  'th',
-                  null,
-                  Lang.get('customer.address_is_active')
-                )
-              )
-            ),
-            _react2.default.createElement(
-              'tbody',
-              null,
-              this.renderListAddresses()
-            )
-          )
+          _react2.default.createElement(ShippingAddresses, { invoice: this.props.invoice })
         ),
         _react2.default.createElement(
           'div',
@@ -22832,55 +22760,23 @@ module.exports = _react2.default.createClass({
       )
     );
   },
-  renderListProduct: function renderListProduct() {
-    var rows = [];
+  getTotalPrice: function getTotalPrice() {
+    var value = 0;
     this.props.productCollection.each(function (product, i) {
-      rows.push(_react2.default.createElement(
-        'tr',
-        { key: i },
-        _react2.default.createElement(
-          'td',
-          null,
-          _react2.default.createElement(
-            'h4',
-            { className: 'ui image header' },
-            _react2.default.createElement('img', { src: "/upload/product/" + product.get('image'), className: 'ui mini rounded image' }),
-            _react2.default.createElement(
-              'div',
-              { className: 'content' },
-              product.get('name')
-            )
-          )
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          product.get('quality')
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          product.get('price')
-        ),
-        _react2.default.createElement(
-          'td',
-          null,
-          product.get('total')
-        )
-      ));
+      value += product.get('price') * product.get('quality');
     });
-    if (!rows.length) {
-      return _react2.default.createElement(
-        'tr',
-        null,
-        _react2.default.createElement(
-          'td',
-          { colSpan: '4' },
-          Lang.get('invoice.products_list_empty')
-        )
-      );
-    }
-    return rows;
+    return value;
+  },
+  getDiscount: function getDiscount() {
+    var value = 0;
+    /*this.props.productCollection.each(function(product, i){
+      value += product.get('price') * product.get('quality');
+    });*/
+    return value;
+  },
+  getPaymentPrice: function getPaymentPrice() {
+    var value = this.getTotalPrice() - this.getDiscount();
+    return value;
   },
   renderListAddresses: function renderListAddresses() {
     var invoice = this.props.invoice;
@@ -22919,7 +22815,251 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":199,"react":173,"react-dom":4}],198:[function(require,module,exports){
+},{"./../../mixins":201,"./items":198,"./shipping-addresses":199,"react":173,"react-dom":4}],198:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+
+  mixins: [BackboneModelMixin],
+
+  getBackboneModels: function getBackboneModels() {
+    return [this.props.collection];
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'table',
+      { className: 'ui black table' },
+      _react2.default.createElement(
+        'thead',
+        null,
+        _react2.default.createElement(
+          'tr',
+          null,
+          _react2.default.createElement(
+            'th',
+            null,
+            Lang.get('product.name')
+          ),
+          _react2.default.createElement(
+            'th',
+            null,
+            Lang.get('product.quality')
+          ),
+          _react2.default.createElement(
+            'th',
+            null,
+            Lang.get('product.price')
+          ),
+          _react2.default.createElement(
+            'th',
+            null,
+            Lang.get('product.total')
+          ),
+          _react2.default.createElement(
+            'th',
+            null,
+            ' '
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'tbody',
+        null,
+        this.renderListProduct()
+      )
+    );
+  },
+  handleItem: function handleItem(product, action) {
+    var currentQty = product.get('quality') || 0;
+    if (action === 'incr') {
+      product.set('quality', ++currentQty);
+      this.props.collection.push(product);
+    } else if (action === 'decr') {
+      if (currentQty > 0) {
+        product.set('quality', --currentQty);
+        this.props.collection.push(product);
+      }
+    } else if (action === 'remove') {
+      this.props.collection.remove(product);
+    }
+  },
+  renderListProduct: function renderListProduct() {
+    var rows = [];
+    this.props.collection.each((function (product, i) {
+      rows.push(_react2.default.createElement(
+        'tr',
+        { key: i },
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement(
+            'h4',
+            { className: 'ui image header' },
+            _react2.default.createElement('img', { src: "/upload/product/" + product.get('image'), className: 'ui mini rounded image' }),
+            _react2.default.createElement(
+              'div',
+              { className: 'content' },
+              product.get('name')
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('quality')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          product.get('price')
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          (product.get('quality') * product.get('price')).format()
+        ),
+        _react2.default.createElement(
+          'td',
+          null,
+          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, product, "incr"),
+            className: 'add circle icon' }),
+          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, product, "decr"),
+            className: 'minus circle icon' }),
+          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, product, "remove"),
+            className: 'remove circle icon' })
+        )
+      ));
+    }).bind(this));
+    if (!rows.length) {
+      return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          { colSpan: '4' },
+          Lang.get('invoice.products_list_empty')
+        )
+      );
+    }
+    return rows;
+  }
+});
+
+},{"./../../mixins":201,"react":173}],199:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+  componentDidUpdate: function componentDidUpdate() {
+    var listAddressesEl = this.refs.listAddresses.getDOMNode();
+    $(listAddressesEl).find('.ui.radio.checkbox').checkbox();
+  },
+  render: function render() {
+    return _react2.default.createElement(
+      'table',
+      { ref: 'listAddresses', className: 'ui black table' },
+      _react2.default.createElement(
+        'thead',
+        null,
+        _react2.default.createElement(
+          'tr',
+          null,
+          _react2.default.createElement(
+            'th',
+            null,
+            Lang.get('customer.address')
+          ),
+          _react2.default.createElement(
+            'th',
+            null,
+            Lang.get('customer.address_is_active')
+          )
+        )
+      ),
+      _react2.default.createElement(
+        'tbody',
+        null,
+        this.renderListAddresses()
+      )
+    );
+  },
+  handleItem: function handleItem(product, action) {
+    var currentQty = product.get('quality') || 0;
+    if (action === 'incr') {
+      product.set('quality', ++currentQty);
+      this.props.collection.push(product);
+    } else if (action === 'decr') {
+      if (currentQty > 0) {
+        product.set('quality', --currentQty);
+        this.props.collection.push(product);
+      }
+    } else if (action === 'remove') {
+      this.props.collection.remove(product);
+    }
+  },
+  renderListAddresses: function renderListAddresses() {
+    var invoice = this.props.invoice;
+    var rows = [];
+    if (invoice.get('customer')) {
+      var customer = invoice.get('customer');
+      customer.getAddresses().each((function (address, i) {
+        console.log(address);
+        rows.push(_react2.default.createElement(
+          'tr',
+          { key: i },
+          _react2.default.createElement(
+            'td',
+            null,
+            address.get('address')
+          ),
+          _react2.default.createElement(
+            'td',
+            null,
+            _react2.default.createElement(
+              'div',
+              { className: 'field' },
+              _react2.default.createElement(
+                'div',
+                { className: 'ui radio checkbox' },
+                _react2.default.createElement('input', { className: 'hidden', checked: address.get('is_active') | 0,
+                  type: 'radio', name: 'address[is_active]' })
+              )
+            )
+          )
+        ));
+      }).bind(this));
+    }
+    if (!rows.length) {
+      return _react2.default.createElement(
+        'tr',
+        null,
+        _react2.default.createElement(
+          'td',
+          { colSpan: '2' },
+          Lang.get('customer.addresses_list_empty')
+        )
+      );
+    }
+    return rows;
+  }
+});
+
+},{"react":173}],200:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22954,7 +23094,7 @@ function mapDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_counter2.default);
 
-},{"../actions/counter":184,"../components/counter":187,"react-redux":9,"redux":176}],199:[function(require,module,exports){
+},{"../actions/counter":184,"../components/counter":187,"react-redux":9,"redux":176}],201:[function(require,module,exports){
 'use strict';
 
 var BackboneModelMixin = {
@@ -23009,7 +23149,7 @@ var FileUploadMixin = {
 exports.FileUploadMixin = FileUploadMixin;
 exports.BackboneModelMixin = BackboneModelMixin;
 
-},{}],200:[function(require,module,exports){
+},{}],202:[function(require,module,exports){
 'use strict';
 
 var URL = '/customer/address';
@@ -23029,7 +23169,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],201:[function(require,module,exports){
+},{}],203:[function(require,module,exports){
 'use strict';
 
 var AddressCollection = require('./address').Collection;
@@ -23062,7 +23202,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./address":200}],202:[function(require,module,exports){
+},{"./address":202}],204:[function(require,module,exports){
 'use strict';
 
 var Customer = require('./customer').Model;
@@ -23087,7 +23227,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./customer":201}],203:[function(require,module,exports){
+},{"./customer":203}],205:[function(require,module,exports){
 'use strict';
 
 var Model = Backbone.Model.extend({
@@ -23105,7 +23245,33 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],204:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
+'use strict';
+
+$.fn.serializeObject = function () {
+  var o = {};
+  var a = this.serializeArray();
+  $.each(a, function () {
+    if (o[this.name] !== undefined) {
+      if (!o[this.name].push) {
+        o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || '');
+    } else {
+      o[this.name] = this.value || '';
+    }
+  });
+  return o;
+};
+
+Number.prototype.format = function (n, x, s, c) {
+  var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+      num = this.toFixed(Math.max(0, ~ ~n));
+
+  return (c ? num.replace(',', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || '.'));
+};
+
+},{}],207:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23133,7 +23299,7 @@ function counter() {
   }
 }
 
-},{"../actions/counter":184}],205:[function(require,module,exports){
+},{"../actions/counter":184}],208:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23154,7 +23320,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./counter":204,"redux":176}],206:[function(require,module,exports){
+},{"./counter":207,"redux":176}],209:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23196,7 +23362,7 @@ function configureStore(initialState) {
   return store;
 }
 
-},{"../reducers":205,"redux":176,"redux-thunk":174}],207:[function(require,module,exports){
+},{"../reducers":208,"redux":176,"redux-thunk":174}],210:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');

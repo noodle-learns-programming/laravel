@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 var FileUploadMixin     = require('./../../mixins').FileUploadMixin;
 var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 var SaleItems  = require('./items');
+var ShippingAddresses  = require('./shipping-addresses');
 
 module.exports = React.createClass({
   mixins : [FileUploadMixin, BackboneModelMixin],
@@ -141,15 +142,7 @@ module.exports = React.createClass({
           </div>
           <div>
             <h4>{Lang.get('invoice.addresses')}</h4>
-            <table className="ui black table">
-              <thead>
-                  <tr>
-                    <th>{Lang.get('customer.address')}</th>
-                    <th>{Lang.get('customer.address_is_active')}</th>
-                  </tr>
-              </thead>
-              <tbody>{this.renderListAddresses()}</tbody>
-            </table>
+            <ShippingAddresses invoice={this.props.invoice} />
           </div>
           <div className="field">
             <label>{Lang.get('invoice.note')}</label>

@@ -9,7 +9,6 @@ module.exports = React.createClass({
   },
 
   render() {
-    console.log('Co vao day!');
     return (
       <table className="ui black table">
         <thead>
