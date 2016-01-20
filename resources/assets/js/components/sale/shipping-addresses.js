@@ -47,14 +47,19 @@ module.exports = React.createClass({
     );
   },
 
-  hideModal(model){
-    this.props.collection.push(model);
+  hideModal(model, isSaved)
+  {
     var modal = this.refs.modal;
         $(modal).modal('hide');
-    this.forceUpdate();
+    if( isSaved )
+    {
+      this.props.collection.push(model);
+      this.forceUpdate();
+    }
   },
 
-  handleAddAnAddress(e){
+  handleAddAnAddress(e)
+  {
     var model = this.props.collection.create({}, {wait: true});
     var modal = this.refs.modal;
         $(modal).modal('show');

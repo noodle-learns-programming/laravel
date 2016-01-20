@@ -45,7 +45,7 @@ module.exports = React.createClass({
     model.save()
       .then(function(res, result, xhr){
         var isSuccess = result==='success';
-        this.props.hideModal(model);
+        this.props.hideModal(model, isSuccess);
       }.bind(this));
   },
 
@@ -65,8 +65,12 @@ module.exports = React.createClass({
               placeholder={Lang.get('customer.address')} type="text" />
           </div>
           <div className="actions">
-            <button className={"ui primary " + this.state.loading + " button"}>{Lang.get('form.save')}</button>
-            <div className="ui cancel button">{Lang.get('form.cancel')}</div>
+            <button className={"ui primary " + this.state.loading + " button"}>
+              {Lang.get('form.save')}
+            </button>
+            <div className="ui cancel button">
+              {Lang.get('form.cancel')}
+            </div>
           </div>
         </div>
       </form>

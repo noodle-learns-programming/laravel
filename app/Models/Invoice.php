@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
+  const STATE_DRAFT           = 0;
+  const STATE_VALID           = 1;
+  const STATE_PENDING         = 2;
+  const STATE_REFUND          = 4;
+  const STATE_DELIVERY        = 8;
+  const STATE_DELIVERY_FAILED = 16;
+
   protected $fillable = [
     'id',
     'customer_id',
@@ -26,7 +33,7 @@ class Invoice extends Model
   public function getValidatorRules()
   {
     return [
-      'customer_id' => 'required'
+      'customer' => 'required'
     ];
   }
 

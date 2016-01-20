@@ -19,6 +19,13 @@ module.exports = React.createClass({
 
   handleSubmit(e){
     e.preventDefault();
+    this.props.invoice.save().
+      then(function(res, result, xhr){
+        console.log('Save invoice');
+        console.log(res, result, xhr);
+      }.bind(this))
+    ;
+    return false;
   },
 
   handleMessage(e){
