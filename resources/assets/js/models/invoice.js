@@ -1,4 +1,5 @@
 var Customer  = require('./customer').Model;
+var ProductCollection  = require('./product').Collection;
 var URL   = '/sale/invoice';
 var Model = Backbone.Model.extend({
   urlRoot   : URL,
@@ -14,6 +15,17 @@ var Model = Backbone.Model.extend({
   setCustomer(customer){
     this.set('customer', new Customer(customer));
     return this;
+  },
+
+  makeProductItemsCollection(){
+    var productCollection = new ProductCollection();
+    this.set('items', productCollection);
+    return this;
+  },
+
+  getProductItemsCollection()
+  {
+    return this.get('items');
   }
 });
 
