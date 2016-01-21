@@ -51,7 +51,7 @@ class InvoiceController extends Controller
     if( $customer->getActiceShippingAddress() ) {
       $invoice->ship_address_id = $customer->getActiceShippingAddress()->id;
     }
-
+    $invoice->save();
 
     return response()->json([
       'result' => $invoice
