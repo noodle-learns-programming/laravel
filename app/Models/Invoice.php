@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Invoice\Item;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
@@ -40,5 +41,36 @@ class Invoice extends Model
   public function customer()
   {
     return $this->belongsTo('App\Models\Customer');
+  }
+
+  public function updateCustomerWithShippingAddress(App\Models\Customer $customer)
+  {
+    $this->customer()->associate($customer);
+
+    if( $customer->getActiceShippingAddress() ) {
+      $this->ship_address_id = $customer->getActiceShippingAddress()->id;
+    }
+    return this;
+  }
+
+  public function updateSaler(App\User $user)
+  {
+    $this->sale_user_id = $user->id;
+  }
+
+  public function items()
+  {
+    return $this->hasMany('App\Models\Invoice\Item');
+  }
+
+  public function addProductItems(array $arrItems = [])
+  {
+    foreach($arrItems as $itemData)
+    {
+      $itemData['product_id'] = $itemData['id'];
+      $item = new Item($itemData);
+      $this->items()->save($item);
+    }
+    return $this;
   }
 }

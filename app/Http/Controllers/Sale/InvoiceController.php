@@ -50,18 +50,36 @@ class InvoiceController extends Controller
     if ($validator) {
       return response()->json($validator,'404');
     }
-
+    /**
+     |-----------------------------------------------------
+     | Create a invoice
+     |-----------------------------------------------------
+     */
     $invoice      = $invoiceModel->create($request->all());
-    
+    /**
+     |-----------------------------------------------------
+     | Add customer to invoice
+     |-----------------------------------------------------
+     */
     $customer_id  = $request->get('customer')['id'];
     $customer     = Customer::find($customer_id);
-    $invoice->customer()->associate($customer);
-
-    if( $customer->getActiceShippingAddress() ) {
-      $invoice->ship_address_id = $customer->getActiceShippingAddress()->id;
-    }
-    $invoice->sale_user_id = Auth::user()->id;
-    
+    $invoice->updateCustomerWithShippingAddress($customer);
+    /**
+     |-----------------------------------------------------
+     | Update saler
+     |-----------------------------------------------------
+     */
+    /**
+     |-----------------------------------------------------
+     | Add list products to invoice
+     |-----------------------------------------------------
+     */
+    $invoice->addProductItems($request->get('items'));
+    /**
+     |-----------------------------------------------------
+     | Save to Db
+     |-----------------------------------------------------
+     */
     $invoice->save();
 
     return response()->json([
