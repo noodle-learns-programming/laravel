@@ -34,4 +34,17 @@ class Customer extends Model
     return $this->hasMany('App\Models\Address');
   }
   
+  /**
+   * Get active shipping address of a customer
+   * @return Customer
+   */
+  public function getActiceShippingAddress()
+  {
+    $addresses = $this->addresses()->where('is_active', '=', 1)->get();
+
+    if( $addresses->count() > 1 ) {
+      throw new \Exception('A customer should not have two active addresses. Customer: '. $this->id);
+    }
+    return $addresses->first();
+  }
 }

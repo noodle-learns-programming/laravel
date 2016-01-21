@@ -47,7 +47,11 @@ class InvoiceController extends Controller
       return response()->json($validator,'404');
     }
     $invoice      = $invoiceModel->create($request->all());
-    $invoice->customer()->associate($customer)->save();
+    $invoice->customer()->associate($customer);
+    if( $customer->getActiceShippingAddress() ) {
+      $invoice->ship_address_id = $customer->getActiceShippingAddress()->id;
+    }
+
 
     return response()->json([
       'result' => $invoice
