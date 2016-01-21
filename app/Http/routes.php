@@ -39,7 +39,10 @@ Route::group(['namespace' => 'Stock', 'prefix' => 'stock'], function()
 	Route::resource('product', 'ProductController');
 });
 
-Route::group(['namespace' => 'Sale', 'prefix' => 'sale'], function()
+Route::group([
+  'middleware' => ['web'], 
+  'namespace'  => 'Sale',
+  'prefix'     => 'sale'], function()
 {
   Route::get('customer/search', 'CustomerController@getSearch');
   Route::resource('customer', 'CustomerController');

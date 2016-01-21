@@ -1,3 +1,9 @@
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': App.get('csrf_token')
+  }
+});
+
 $.fn.serializeObject = function(){
   var o = {};
   var a = this.serializeArray();

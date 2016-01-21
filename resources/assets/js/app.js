@@ -1,4 +1,8 @@
 var App = window.App || {};
+App.get = function(name) {
+  return this._data[name];
+};
+
 import React from 'react';
 import ReactDOM, { render } from 'react-dom';
 import { Provider } from 'react-redux';

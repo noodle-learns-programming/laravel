@@ -38,7 +38,10 @@
     <!-- JavaScripts -->
     <script type="text/javascript">
         var App = window.App = {
-            'version' : '0.1'
+            'version' : '0.1',
+            '_data'   : {
+                csrf_token: '{{ csrf_token() }}'
+            } 
         };
     </script>
     <script src="/js/vendor/jquery.min.js"></script>

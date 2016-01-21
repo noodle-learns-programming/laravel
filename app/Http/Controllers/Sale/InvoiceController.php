@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Sale;
 
+use Auth;
 use App\User;
 use App\Models\Invoice;
+use App\Http\Requests;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class InvoiceController extends Controller
 {
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
   /**
    * Show the profile for the given user.
    *
@@ -38,19 +44,24 @@ class InvoiceController extends Controller
   public function store(Request $request)
   {
     $invoiceModel = new Invoice();
-    $customer_id  = $request->get('customer')['id'];
-    $customer     = Customer::find($customer_id);
 
     $rules        = $invoiceModel->getValidatorRules();
     $validator    = $this->validate($request, $rules);
     if ($validator) {
       return response()->json($validator,'404');
     }
+
     $invoice      = $invoiceModel->create($request->all());
+    
+    $customer_id  = $request->get('customer')['id'];
+    $customer     = Customer::find($customer_id);
     $invoice->customer()->associate($customer);
+
     if( $customer->getActiceShippingAddress() ) {
       $invoice->ship_address_id = $customer->getActiceShippingAddress()->id;
     }
+    $invoice->sale_user_id = Auth::user()->id;
+    
     $invoice->save();
 
     return response()->json([
