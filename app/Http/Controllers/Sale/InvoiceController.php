@@ -82,8 +82,6 @@ class InvoiceController extends Controller
      */
     $invoice->save();
 
-    return response()->json([
-      'result' => $invoice
-    ]);
+    return $invoice;
   }
 }
