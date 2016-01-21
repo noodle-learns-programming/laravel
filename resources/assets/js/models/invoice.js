@@ -10,7 +10,9 @@ var Model = Backbone.Model.extend({
     if( this.get('customer') instanceof Customer) {
       return this.get('customer'); 
     }
-    return new Customer(this.get('customer'));
+    var customer = new Customer(this.get('customer'));
+    this.set('customer', customer);
+    return customer;
   },
   setCustomer(customer){
     this.set('customer', new Customer(customer));

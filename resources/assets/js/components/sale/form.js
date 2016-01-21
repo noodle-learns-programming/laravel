@@ -57,11 +57,9 @@ module.exports = React.createClass({
 
   render: function() {
     var invoice   = this.props.invoice;
-    var customer  = invoice.get('customer')
-        ? invoice.getCustomer().toJSON()
-        : {};
+    var customer  = invoice.getCustomer();
     return (<form ref="form" onSubmit={this.handleSubmit}>
-        <div>Invoice : #{invoice.get('id')} | Customer: {invoice.get('customer_id')}</div>
+        <div>Invoice : #{invoice.get('id')} | Customer: {customer.get('id')}</div>
         <div className="ui form">
           <div className="two fields">
             <div className="required field">
@@ -69,14 +67,14 @@ module.exports = React.createClass({
               <div className="ui icon input">
                 <input ref="mobile_phone" name="mobile_phone" 
                   onChange={this.searchPhoneHandle}
-                  defaultValue={customer['mobile_phone']}
+                  value={customer.get('mobile_phone')}
                   placeholder={Lang.get('customer.mobile_phone')} />
                 <i className="search icon"></i>
               </div>
             </div>
             <div className="required field">
               <label>{ Lang.get('customer.name') }</label>
-              <input ref="customer_name" name="customer_name" defaultValue={customer['name']}
+              <input ref="customer_name" name="customer_name" value={customer.get('name')}
                 placeholder={Lang.get('customer.name')} type="text" />
             </div>
           </div>
