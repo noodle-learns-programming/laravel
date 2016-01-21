@@ -79,10 +79,12 @@ class Invoice extends Model
        |    $item->save();
        |----------------------------------------------
        */
-      $this->items()->save($item);
+      $item->invoice()->associate($this);
       /***********************************************/
-      // $item->invoice()->associate($this);
-      // $item->save();
+      $item->firstOrNew([
+        'product_id'  => $product->id,
+        'invoice_id'  => $this->id
+      ])->fill($itemData)->save();
     }
     return $this;
   }
