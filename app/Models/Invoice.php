@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Invoice\Item;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
@@ -67,9 +68,21 @@ class Invoice extends Model
   {
     foreach($arrItems as $itemData)
     {
-      $itemData['product_id'] = $itemData['id'];
-      $item = new Item($itemData);
+      $item    = new Item($itemData);
+      $product = Product::find($itemData['id']);
+      $item->product()->associate($product);
+      /**
+       |----------------------------------------------
+       | There are two ways to add item to an invoice.
+       | 1. $this->items()->save($item);
+       | 2. $item->invoice()->associate($this);
+       |    $item->save();
+       |----------------------------------------------
+       */
       $this->items()->save($item);
+      /***********************************************/
+      // $item->invoice()->associate($this);
+      // $item->save();
     }
     return $this;
   }
