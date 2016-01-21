@@ -69,6 +69,41 @@ class InvoiceController extends Controller
      | Update saler
      |-----------------------------------------------------
      */
+    $invoice->updateSaler(Auth::user());
+    /**
+     |-----------------------------------------------------
+     | Add list products to invoice
+     |-----------------------------------------------------
+     */
+    $invoice->addProductItems($request->get('items'));
+    /**
+     |-----------------------------------------------------
+     | Save to Db
+     |-----------------------------------------------------
+     */
+    $invoice->save();
+
+    return $invoice;
+  }
+
+  public function update($id, Request $request)
+  {
+    $invoice    = Invoice::find($id);
+    $rules      = $invoice->getValidatorRules();
+    $validator  = $this->validate($request, $rules);
+    if ($validator) {
+      return response()->json($validator,'404');
+    }
+    $input    = $request->all();
+    $invoice->update($input);
+    /**
+     |-----------------------------------------------------
+     | Add customer to invoice
+     |-----------------------------------------------------
+     */
+    $customer_id  = $request->get('customer')['id'];
+    $customer     = Customer::find($customer_id);
+    $invoice->updateCustomerWithShippingAddress($customer);
     /**
      |-----------------------------------------------------
      | Add list products to invoice

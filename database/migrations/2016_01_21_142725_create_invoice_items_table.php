@@ -21,6 +21,7 @@ class CreateInvoiceItemsTable extends Migration
             $table->float('discount_value');
             $table->integer('discount_type');
             $table->timestamps();
+            $table->unique(['invoice_id', 'product_id']);
         });
     }
 
