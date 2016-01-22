@@ -40,7 +40,7 @@ module.exports = React.createClass({
   renderListProduct(){
     var rows = [];
     this.props.collection.each(function(item, i){
-      var product = item.get('product');
+      var product = item.getProduct();
       rows.push(
         <tr key={i}>
           <td>

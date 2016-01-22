@@ -32,7 +32,7 @@ var Model = Backbone.Model.extend({
     }
     var items = new ItemCollection(this.get('items'));
     this.set('items', items);
-    return items;
+    return this.get('items');
   },
 
   addItemWithProduct(product)

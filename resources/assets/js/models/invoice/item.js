@@ -1,3 +1,4 @@
+var Product = require('./../product').Model;
 var URL = '/sale/item';
 var Model = Backbone.Model.extend({
   urlRoot : URL,
@@ -6,7 +7,12 @@ var Model = Backbone.Model.extend({
   },
   getProduct()
   {
-    this.get('product');
+    if( this.get('product') instanceof Product) {
+      return this.get('product'); 
+    }
+    var product = new Product(this.get('product'));
+    this.set('product', product);
+    return this.get('product');
   },
   getPrice()
   {
