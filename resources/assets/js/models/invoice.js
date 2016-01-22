@@ -35,6 +35,13 @@ var Model = Backbone.Model.extend({
     return items;
   },
 
+  addItemWithProduct(product)
+  {
+    var items = this.getItems();
+        items.addItemWithProduct(product);
+    return this;
+  },
+
   getTotalPrice()
   {
     var value = 0;

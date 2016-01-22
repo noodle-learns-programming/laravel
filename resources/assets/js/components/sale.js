@@ -39,8 +39,9 @@ module.exports = React.createClass({
   },
 
   notifyChooseAProduct(product){
-    var itemsCollection = this.state.invoice.getItem();
-      itemsCollection.addItemWithProduct(product);
+    this.state.invoice.addItemWithProduct(
+      product
+    );
   },
 
   render: function() {
