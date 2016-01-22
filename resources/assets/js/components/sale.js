@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-var SaleForm = require('./sale/form');
+var SaleForm    = require('./sale/form');
 var ProductList = require('./product/list');
-var ProductCollection = require('./../models/product').Collection;
 
 module.exports = React.createClass({
   getInitialState() {
@@ -15,7 +14,6 @@ module.exports = React.createClass({
       invoice = invoiceCollection.get(this.props.invoiceId);
       invoice.fetch();
     }
-    invoice.makeProductItemsCollection();
     return {
       action      : this.props.action || 'list',
       invoice     : invoice
@@ -24,8 +22,7 @@ module.exports = React.createClass({
 
   componentWillMount() {
     this.formView = <SaleForm
-      invoice={this.state.invoice} 
-      productCollection={this.state.invoice.getProductItemsCollection()} />;
+      invoice={this.state.invoice} />;
     this.listView = <ProductList 
       notifyChooseAProduct={this.notifyChooseAProduct}
       collection={App.getModelCollection('product')} />;
@@ -42,9 +39,8 @@ module.exports = React.createClass({
   },
 
   notifyChooseAProduct(product){
-    product.set('quality', (product.get('quality') || 0) + 1);
-    var itemsCollection = this.state.invoice.getProductItemsCollection();
-        itemsCollection.push(product);
+    var itemsCollection = this.state.invoice.getItem();
+      itemsCollection.addItemWithProduct(product);
   },
 
   render: function() {

@@ -38,7 +38,7 @@ module.exports = React.createClass({
   },
 
   getBackboneModels(){
-    return [this.props.invoice, this.props.productCollection];
+    return [this.props.invoice];
   },
 
   searchPhoneHandle(e){
@@ -80,7 +80,7 @@ module.exports = React.createClass({
           </div>
           <div>
             <h4>{Lang.get('invoce.products')}</h4>
-            <SaleItems collection={this.props.productCollection} />
+            <SaleItems collection={this.props.invoice.getItems()} />
           </div>
           <div className="ui two column grid">
             <div className="column">
@@ -113,19 +113,19 @@ module.exports = React.createClass({
                 <div className="item">
                   <i className="dollar icon"></i>
                   <div className="ui right aligned content">
-                    {this.getTotalPrice().format()}đ
+                    {this.props.invoice.getTotalPrice().format()}đ
                   </div>
                 </div>
                 <div className="item">
                   <i className="gift icon"></i>
                   <div className="ui right aligned content">
-                    {this.getDiscount().format()}đ
+                    {this.props.invoice.getDiscount().format()}đ
                   </div>
                 </div>
                 <div className="item">
                   <i className="payment icon"></i>
                   <div className="ui right aligned content">
-                    {this.getPaymentPrice().format()}đ
+                    {this.props.invoice.getPaymentPrice().format()}đ
                   </div>
                 </div>
               </div>
@@ -160,24 +160,6 @@ module.exports = React.createClass({
         </div>
       </form>
     );
-  },
-  getTotalPrice(){
-    var value = 0;
-    this.props.productCollection.each(function(product, i){
-      value += product.get('price') * product.get('quality');
-    });
-    return value;
-  },
-  getDiscount(){
-    var value = 0;
-    /*this.props.productCollection.each(function(product, i){
-      value += product.get('price') * product.get('quality');
-    });*/
-    return value;
-  },
-  getPaymentPrice(){
-    var value = this.getTotalPrice() - this.getDiscount();
-    return value;
   },
   renderListAddresses(){
     var invoice   = this.props.invoice;

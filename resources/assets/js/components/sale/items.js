@@ -25,24 +25,20 @@ module.exports = React.createClass({
     );
   },
 
-  handleItem(product, action){
-    var currentQty = product.get('quality') || 0;
+  handleItem(item, action){
     if( action === 'incr'){
-      product.set('quality', ++currentQty);
-      this.props.collection.push(product);
     } else if( action === 'decr'){
       if( currentQty > 0 ){
-        product.set('quality', --currentQty);  
-        this.props.collection.push(product);
       }
     } else if( action === 'remove' ){
-      this.props.collection.remove(product);
+
     }
   },
 
   renderListProduct(){
     var rows = [];
-    this.props.collection.each(function(product, i){
+    this.props.collection.each(function(item, i){
+      var product = item.get('product');
       rows.push(
         <tr key={i}>
           <td>
@@ -53,15 +49,15 @@ module.exports = React.createClass({
               </div>
             </h4>
           </td>
-          <td>{product.get('quality')}</td>
-          <td>{product.get('price')}</td>
-          <td>{(product.get('quality')*product.get('price')).format()}</td>
+          <td>{item.get('quality')}</td>
+          <td>{item.get('price')}</td>
+          <td>{item.getPayment().format()}</td>
           <td>
-            <i onClick={this.handleItem.bind(this, product, "incr")}
+            <i onClick={this.handleItem.bind(this, item, "incr")}
               className="add circle icon"></i>
-            <i onClick={this.handleItem.bind(this, product, "decr")}
+            <i onClick={this.handleItem.bind(this, item, "decr")}
               className="minus circle icon"></i>
-            <i onClick={this.handleItem.bind(this, product, "remove")}
+            <i onClick={this.handleItem.bind(this, item, "remove")}
               className="remove circle icon"></i>
           </td>
         </tr>

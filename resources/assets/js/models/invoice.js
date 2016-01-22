@@ -1,5 +1,5 @@
-var Customer  = require('./customer').Model;
-var ProductCollection  = require('./product').Collection;
+var Customer       = require('./customer').Model;
+var ItemCollection = require('./invoice/item').Collection;
 var URL   = '/sale/invoice';
 var Model = Backbone.Model.extend({
   urlRoot   : URL,
@@ -19,15 +19,44 @@ var Model = Backbone.Model.extend({
     return this;
   },
 
-  makeProductItemsCollection(){
-    var productCollection = new ProductCollection();
-    this.set('items', productCollection);
+  setItems(items){
+    var itemCollection = new ItemCollectionitems();
+    this.set('items', itemCollection);
     return this;
   },
 
-  getProductItemsCollection()
+  getItems()
   {
-    return this.get('items');
+    if( this.get('items') instanceof ItemCollection) {
+      return this.get('items'); 
+    }
+    var items = new ItemCollection(this.get('items'));
+    this.set('items', items);
+    return items;
+  },
+
+  getTotalPrice()
+  {
+    var value = 0;
+    this.getItems().each(function(item, i){
+      value += item.getPayment();
+    });
+    return value;
+  },
+
+  getDiscount()
+  {
+    var value = 0;
+    /*this.getItems().each(function(item, i){
+      value += 0;
+    });*/
+    return value;
+  },
+
+  getPaymentPrice()
+  {
+    var value = this.getTotalPrice() - this.getDiscount();
+    return value;
   }
 });
 
