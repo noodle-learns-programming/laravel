@@ -15,23 +15,43 @@ var Model = Backbone.Model.extend({
   getPayment()
   {
     return this.get('price') * this.get('quality');
+  },
+  incr()
+  {
+    this.set('quality', this.get('quality') + 1);
+    return this;
+  },
+  decr()
+  {
+    if( this.get('quality') > 0 ) {
+      this.set('quality', this.get('quality') - 1);
+    }
+    return this;
   }
 });
 
 var Collection = Backbone.Collection.extend({
   url   : URL,
   model : Model,
-  parse(response) {
+  parse(response)
+  {
     return response.data;
   },
-  addItemWithProduct(product){
-    var item = new Model({
-      id      : product.id,
-      price   : product.get('price'),
-      quality : 1,
-      product : product
-    });
+  addItemWithProduct(product)
+  {
+    var item = this.get(product.id);
+    if( item ) {
+      item.incr();
+    } else {
+      item = new Model({
+        id      : product.id,
+        price   : product.get('price'),
+        quality : 1,
+        product : product
+      });
+    }
     this.push(item);
+    return this;
   }
 });
 

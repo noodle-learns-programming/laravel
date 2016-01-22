@@ -33,7 +33,6 @@ module.exports = React.createClass({
   },
 
   handleClick(product){
-    console.log('You chose product: ', product);
     this.props.notifyChooseAProduct(product);
   },
 

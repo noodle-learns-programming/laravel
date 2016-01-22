@@ -27,11 +27,13 @@ module.exports = React.createClass({
 
   handleItem(item, action){
     if( action === 'incr'){
+      item.incr();
+      this.props.collection.push(item);
     } else if( action === 'decr'){
-      if( currentQty > 0 ){
-      }
+      item.decr();
+      this.props.collection.push(item);
     } else if( action === 'remove' ){
-
+      this.props.collection.remove(item);
     }
   },
 
