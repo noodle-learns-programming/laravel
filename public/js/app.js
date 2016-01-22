@@ -20698,6 +20698,9 @@ var _configureStore2 = _interopRequireDefault(_configureStore);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = window.App || {};
+App.get = function (name) {
+  return this._data[name];
+};
 
 require('./overhead/extend');
 var injectTapEventPlugin = require("react-tap-event-plugin");
@@ -20795,7 +20798,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":187,"./components/customer":189,"./components/dashboard":192,"./components/feed":193,"./components/product":195,"./components/product-show":194,"./components/sale":197,"./containers/page":201,"./models/customer":204,"./models/invoice":205,"./models/product":206,"./overhead/extend":207,"./store/configureStore":210,"./test/upload":211,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
+},{"./components/breadcrumb":187,"./components/customer":189,"./components/dashboard":192,"./components/feed":193,"./components/product":195,"./components/product-show":194,"./components/sale":197,"./containers/page":201,"./models/customer":204,"./models/invoice":205,"./models/product":207,"./overhead/extend":208,"./store/configureStore":211,"./test/upload":212,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -20847,7 +20850,7 @@ module.exports = _react2.default.createClass({
     }
     model.save().then((function (res, result, xhr) {
       var isSuccess = result === 'success';
-      this.props.hideModal(model);
+      this.props.hideModal(model, isSuccess);
     }).bind(this));
   },
   handleChange: function handleChange(e) {
@@ -22343,12 +22346,10 @@ module.exports = _react2.default.createClass({
         q: value
       })
     }).done(function () {
-      console.log('Nen vao day!!!');
       $container.removeClass('loading');
     });
   },
   handleClick: function handleClick(product) {
-    console.log('You chose product: ', product);
     this.props.notifyChooseAProduct(product);
   },
   render: function render() {
@@ -22477,18 +22478,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var SaleForm = require('./sale/form');
 var ProductList = require('./product/list');
-var ProductCollection = require('./../models/product').Collection;
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
   getInitialState: function getInitialState() {
-    return {
-      action: this.props.action || 'list',
-      id: this.props.invoiceId || 0,
-      productCollection: new ProductCollection()
-    };
-  },
-  componentWillMount: function componentWillMount() {
     var invoiceCollection = App.getModelCollection('invoice');
     var invoice = null;
     if (!this.props.invoiceId) {
@@ -22498,7 +22491,14 @@ module.exports = _react2.default.createClass({
       invoice = invoiceCollection.get(this.props.invoiceId);
       invoice.fetch();
     }
-    this.formView = _react2.default.createElement(SaleForm, { invoice: invoice, productCollection: this.state.productCollection });
+    return {
+      action: this.props.action || 'list',
+      invoice: invoice
+    };
+  },
+  componentWillMount: function componentWillMount() {
+    this.formView = _react2.default.createElement(SaleForm, {
+      invoice: this.state.invoice });
     this.listView = _react2.default.createElement(ProductList, {
       notifyChooseAProduct: this.notifyChooseAProduct,
       collection: App.getModelCollection('product') });
@@ -22511,8 +22511,7 @@ module.exports = _react2.default.createClass({
     });
   },
   notifyChooseAProduct: function notifyChooseAProduct(product) {
-    product.set('quality', (product.get('quality') || 0) + 1);
-    this.state.productCollection.push(product);
+    this.state.invoice.addItemWithProduct(product);
   },
 
   render: function render() {
@@ -22537,7 +22536,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/product":206,"./product/list":196,"./sale/form":198,"react":173,"react-dom":4}],198:[function(require,module,exports){
+},{"./product/list":196,"./sale/form":198,"react":173,"react-dom":4}],198:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22568,6 +22567,11 @@ module.exports = _react2.default.createClass({
   componentDidMount: function componentDidMount() {},
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
+    this.props.invoice.save().then((function (res, result, xhr) {
+      console.log('Save invoice');
+      console.log(res, result, xhr);
+    }).bind(this));
+    return false;
   },
   handleMessage: function handleMessage(e) {
     this.setState({
@@ -22576,7 +22580,7 @@ module.exports = _react2.default.createClass({
   },
   componentDidUpdate: function componentDidUpdate() {},
   getBackboneModels: function getBackboneModels() {
-    return [this.props.invoice, this.props.productCollection];
+    return [this.props.invoice];
   },
   searchPhoneHandle: function searchPhoneHandle(e) {
     var value = e.target.value;
@@ -22594,7 +22598,7 @@ module.exports = _react2.default.createClass({
 
   render: function render() {
     var invoice = this.props.invoice;
-    var customer = invoice.get('customer') ? invoice.getCustomer().toJSON() : {};
+    var customer = invoice.getCustomer();
     return _react2.default.createElement(
       'form',
       { ref: 'form', onSubmit: this.handleSubmit },
@@ -22604,7 +22608,7 @@ module.exports = _react2.default.createClass({
         'Invoice : #',
         invoice.get('id'),
         ' | Customer: ',
-        invoice.get('customer_id')
+        customer.get('id')
       ),
       _react2.default.createElement(
         'div',
@@ -22625,7 +22629,7 @@ module.exports = _react2.default.createClass({
               { className: 'ui icon input' },
               _react2.default.createElement('input', { ref: 'mobile_phone', name: 'mobile_phone',
                 onChange: this.searchPhoneHandle,
-                defaultValue: customer['mobile_phone'],
+                value: customer.get('mobile_phone'),
                 placeholder: Lang.get('customer.mobile_phone') }),
               _react2.default.createElement('i', { className: 'search icon' })
             )
@@ -22638,7 +22642,7 @@ module.exports = _react2.default.createClass({
               null,
               Lang.get('customer.name')
             ),
-            _react2.default.createElement('input', { ref: 'customer_name', name: 'customer_name', defaultValue: customer['name'],
+            _react2.default.createElement('input', { ref: 'customer_name', name: 'customer_name', value: customer.get('name'),
               placeholder: Lang.get('customer.name'), type: 'text' })
           )
         ),
@@ -22650,7 +22654,7 @@ module.exports = _react2.default.createClass({
             null,
             Lang.get('invoce.products')
           ),
-          _react2.default.createElement(SaleItems, { collection: this.props.productCollection })
+          _react2.default.createElement(SaleItems, { collection: this.props.invoice.getItems() })
         ),
         _react2.default.createElement(
           'div',
@@ -22747,7 +22751,7 @@ module.exports = _react2.default.createClass({
                 _react2.default.createElement(
                   'div',
                   { className: 'ui right aligned content' },
-                  this.getTotalPrice().format(),
+                  this.props.invoice.getTotalPrice().format(),
                   'đ'
                 )
               ),
@@ -22758,7 +22762,7 @@ module.exports = _react2.default.createClass({
                 _react2.default.createElement(
                   'div',
                   { className: 'ui right aligned content' },
-                  this.getDiscount().format(),
+                  this.props.invoice.getDiscount().format(),
                   'đ'
                 )
               ),
@@ -22769,7 +22773,7 @@ module.exports = _react2.default.createClass({
                 _react2.default.createElement(
                   'div',
                   { className: 'ui right aligned content' },
-                  this.getPaymentPrice().format(),
+                  this.props.invoice.getPaymentPrice().format(),
                   'đ'
                 )
               )
@@ -22858,24 +22862,6 @@ module.exports = _react2.default.createClass({
         )
       )
     );
-  },
-  getTotalPrice: function getTotalPrice() {
-    var value = 0;
-    this.props.productCollection.each(function (product, i) {
-      value += product.get('price') * product.get('quality');
-    });
-    return value;
-  },
-  getDiscount: function getDiscount() {
-    var value = 0;
-    /*this.props.productCollection.each(function(product, i){
-      value += product.get('price') * product.get('quality');
-    });*/
-    return value;
-  },
-  getPaymentPrice: function getPaymentPrice() {
-    var value = this.getTotalPrice() - this.getDiscount();
-    return value;
   },
   renderListAddresses: function renderListAddresses() {
     var invoice = this.props.invoice;
@@ -22977,23 +22963,21 @@ module.exports = _react2.default.createClass({
       )
     );
   },
-  handleItem: function handleItem(product, action) {
-    var currentQty = product.get('quality') || 0;
+  handleItem: function handleItem(item, action) {
     if (action === 'incr') {
-      product.set('quality', ++currentQty);
-      this.props.collection.push(product);
+      item.incr();
+      this.props.collection.push(item);
     } else if (action === 'decr') {
-      if (currentQty > 0) {
-        product.set('quality', --currentQty);
-        this.props.collection.push(product);
-      }
+      item.decr();
+      this.props.collection.push(item);
     } else if (action === 'remove') {
-      this.props.collection.remove(product);
+      this.props.collection.remove(item);
     }
   },
   renderListProduct: function renderListProduct() {
     var rows = [];
-    this.props.collection.each((function (product, i) {
+    this.props.collection.each((function (item, i) {
+      var product = item.get('product');
       rows.push(_react2.default.createElement(
         'tr',
         { key: i },
@@ -23014,26 +22998,26 @@ module.exports = _react2.default.createClass({
         _react2.default.createElement(
           'td',
           null,
-          product.get('quality')
+          item.get('quality')
         ),
         _react2.default.createElement(
           'td',
           null,
-          product.get('price')
+          item.get('price')
         ),
         _react2.default.createElement(
           'td',
           null,
-          (product.get('quality') * product.get('price')).format()
+          item.getPayment().format()
         ),
         _react2.default.createElement(
           'td',
           null,
-          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, product, "incr"),
+          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, item, "incr"),
             className: 'add circle icon' }),
-          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, product, "decr"),
+          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, item, "decr"),
             className: 'minus circle icon' }),
-          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, product, "remove"),
+          _react2.default.createElement('i', { onClick: this.handleItem.bind(this, item, "remove"),
             className: 'remove circle icon' })
         )
       ));
@@ -23143,11 +23127,13 @@ module.exports = _react2.default.createClass({
       )
     );
   },
-  hideModal: function hideModal(model) {
-    this.props.collection.push(model);
+  hideModal: function hideModal(model, isSaved) {
     var modal = this.refs.modal;
     $(modal).modal('hide');
-    this.forceUpdate();
+    if (isSaved) {
+      this.props.collection.push(model);
+      this.forceUpdate();
+    }
   },
   handleAddAnAddress: function handleAddAnAddress(e) {
     var model = this.props.collection.create({}, { wait: true });
@@ -23371,6 +23357,7 @@ exports.Collection = Collection;
 'use strict';
 
 var Customer = require('./customer').Model;
+var ItemCollection = require('./invoice/item').Collection;
 var URL = '/sale/invoice';
 var Model = Backbone.Model.extend({
   urlRoot: URL,
@@ -23379,11 +23366,49 @@ var Model = Backbone.Model.extend({
     if (this.get('customer') instanceof Customer) {
       return this.get('customer');
     }
-    return new Customer(this.get('customer'));
+    var customer = new Customer(this.get('customer'));
+    this.set('customer', customer);
+    return customer;
   },
   setCustomer: function setCustomer(customer) {
     this.set('customer', new Customer(customer));
     return this;
+  },
+  setItems: function setItems(items) {
+    var itemCollection = new ItemCollectionitems();
+    this.set('items', itemCollection);
+    return this;
+  },
+  getItems: function getItems() {
+    if (this.get('items') instanceof ItemCollection) {
+      return this.get('items');
+    }
+    var items = new ItemCollection(this.get('items'));
+    this.set('items', items);
+    return items;
+  },
+  addItemWithProduct: function addItemWithProduct(product) {
+    var items = this.getItems();
+    items.addItemWithProduct(product);
+    return this;
+  },
+  getTotalPrice: function getTotalPrice() {
+    var value = 0;
+    this.getItems().each(function (item, i) {
+      value += item.getPayment();
+    });
+    return value;
+  },
+  getDiscount: function getDiscount() {
+    var value = 0;
+    /*this.getItems().each(function(item, i){
+      value += 0;
+    });*/
+    return value;
+  },
+  getPaymentPrice: function getPaymentPrice() {
+    var value = this.getTotalPrice() - this.getDiscount();
+    return value;
   }
 });
 
@@ -23395,15 +23420,75 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./customer":204}],206:[function(require,module,exports){
+},{"./customer":204,"./invoice/item":206}],206:[function(require,module,exports){
 'use strict';
 
+var URL = '/sale/item';
 var Model = Backbone.Model.extend({
-  initialize: function initialize() {}
+  urlRoot: URL,
+  initialize: function initialize() {},
+  getProduct: function getProduct() {
+    this.get('product');
+  },
+  getPrice: function getPrice() {
+    return this.get('price');
+  },
+  getPayment: function getPayment() {
+    return this.get('price') * this.get('quality');
+  },
+  incr: function incr() {
+    this.set('quality', this.get('quality') + 1);
+    return this;
+  },
+  decr: function decr() {
+    if (this.get('quality') > 0) {
+      this.set('quality', this.get('quality') - 1);
+    }
+    return this;
+  }
 });
 
 var Collection = Backbone.Collection.extend({
-  url: '/stock/product',
+  url: URL,
+  model: Model,
+  parse: function parse(response) {
+    return response.data;
+  },
+  addItemWithProduct: function addItemWithProduct(product) {
+    var item = this.get(product.id);
+    if (item) {
+      item.incr();
+    } else {
+      item = new Model({
+        id: product.id,
+        price: product.get('price'),
+        quality: 1,
+        product: product
+      });
+    }
+    this.push(item);
+    return this;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
+
+},{}],207:[function(require,module,exports){
+'use strict';
+
+var URL = '/stock/product';
+var Model = Backbone.Model.extend({
+  rootUrl: URL,
+  initialize: function initialize() {},
+  setItem: function setItem(item) {
+    this.set('item', item);
+    return this;
+  }
+});
+
+var Collection = Backbone.Collection.extend({
+  url: URL,
   model: Model,
   parse: function parse(response) {
     return response.data;
@@ -23413,8 +23498,14 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 'use strict';
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': App.get('csrf_token')
+  }
+});
 
 $.fn.serializeObject = function () {
   var o = {};
@@ -23439,7 +23530,7 @@ Number.prototype.format = function (n, x, s, c) {
   return (c ? num.replace(',', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || '.'));
 };
 
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23467,7 +23558,7 @@ function counter() {
   }
 }
 
-},{"../actions/counter":184}],209:[function(require,module,exports){
+},{"../actions/counter":184}],210:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23488,7 +23579,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./counter":208,"redux":176}],210:[function(require,module,exports){
+},{"./counter":209,"redux":176}],211:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23530,7 +23621,7 @@ function configureStore(initialState) {
   return store;
 }
 
-},{"../reducers":209,"redux":176,"redux-thunk":174}],211:[function(require,module,exports){
+},{"../reducers":210,"redux":176,"redux-thunk":174}],212:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
