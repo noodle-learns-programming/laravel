@@ -20,7 +20,7 @@ var Model = Backbone.Model.extend({
   },
 
   setItems(items){
-    var itemCollection = new ItemCollectionitems();
+    var itemCollection = new ItemCollection(items);
     this.set('items', itemCollection);
     return this;
   },

@@ -22977,7 +22977,7 @@ module.exports = _react2.default.createClass({
   renderListProduct: function renderListProduct() {
     var rows = [];
     this.props.collection.each((function (item, i) {
-      var product = item.get('product');
+      var product = item.getProduct();
       rows.push(_react2.default.createElement(
         'tr',
         { key: i },
@@ -23375,7 +23375,7 @@ var Model = Backbone.Model.extend({
     return this;
   },
   setItems: function setItems(items) {
-    var itemCollection = new ItemCollectionitems();
+    var itemCollection = new ItemCollection(items);
     this.set('items', itemCollection);
     return this;
   },
@@ -23385,7 +23385,7 @@ var Model = Backbone.Model.extend({
     }
     var items = new ItemCollection(this.get('items'));
     this.set('items', items);
-    return items;
+    return this.get('items');
   },
   addItemWithProduct: function addItemWithProduct(product) {
     var items = this.getItems();
@@ -23423,12 +23423,18 @@ exports.Collection = Collection;
 },{"./customer":204,"./invoice/item":206}],206:[function(require,module,exports){
 'use strict';
 
+var Product = require('./../product').Model;
 var URL = '/sale/item';
 var Model = Backbone.Model.extend({
   urlRoot: URL,
   initialize: function initialize() {},
   getProduct: function getProduct() {
-    this.get('product');
+    if (this.get('product') instanceof Product) {
+      return this.get('product');
+    }
+    var product = new Product(this.get('product'));
+    this.set('product', product);
+    return this.get('product');
   },
   getPrice: function getPrice() {
     return this.get('price');
@@ -23474,7 +23480,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],207:[function(require,module,exports){
+},{"./../product":207}],207:[function(require,module,exports){
 'use strict';
 
 var URL = '/stock/product';
