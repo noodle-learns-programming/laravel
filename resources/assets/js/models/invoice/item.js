@@ -70,7 +70,11 @@ var Collection = Backbone.Collection.extend({
   push(model)
   {
     Backbone.Collection.prototype.push.apply(this, arguments);
-    console.log('item get this.getInvoice(): ', this.getInvoice());
+    this.getInvoice().trigger("change:items");
+  },
+  remove(model)
+  {
+    Backbone.Collection.prototype.remove.apply(this, arguments);
     this.getInvoice().trigger("change:items");
   }
 });

@@ -1,13 +1,6 @@
 import React from 'react';
-var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 
 module.exports = React.createClass({
-  mixins : [BackboneModelMixin],
-
-  getBackboneModels(){
-    return [];
-  },
-
   render() {
     return (
       <table className="ui black table">

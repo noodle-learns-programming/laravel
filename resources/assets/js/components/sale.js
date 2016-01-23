@@ -10,7 +10,6 @@ module.exports = React.createClass({
     if( !this.props.invoiceId ) {
       invoice= invoiceCollection.create({}, {wait: true});
     } else {
-      console.log('this.props.invoiceId:', this.props.invoiceId);
       invoiceCollection.add({id: this.props.invoiceId});
       invoice = invoiceCollection.get(this.props.invoiceId);
       invoice.fetch();
