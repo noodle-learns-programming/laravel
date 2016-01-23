@@ -11,9 +11,7 @@ module.exports = React.createClass({
   getInitialState() {
     var customer = this.props.invoice.getCustomer();
     return {
-      showMessage     : false,
-      customer_phone  : customer.get('mobile_phone'),
-      customer_name   : customer.get('name')
+      showMessage     : false
     };
   },
 
@@ -28,12 +26,8 @@ module.exports = React.createClass({
           title   : 'mobile_phone',
           description: 'name'
         },
-        minCharacters : 3,
+        minCharacters : 4,
         onSelect: function(result, response) {
-          this.setState({
-            customer_phone: result.mobile_phone,
-            customer_name : result.name
-          });
           this.props.invoice.setCustomer(result);
         }.bind(this)
       })
@@ -56,7 +50,10 @@ module.exports = React.createClass({
     });
   },
 
-  componentDidUpdate() {
+  searchCustomerHandle(e){
+    var invoice   = this.props.invoice;
+    invoice.setCustomer({});
+    this.forceUpdate();
   },
 
   getBackboneModels(){
@@ -72,6 +69,7 @@ module.exports = React.createClass({
 
   render: function() {
     var invoice   = this.props.invoice;
+    var customer  = invoice.getCustomer();
     return (<form ref="form" onSubmit={this.handleSubmit}>
         <div>Invoice : #{invoice.get('id')}</div>
         <div className="ui form">
@@ -82,7 +80,8 @@ module.exports = React.createClass({
                 <div className="ui icon input">
                   <input className="prompt"
                     ref="customer_phone" name="customer_phone" 
-                    value={this.state.customer_phone}
+                    value={customer.get('mobile_phone')}
+                    onChange={this.searchCustomerHandle}
                     placeholder={Lang.get('customer.mobile_phone')} />
                   <i className="search icon"></i>
                 </div>
@@ -91,7 +90,7 @@ module.exports = React.createClass({
             <div className="required field">
               <label>{ Lang.get('customer.name') }</label>
               <input ref="customer_name" name="customer_name" 
-                value={this.state.customer_name}
+                value={customer.get('name')}
                 placeholder={Lang.get('customer.name')} type="text" />
             </div>
           </div>
