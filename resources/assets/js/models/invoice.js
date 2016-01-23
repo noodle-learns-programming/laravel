@@ -1,10 +1,16 @@
 var Customer       = require('./customer').Model;
 var ItemCollection = require('./invoice/item').Collection;
+var ItemModel      = require('./invoice/item').Model;
 var URL   = '/sale/invoice';
 var Model = Backbone.Model.extend({
   urlRoot   : URL,
+  /*defaults : {
+    items : new ItemCollection()
+  },*/
   initialize() {
-
+    var items = new ItemCollection();
+    items.setInvoice(this);
+    this.set('items', items);
   },
   getCustomer(){
     if( this.get('customer') instanceof Customer) {
@@ -19,32 +25,24 @@ var Model = Backbone.Model.extend({
     return this;
   },
 
-  setItems(items){
-    var itemCollection = new ItemCollection(items);
-    this.set('items', itemCollection);
-    return this;
-  },
-
   getItems()
   {
-    if( this.get('items') instanceof ItemCollection) {
-      return this.get('items'); 
-    }
-    var items = new ItemCollection(this.get('items'));
-    this.set('items', items);
     return this.get('items');
   },
 
   addItemWithProduct(product)
   {
-    var items = this.getItems();
-        items.addItemWithProduct(product);
+    var items = this.get('items');
+      items.addItemWithProduct(product);
     return this;
   },
 
   getTotalPrice()
   {
     var value = 0;
+    if( !this.getItems() ){
+      return value;
+    }
     this.getItems().each(function(item, i){
       value += item.getPayment();
     });
@@ -53,6 +51,10 @@ var Model = Backbone.Model.extend({
 
   getDiscount()
   {
+    var value = 0;
+    if( !this.getItems() ){
+      return value;
+    }
     var value = 0;
     /*this.getItems().each(function(item, i){
       value += 0;
@@ -64,6 +66,22 @@ var Model = Backbone.Model.extend({
   {
     var value = this.getTotalPrice() - this.getDiscount();
     return value;
+  },
+
+  set(attributes, options)
+  {
+    if( attributes.hasOwnProperty('items') )
+    {
+      var items = this.get('items');
+      if( !(items instanceof ItemCollection) ){
+        items = new ItemCollection();
+      }
+      _.each(attributes['items'], function(item){
+        items.push(new ItemModel(item));
+      });
+      attributes['items'] = items;
+    }
+    return Backbone.Model.prototype.set.call(this, attributes, options);
   }
 });
 

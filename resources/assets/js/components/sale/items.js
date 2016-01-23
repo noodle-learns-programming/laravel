@@ -5,7 +5,7 @@ module.exports = React.createClass({
   mixins : [BackboneModelMixin],
 
   getBackboneModels(){
-    return [this.props.collection];
+    return [];
   },
 
   render() {
@@ -20,7 +20,7 @@ module.exports = React.createClass({
               <th> </th>
             </tr>
         </thead>
-        <tbody>{this.renderListProduct()}</tbody>
+        <tbody>{this.renderListItems()}</tbody>
       </table>
     );
   },
@@ -35,11 +35,10 @@ module.exports = React.createClass({
     } else if( action === 'remove' ){
       this.props.collection.remove(item);
     }
-    this.forceUpdate();
     return false;
   },
 
-  renderListProduct(){
+  renderListItems(){
     var rows = [];
     this.props.collection.each(function(item, i){
       var product = item.getProduct();

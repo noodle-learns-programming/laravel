@@ -51,7 +51,7 @@ var Collection = Backbone.Collection.extend({
       item.incr();
     } else {
       item = new Model({
-        id_product  : product.id,
+        product_id  : product.id,
         price       : product.get('price'),
         quality     : 1,
         product     : product
@@ -59,6 +59,19 @@ var Collection = Backbone.Collection.extend({
     }
     this.push(item);
     return this;
+  },
+  setInvoice(invoice){
+    this._invoice = invoice;
+    return this;
+  },
+  getInvoice(){
+    return this._invoice;
+  },
+  push(model)
+  {
+    Backbone.Collection.prototype.push.apply(this, arguments);
+    console.log('item get this.getInvoice(): ', this.getInvoice());
+    this.getInvoice().trigger("change:items");
   }
 });
 

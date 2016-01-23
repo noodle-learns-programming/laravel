@@ -10,21 +10,17 @@ module.exports = React.createClass({
     if( !this.props.invoiceId ) {
       invoice= invoiceCollection.create({}, {wait: true});
     } else {
+      console.log('this.props.invoiceId:', this.props.invoiceId);
       invoiceCollection.add({id: this.props.invoiceId});
       invoice = invoiceCollection.get(this.props.invoiceId);
       invoice.fetch();
     }
+    invoice.on('change:items', function(){
+      this.forceUpdate();
+    }.bind(this));
     return {
       invoice     : invoice
     };
-  },
-
-  componentWillMount() {
-    this.formView = <SaleForm
-      invoice={this.state.invoice} />;
-    this.listView = <ProductList 
-      notifyChooseAProduct={this.notifyChooseAProduct}
-      collection={App.getModelCollection('product')} />;
   },
 
   componentDidUpdate() {
@@ -34,6 +30,7 @@ module.exports = React.createClass({
     this.state.invoice.addItemWithProduct(
       product
     );
+    this.refs.form.refresh();
   },
 
   render: function() {
@@ -41,10 +38,12 @@ module.exports = React.createClass({
       <div className="ui equal width grid">
         <div className="equal width row">
           <div className="column">
-            {this.formView}
+            <SaleForm ref="form" invoice={this.state.invoice} />
           </div>
           <div className="column">
-            {this.listView}
+            <ProductList 
+              notifyChooseAProduct={this.notifyChooseAProduct}
+              collection={App.getModelCollection('product')} />
           </div>
         </div>
       </div>

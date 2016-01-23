@@ -37,7 +37,14 @@ module.exports = React.createClass({
   },
 
   getBackboneModels(){
-    return [this.props.invoice];
+    return [
+      this.props.invoice
+    ];
+  },
+
+  refresh()
+  {
+    this.forceUpdate();
   },
 
   searchPhoneHandle(e){
