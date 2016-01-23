@@ -80,7 +80,9 @@ module.exports = React.createClass({
               <label>{ Lang.get('customer.mobile_phone') }</label>
               <div ref="customer_phone_search" className="ui search">
                 <div className="ui icon input">
-                  <input className="prompt" ref="customer_phone" name="customer_phone" 
+                  <input className="prompt"
+                    ref="customer_phone" name="customer_phone" 
+                    value={this.state.customer_phone}
                     placeholder={Lang.get('customer.mobile_phone')} />
                   <i className="search icon"></i>
                 </div>
@@ -88,7 +90,8 @@ module.exports = React.createClass({
             </div>
             <div className="required field">
               <label>{ Lang.get('customer.name') }</label>
-              <input ref="customer_name" name="customer_name" value={this.state.customer_name}
+              <input ref="customer_name" name="customer_name" 
+                value={this.state.customer_name}
                 placeholder={Lang.get('customer.name')} type="text" />
             </div>
           </div>

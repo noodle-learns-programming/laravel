@@ -69,7 +69,7 @@ class Invoice extends Model
     foreach($arrItems as $itemData)
     {
       $item    = new Item($itemData);
-      $product = Product::find($itemData['id']);
+      $product = Product::find($itemData['product_id']);
       $item->product()->associate($product);
       /**
        |----------------------------------------------
@@ -81,10 +81,13 @@ class Invoice extends Model
        */
       $item->invoice()->associate($this);
       /***********************************************/
-      $item->firstOrNew([
+      if( !empty($itemData['id']) ) {
+        unset($itemData['id']);
+      }
+      $item->updateOrCreate([
         'product_id'  => $product->id,
         'invoice_id'  => $this->id
-      ])->fill($itemData)->save();
+      ], $itemData);
     }
     return $this;
   }
