@@ -35,6 +35,8 @@ module.exports = React.createClass({
     } else if( action === 'remove' ){
       this.props.collection.remove(item);
     }
+    this.forceUpdate();
+    return false;
   },
 
   renderListProduct(){

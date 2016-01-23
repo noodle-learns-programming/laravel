@@ -34,7 +34,9 @@ class InvoiceController extends Controller
 
   public function show($id)
   {
-    $invoice = Invoice::with('customer')->with('items.product')->find($id);
+    $invoice = Invoice::with('customer.addresses')
+      ->with('items.product')
+      ->find($id);
     return $invoice;
   }
 

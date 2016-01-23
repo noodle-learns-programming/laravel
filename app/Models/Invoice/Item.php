@@ -8,6 +8,14 @@ class Item extends Model
 {
   protected $table = 'invoice_items';
 
+  protected $casts = [
+    'invoice_id' => 'integer',
+    'product_id' => 'integer',
+    'product_id' => 'integer',
+    'quality'    => 'integer',
+    'price'      => 'float'
+  ];
+
   protected $fillable = [
     'invoice_id',
     'product_id',

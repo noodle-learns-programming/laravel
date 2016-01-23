@@ -21,7 +21,6 @@ module.exports = React.createClass({
     e.preventDefault();
     this.props.invoice.save().
       then(function(res, result, xhr){
-        console.log('Save invoice');
         console.log(res, result, xhr);
       }.bind(this))
     ;
@@ -160,29 +159,5 @@ module.exports = React.createClass({
         </div>
       </form>
     );
-  },
-  renderListAddresses(){
-    var invoice   = this.props.invoice;
-    var rows = [];
-    if( invoice.get('customer') )
-    {
-      var customer  = invoice.get('customer');
-      customer.getAddresses().each(function(address, i){
-        rows.push(
-          <tr key={i}>
-            <td>{address.get('address')}</td>
-            <td>{address.get('is_active')}</td>
-          </tr>
-        );
-      });
-    }
-    if( !rows.length ){
-      return (
-        <tr>
-          <td colSpan="2">{Lang.get('customer.addresses_list_empty')}</td>
-        </tr>
-      );
-    }
-    return rows;
   }
 });
