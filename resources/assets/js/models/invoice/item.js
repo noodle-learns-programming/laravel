@@ -69,13 +69,23 @@ var Collection = Backbone.Collection.extend({
   },
   push(model)
   {
+    /**
+     |------------------------------------------------------
+     | Custom event - when items of invoice is changed.
+     |------------------------------------------------------
+     */
     Backbone.Collection.prototype.push.apply(this, arguments);
-    this.getInvoice().trigger("change:items");
+    this.getInvoice().trigger("items-changed");
   },
   remove(model)
   {
+    /**
+     |------------------------------------------------------
+     | Custom event - when items of invoice is changed.
+     |------------------------------------------------------
+     */
     Backbone.Collection.prototype.remove.apply(this, arguments);
-    this.getInvoice().trigger("change:items");
+    this.getInvoice().trigger("items-changed");
   }
 });
 

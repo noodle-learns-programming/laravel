@@ -14,7 +14,12 @@ module.exports = React.createClass({
       invoice = invoiceCollection.get(this.props.invoiceId);
       invoice.fetch();
     }
-    invoice.on('change:items', function(){
+    /**
+     |------------------------------------------------------
+     | Custom event - when items of invoice is changed.
+     |------------------------------------------------------
+     */
+    invoice.on('items-changed', function(){
       this.forceUpdate();
     }.bind(this));
     return {
