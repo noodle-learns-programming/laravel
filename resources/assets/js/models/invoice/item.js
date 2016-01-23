@@ -51,10 +51,10 @@ var Collection = Backbone.Collection.extend({
       item.incr();
     } else {
       item = new Model({
-        id      : product.id,
-        price   : product.get('price'),
-        quality : 1,
-        product : product
+        id_product  : product.id,
+        price       : product.get('price'),
+        quality     : 1,
+        product     : product
       });
     }
     this.push(item);
