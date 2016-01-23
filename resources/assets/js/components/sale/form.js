@@ -9,12 +9,35 @@ module.exports = React.createClass({
   mixins : [FileUploadMixin, BackboneModelMixin],
   filename  : null,
   getInitialState() {
+    var customer = this.props.invoice.getCustomer();
     return {
-      showMessage : false
+      showMessage     : false,
+      customer_phone  : customer.get('mobile_phone'),
+      customer_name   : customer.get('name')
     };
   },
 
   componentDidMount() {
+    $(ReactDOM.findDOMNode(this.refs.customer_phone_search))
+      .search({
+        apiSettings: {
+          url: '/sale/customer/search?q={query}'
+        },
+        fields: {
+          results : 'data',
+          title   : 'mobile_phone',
+          description: 'name'
+        },
+        minCharacters : 3,
+        onSelect: function(result, response) {
+          this.setState({
+            customer_phone: result.mobile_phone,
+            customer_name : result.name
+          });
+          this.props.invoice.setCustomer(result);
+        }.bind(this)
+      })
+    ;
   },
 
   handleSubmit(e){
@@ -47,40 +70,25 @@ module.exports = React.createClass({
     this.forceUpdate();
   },
 
-  searchPhoneHandle(e){
-    var value = e.target.value;
-    $(e.target).parent().addClass('loading');
-    var customerCollection = App.getModelCollection('customer');
-    customerCollection.search(value, function(res){
-      var customer = res.data[0];
-      $(e.target).parent().removeClass('loading');
-      if( customer ) {
-        this.props.invoice.setCustomer(customer);
-        this.refs.customer_name.value = customer['name'];
-      }
-    }.bind(this));
-  },
-
   render: function() {
     var invoice   = this.props.invoice;
-    var customer  = invoice.getCustomer();
     return (<form ref="form" onSubmit={this.handleSubmit}>
-        <div>Invoice : #{invoice.get('id')} | Customer: {customer.get('id')}</div>
+        <div>Invoice : #{invoice.get('id')}</div>
         <div className="ui form">
           <div className="two fields">
             <div className="required field">
               <label>{ Lang.get('customer.mobile_phone') }</label>
-              <div className="ui icon input">
-                <input ref="mobile_phone" name="mobile_phone" 
-                  onChange={this.searchPhoneHandle}
-                  value={customer.get('mobile_phone')}
-                  placeholder={Lang.get('customer.mobile_phone')} />
-                <i className="search icon"></i>
+              <div ref="customer_phone_search" className="ui search">
+                <div className="ui icon input">
+                  <input className="prompt" ref="customer_phone" name="customer_phone" 
+                    placeholder={Lang.get('customer.mobile_phone')} />
+                  <i className="search icon"></i>
+                </div>
               </div>
             </div>
             <div className="required field">
               <label>{ Lang.get('customer.name') }</label>
-              <input ref="customer_name" name="customer_name" value={customer.get('name')}
+              <input ref="customer_name" name="customer_name" value={this.state.customer_name}
                 placeholder={Lang.get('customer.name')} type="text" />
             </div>
           </div>
