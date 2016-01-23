@@ -2,6 +2,7 @@ var Product = require('./../product').Model;
 var URL = '/sale/item';
 var Model = Backbone.Model.extend({
   urlRoot : URL,
+  idAttribute : 'product_id',
   initialize() {
 
   },

@@ -15,7 +15,6 @@ module.exports = React.createClass({
       invoice.fetch();
     }
     return {
-      action      : this.props.action || 'list',
       invoice     : invoice
     };
   },
@@ -29,13 +28,6 @@ module.exports = React.createClass({
   },
 
   componentDidUpdate() {
-  },
-
-  handleMenu(e) {
-    var view = $(e.currentTarget).data('view');
-    this.setState({
-      action : view
-    });
   },
 
   notifyChooseAProduct(product){
