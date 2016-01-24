@@ -82,7 +82,7 @@ class InvoiceController extends Controller
      */
     $invoice->save();
 
-    return $invoice;
+    redirect()->route('sale.invoice.show', [$invoice], 302);
   }
 
   public function update($id, Request $request)
@@ -114,8 +114,6 @@ class InvoiceController extends Controller
      | Save to Db
      |-----------------------------------------------------
      */
-    $invoice->save();
-
-    return $invoice;
+    redirect()->route('sale.invoice.show', [$invoice], 302);
   }
 }
