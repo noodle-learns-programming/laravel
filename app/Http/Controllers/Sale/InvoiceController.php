@@ -30,6 +30,7 @@ class InvoiceController extends Controller
   {
     $invoices = Invoice::with('customer')
       ->with('items.product')
+      ->orderBy('id', 'desc')
       ->paginate(10);
     return $invoices;
   }
