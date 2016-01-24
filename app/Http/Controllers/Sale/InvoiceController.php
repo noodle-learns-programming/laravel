@@ -28,7 +28,9 @@ class InvoiceController extends Controller
 
   public function index()
   {
-    $invoices = Invoice::with('customer')->paginate(10);
+    $invoices = Invoice::with('customer')
+      ->with('items.product')
+      ->paginate(10);
     return $invoices;
   }
 

@@ -4,13 +4,21 @@ var ItemModel      = require('./invoice/item').Model;
 var URL   = '/sale/invoice';
 var Model = Backbone.Model.extend({
   urlRoot   : URL,
-  /*defaults : {
-    items : new ItemCollection()
-  },*/
+  defaults : {
+    items : function(){
+      return new ItemCollection().setInvoice(this)
+    }
+  },
   initialize() {
-    var items = new ItemCollection();
+    /**
+     |-----------------------------------------------
+     | Xu ly nhu the nay la sai, vi no mau thuan voi
+     | cai ham set ben duoi.
+     |-----------------------------------------------
+     */
+    /*var items = new ItemCollection();
     items.setInvoice(this);
-    this.set('items', items);
+    this.set('items', items);*/
   },
   getCustomer(){
     if( this.get('customer') instanceof Customer) {
@@ -75,6 +83,7 @@ var Model = Backbone.Model.extend({
       var items = this.get('items');
       if( !(items instanceof ItemCollection) ){
         items = new ItemCollection();
+        items.setInvoice(this);
       }
       _.each(attributes['items'], function(item){
         items.push(new ItemModel(item));

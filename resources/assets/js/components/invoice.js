@@ -33,6 +33,9 @@ module.exports = React.createClass({
               <tr>
                 <th>{Lang.get('invoice.id')}</th>
                 <th>{Lang.get('invoice.customer')}</th>
+                <th>{Lang.get('invoice.total')}</th>
+                <th>{Lang.get('invoice.discount')}</th>
+                <th>{Lang.get('invoice.payment')}</th>
               </tr>
           </thead>
           <tbody>{row}</tbody>
@@ -50,6 +53,9 @@ module.exports = React.createClass({
             <a href={"#sale/"+invoice.get('id')}>#{invoice.get('id')}</a>
           </td>
           <td>{invoice.getCustomer().get('name')}</td>
+          <td>{invoice.getTotalPrice()}</td>
+          <td>{invoice.getDiscount()}</td>
+          <td>{invoice.getPaymentPrice()}</td>
         </tr>
       ));
     });
