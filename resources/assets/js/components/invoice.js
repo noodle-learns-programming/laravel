@@ -53,9 +53,9 @@ module.exports = React.createClass({
             <a href={"#sale/"+invoice.get('id')}>#{invoice.get('id')}</a>
           </td>
           <td>{invoice.getCustomer().get('name')}</td>
-          <td>{invoice.getTotalPrice()}</td>
-          <td>{invoice.getDiscount()}</td>
-          <td>{invoice.getPaymentPrice()}</td>
+          <td className="right aligned">{invoice.getTotalPrice().format()}đ</td>
+          <td className="right aligned">{invoice.getDiscount().format()}đ</td>
+          <td className="right aligned">{invoice.getPaymentPrice().format()}đ</td>
         </tr>
       ));
     });
