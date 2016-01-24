@@ -19,8 +19,8 @@ return [
     'stock_audit'           => 'Kiểm kê',
     'stock_show_product'    => 'Danh sách sản phẩm',
 
-    'sale'                  => 'Quản lý bán hàng',
-    'sale_invoice'          => 'Đơn hàng',
+    'sale'                  => 'Bán hàng',
+    'invoice'               => 'Đơn hàng',
     'sale_total_revenue'    => 'Doanh số',
     'sale_customer'         => 'Khách hàng',
 

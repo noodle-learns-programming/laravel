@@ -18,6 +18,7 @@ var Dashboard   = require('./components/dashboard');
 var Product     = require('./components/product');
 var ProductShow = require('./components/product-show');
 var Sale        = require('./components/sale');
+var Invoice     = require('./components/invoice');
 var Customer    = require('./components/customer');
 //Model
 App.Collection  = {
@@ -63,16 +64,17 @@ App.run = function(){
 };
 const store   = configureStore();
 App.Router = Backbone.Router.extend({
-  routes: {
+    routes: {
     '' : 'dashboard',
     'stock/product' : 'product',
     'stock/show-product' : 'productShow',
-    'sale/invoice(/:id)' : 'sale',
+    'invoice' : 'invoice',
+    'sale(/:id)' : 'sale',
     'sale/customer(/:action)(/:id)' : 'customer',
     'test/redux' : '_redux',
     'test/upload' : '_upload',
-    'test/material-ui' : '_meterial',
-  },
+    'test/material-ui' : '_meterial'
+    },
   dashboard(){
     ReactDOM.render(<Dashboard />, document.getElementById('main'));
   },
@@ -81,6 +83,9 @@ App.Router = Backbone.Router.extend({
   },
   productShow(){
     ReactDOM.render(<ProductShow collection={App.getModelCollection('product')}/>, document.getElementById('main'));
+  },
+  invoice(){
+    ReactDOM.render(<Invoice collection={App.getModelCollection('invoice')}/>, document.getElementById('main'));
   },
   sale(id){
     ReactDOM.render(<Sale invoiceId={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));

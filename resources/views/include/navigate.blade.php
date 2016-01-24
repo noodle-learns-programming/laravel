@@ -2,9 +2,18 @@
     <div class="item">
         <div class="header">{{ trans('common.sale') }}</div>
         <div class="menu">
-            <a class="item" href="#sale/invoice">{{ trans('common.sale_invoice') }}</a>
-            <a class="item">{{ trans('common.sale_total_revenue') }}</a>
-            <a class="item" href="#sale/customer">{{ trans('common.sale_customer') }}</a>
+            <a class="item" href="#invoice">
+                {{ trans('common.invoice') }}
+            </a>
+            <a class="item" href="#sale">
+                {{ trans('common.sale') }}
+            </a>
+            <a class="item">
+                {{ trans('common.sale_total_revenue') }}
+            </a>
+            <a class="item" href="#sale/customer">
+                {{ trans('common.sale_customer') }}
+            </a>
         </div>
     </div>
     <div class="item">

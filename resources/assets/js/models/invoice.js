@@ -87,7 +87,14 @@ var Model = Backbone.Model.extend({
 
 var Collection = Backbone.Collection.extend({
   url   : URL,
-  model : Model
+  model : Model,
+  parse(response) {
+    try {
+      return response.data;
+    } catch( e ) {
+      
+    }
+  }
 });
 
 
