@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('brand_id')->unsigned();
+            $table->integer('stock_id')->unsigned();
             $table->integer('supplier_id')->unsigned();
             $table->boolean('is_active');
             $table->integer('unit')->unsigned();
