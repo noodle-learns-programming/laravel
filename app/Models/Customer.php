@@ -24,7 +24,6 @@ class Customer extends Model
   {
     return [
       'name'          => 'required',
-      'gender'        => 'required',
       'mobile_phone'  => 'required'
     ];
   }

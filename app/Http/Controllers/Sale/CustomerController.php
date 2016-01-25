@@ -42,9 +42,11 @@ class CustomerController extends Controller
       return response()->json($validator,'404');
     }
     $input    = $request->all();
-    $result   = $customer->create($input);
+    $result   = $customer->updateOrCreate([
+      'mobile_phone' => $input['mobile_phone']
+    ],$input);
 
-    return response()->json($result);
+    return $result;
   }
 
   public function update($id, Request $request)

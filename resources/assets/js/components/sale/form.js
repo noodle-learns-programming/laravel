@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 var FileUploadMixin     = require('./../../mixins').FileUploadMixin;
 var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
 var SaleItems  = require('./items');
+var Customer   = require('./../../models/customer').Model;
 var ShippingAddresses  = require('./shipping-addresses');
 
 module.exports = React.createClass({
@@ -28,7 +29,9 @@ module.exports = React.createClass({
         },
         minCharacters : 4,
         onSelect: function(result, response) {
-          this.props.invoice.setCustomer(result);
+          if( !_.isEmpty(result) ) {
+            this.props.invoice.setCustomer(result);
+          }
         }.bind(this)
       })
     ;
@@ -36,7 +39,9 @@ module.exports = React.createClass({
 
   handleSubmit(e){
     e.preventDefault();
-    this.props.invoice.save().
+    var invoice   = this.props.invoice;
+    var customer  = invoice.getCustomer();
+    invoice.save().
       then(function(res, result, xhr){
         console.log(res, result, xhr);
       }.bind(this))
@@ -52,8 +57,18 @@ module.exports = React.createClass({
 
   searchCustomerHandle(e){
     var invoice   = this.props.invoice;
-    invoice.setCustomer({});
-    this.forceUpdate();
+    var phone     = this.refs.customer_phone.value || '';
+    var name      = this.refs.customer_name.value || '';
+    if( phone.length >= 10 && name.length )
+    {
+      var c = new Customer({
+        'name'          : name,
+        'mobile_phone'  : phone
+      });
+      c.save().then(function(res, result, xhr){
+        invoice.setCustomer(c);
+      });
+    }
   },
 
   getBackboneModels(){
@@ -81,7 +96,7 @@ module.exports = React.createClass({
                   <input className="prompt"
                     ref="customer_phone" name="customer_phone" 
                     value={customer.get('mobile_phone')}
-                    onChange={this.searchCustomerHandle}
+                    onBlur={this.searchCustomerHandle}
                     placeholder={Lang.get('customer.mobile_phone')} />
                   <i className="search icon"></i>
                 </div>
@@ -91,6 +106,7 @@ module.exports = React.createClass({
               <label>{ Lang.get('customer.name') }</label>
               <input ref="customer_name" name="customer_name" 
                 value={customer.get('name')}
+                onBlur={this.searchCustomerHandle}
                 placeholder={Lang.get('customer.name')} type="text" />
             </div>
           </div>

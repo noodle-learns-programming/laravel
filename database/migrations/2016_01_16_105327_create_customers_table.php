@@ -17,9 +17,9 @@ class CreateCustomersTable extends Migration
             $table->string('name');
             $table->tinyInteger('gender');
             $table->date('dob');
-            $table->string('email');
-            $table->string('mobile_phone');
-            $table->string('home_phone');
+            $table->string('email')->unique()->nullable();
+            $table->string('mobile_phone')->unique();
+            $table->string('home_phone')->unique();
             $table->string('address');
             $table->string('image');
             $table->string('description');
