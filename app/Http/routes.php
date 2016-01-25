@@ -37,6 +37,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function()
 Route::group(['namespace' => 'Stock', 'prefix' => 'stock'], function()
 {
 	Route::resource('product', 'ProductController');
+  Route::resource('stock', 'StockController');
 });
 
 Route::group([

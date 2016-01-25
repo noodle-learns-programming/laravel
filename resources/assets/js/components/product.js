@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+var StockSelect = require('./stock/select');
 
 module.exports = React.createClass({
   getInitialState() {
@@ -108,9 +109,15 @@ module.exports = React.createClass({
         </h2>
         {message}
         <div className="ui form">
-          <div className="required field">
-            <label>{ Lang.get('product.name') }</label>
-            <input ref="name" name="name" placeholder={Lang.get('product.name')} type="text" />
+          <div className="two fields">
+            <div className="required field">
+              <label>{ Lang.get('product.name') }</label>
+              <input ref="name" name="name" placeholder={Lang.get('product.name')} type="text" />
+            </div>
+            <div className="required field">
+              <label>{ Lang.get('product.stock') }</label>
+              <StockSelect />
+            </div>
           </div>
           <div className="two fields">
             <div className="required field">

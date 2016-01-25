@@ -24,7 +24,8 @@ var Customer    = require('./components/customer');
 App.Collection  = {
   product   : require('./models/product').Collection,
   customer  : require('./models/customer').Collection,
-  invoice   : require('./models/invoice').Collection
+  invoice   : require('./models/invoice').Collection,
+  stock     : require('./models/stock').Collection
 };
 
 /**
