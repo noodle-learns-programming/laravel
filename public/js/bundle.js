@@ -20717,7 +20717,8 @@ var Customer = require('./components/customer');
 App.Collection = {
   product: require('./models/product').Collection,
   customer: require('./models/customer').Collection,
-  invoice: require('./models/invoice').Collection
+  invoice: require('./models/invoice').Collection,
+  stock: require('./models/stock').Collection
 };
 
 /**
@@ -20803,7 +20804,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":187,"./components/customer":189,"./components/dashboard":192,"./components/feed":193,"./components/invoice":194,"./components/product":196,"./components/product-show":195,"./components/sale":198,"./containers/page":202,"./models/customer":205,"./models/invoice":206,"./models/product":208,"./overhead/extend":209,"./store/configureStore":212,"./test/upload":213,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
+},{"./components/breadcrumb":187,"./components/customer":189,"./components/dashboard":192,"./components/feed":193,"./components/invoice":194,"./components/product":196,"./components/product-show":195,"./components/sale":198,"./containers/page":203,"./models/customer":206,"./models/invoice":207,"./models/product":209,"./models/stock":210,"./overhead/extend":211,"./store/configureStore":214,"./test/upload":215,"react":173,"react-dom":4,"react-redux":9,"react-tap-event-plugin":17}],186:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21185,7 +21186,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/customer":205,"./customer/form":190,"./customer/list":191,"react":173,"react-dom":4}],190:[function(require,module,exports){
+},{"./../models/customer":206,"./customer/form":190,"./customer/list":191,"react":173,"react-dom":4}],190:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21467,7 +21468,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":203,"react":173,"react-dom":4}],191:[function(require,module,exports){
+},{"./../../mixins":204,"react":173,"react-dom":4}],191:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -21709,7 +21710,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":203,"./form":190,"react":173,"react-dom":4}],192:[function(require,module,exports){
+},{"./../../mixins":204,"./form":190,"react":173,"react-dom":4}],192:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22084,7 +22085,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":203,"react":173}],195:[function(require,module,exports){
+},{"./../mixins":204,"react":173}],195:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22269,7 +22270,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":203,"react":173}],196:[function(require,module,exports){
+},{"./../mixins":204,"react":173}],196:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22281,6 +22282,8 @@ var _reactDom = require('react-dom');
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var StockSelect = require('./stock/select');
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
@@ -22398,13 +22401,27 @@ module.exports = _react2.default.createClass({
         { className: 'ui form' },
         _react2.default.createElement(
           'div',
-          { className: 'required field' },
+          { className: 'two fields' },
           _react2.default.createElement(
-            'label',
-            null,
-            Lang.get('product.name')
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('product.name')
+            ),
+            _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('product.name'), type: 'text' })
           ),
-          _react2.default.createElement('input', { ref: 'name', name: 'name', placeholder: Lang.get('product.name'), type: 'text' })
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('product.stock')
+            ),
+            _react2.default.createElement(StockSelect, { field_name: 'stock_id' })
+          )
         ),
         _react2.default.createElement(
           'div',
@@ -22498,7 +22515,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":173,"react-dom":4}],197:[function(require,module,exports){
+},{"./stock/select":202,"react":173,"react-dom":4}],197:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22647,7 +22664,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":203,"react":173}],198:[function(require,module,exports){
+},{"./../../mixins":204,"react":173}],198:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -22733,6 +22750,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var FileUploadMixin = require('./../../mixins').FileUploadMixin;
 var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
 var SaleItems = require('./items');
+var Customer = require('./../../models/customer').Model;
 var ShippingAddresses = require('./shipping-addresses');
 
 module.exports = _react2.default.createClass({
@@ -22758,13 +22776,17 @@ module.exports = _react2.default.createClass({
       },
       minCharacters: 4,
       onSelect: (function (result, response) {
-        this.props.invoice.setCustomer(result);
+        if (!_.isEmpty(result)) {
+          this.props.invoice.setCustomer(result);
+        }
       }).bind(this)
     });
   },
   handleSubmit: function handleSubmit(e) {
     e.preventDefault();
-    this.props.invoice.save().then((function (res, result, xhr) {
+    var invoice = this.props.invoice;
+    var customer = invoice.getCustomer();
+    invoice.save().then((function (res, result, xhr) {
       console.log(res, result, xhr);
     }).bind(this));
     return false;
@@ -22776,8 +22798,17 @@ module.exports = _react2.default.createClass({
   },
   searchCustomerHandle: function searchCustomerHandle(e) {
     var invoice = this.props.invoice;
-    invoice.setCustomer({});
-    this.forceUpdate();
+    var phone = this.refs.customer_phone.value || '';
+    var name = this.refs.customer_name.value || '';
+    if (phone.length >= 10 && name.length) {
+      var c = new Customer({
+        'name': name,
+        'mobile_phone': phone
+      });
+      c.save().then(function (res, result, xhr) {
+        invoice.setCustomer(c);
+      });
+    }
   },
   getBackboneModels: function getBackboneModels() {
     return [this.props.invoice];
@@ -22821,7 +22852,7 @@ module.exports = _react2.default.createClass({
                 _react2.default.createElement('input', { className: 'prompt',
                   ref: 'customer_phone', name: 'customer_phone',
                   value: customer.get('mobile_phone'),
-                  onChange: this.searchCustomerHandle,
+                  onBlur: this.searchCustomerHandle,
                   placeholder: Lang.get('customer.mobile_phone') }),
                 _react2.default.createElement('i', { className: 'search icon' })
               )
@@ -22837,6 +22868,7 @@ module.exports = _react2.default.createClass({
             ),
             _react2.default.createElement('input', { ref: 'customer_name', name: 'customer_name',
               value: customer.get('name'),
+              onBlur: this.searchCustomerHandle,
               placeholder: Lang.get('customer.name'), type: 'text' })
           )
         ),
@@ -23059,7 +23091,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":203,"./items":200,"./shipping-addresses":201,"react":173,"react-dom":4}],200:[function(require,module,exports){
+},{"./../../mixins":204,"./../../models/customer":206,"./items":200,"./shipping-addresses":201,"react":173,"react-dom":4}],200:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -23338,7 +23370,63 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":203,"./../address/form":186,"react":173,"react-dom":4}],202:[function(require,module,exports){
+},{"./../../mixins":204,"./../address/form":186,"react":173,"react-dom":4}],202:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BackboneModelMixin = require('./../../mixins').BackboneModelMixin;
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+
+  mixins: [BackboneModelMixin],
+  getInitialState: function getInitialState() {
+    return {
+      collection: App.getModelCollection('stock')
+    };
+  },
+  getBackboneModels: function getBackboneModels() {
+    return [this.state.collection];
+  },
+  componentDidMount: function componentDidMount() {
+    this.state.collection.fetch();
+  },
+
+  render: function render() {
+    var options = [_react2.default.createElement(
+      'option',
+      { value: '0' },
+      '--',
+      Lang.get('stock.please_select_one'),
+      '--'
+    )];
+    this.state.collection.each(function (stock) {
+      options.push(_react2.default.createElement(
+        'option',
+        { value: stock.id },
+        stock.get('name'),
+        ' - ',
+        stock.get('address')
+      ));
+    });
+    return _react2.default.createElement(
+      'select',
+      { name: this.props.field_name },
+      options
+    );
+  }
+});
+
+},{"./../../mixins":204,"react":173,"react-dom":4}],203:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23373,7 +23461,7 @@ function mapDispatchToProps(dispatch) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_counter2.default);
 
-},{"../actions/counter":184,"../components/counter":188,"react-redux":9,"redux":176}],203:[function(require,module,exports){
+},{"../actions/counter":184,"../components/counter":188,"react-redux":9,"redux":176}],204:[function(require,module,exports){
 'use strict';
 
 var BackboneModelMixin = {
@@ -23428,7 +23516,7 @@ var FileUploadMixin = {
 exports.FileUploadMixin = FileUploadMixin;
 exports.BackboneModelMixin = BackboneModelMixin;
 
-},{}],204:[function(require,module,exports){
+},{}],205:[function(require,module,exports){
 'use strict';
 
 var URL = '/sale/address';
@@ -23470,7 +23558,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],205:[function(require,module,exports){
+},{}],206:[function(require,module,exports){
 'use strict';
 
 var AddressCollection = require('./address').Collection;
@@ -23505,7 +23593,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./address":204}],206:[function(require,module,exports){
+},{"./address":205}],207:[function(require,module,exports){
 'use strict';
 
 var Customer = require('./customer').Model;
@@ -23604,7 +23692,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./customer":205,"./invoice/item":207}],207:[function(require,module,exports){
+},{"./customer":206,"./invoice/item":208}],208:[function(require,module,exports){
 'use strict';
 
 var Product = require('./../product').Model;
@@ -23690,7 +23778,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./../product":208}],208:[function(require,module,exports){
+},{"./../product":209}],209:[function(require,module,exports){
 'use strict';
 
 var URL = '/stock/product';
@@ -23714,7 +23802,27 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
+'use strict';
+
+var URL = '/stock/stock';
+var Model = Backbone.Model.extend({
+  rootUrl: URL,
+  initialize: function initialize() {}
+});
+
+var Collection = Backbone.Collection.extend({
+  url: URL,
+  model: Model,
+  parse: function parse(response) {
+    return response;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
+
+},{}],211:[function(require,module,exports){
 'use strict';
 
 $.ajaxSetup({
@@ -23746,7 +23854,7 @@ Number.prototype.format = function (n, x, s, c) {
   return (c ? num.replace(',', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || '.'));
 };
 
-},{}],210:[function(require,module,exports){
+},{}],212:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23774,7 +23882,7 @@ function counter() {
   }
 }
 
-},{"../actions/counter":184}],211:[function(require,module,exports){
+},{"../actions/counter":184}],213:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23795,7 +23903,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./counter":210,"redux":176}],212:[function(require,module,exports){
+},{"./counter":212,"redux":176}],214:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23837,7 +23945,7 @@ function configureStore(initialState) {
   return store;
 }
 
-},{"../reducers":211,"redux":176,"redux-thunk":174}],213:[function(require,module,exports){
+},{"../reducers":213,"redux":176,"redux-thunk":174}],215:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
