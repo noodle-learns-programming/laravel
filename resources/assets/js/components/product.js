@@ -116,7 +116,7 @@ module.exports = React.createClass({
             </div>
             <div className="required field">
               <label>{ Lang.get('product.stock') }</label>
-              <StockSelect />
+              <StockSelect field_name="stock_id"/>
             </div>
           </div>
           <div className="two fields">

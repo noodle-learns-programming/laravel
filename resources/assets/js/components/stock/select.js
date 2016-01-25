@@ -16,11 +16,15 @@ module.exports = React.createClass({
     this.state.collection.fetch();
   },
   render: function() {
-    var options = [];
+    var options = [
+      <option value="0">--{Lang.get('stock.please_select_one')}--</option>
+    ];
     this.state.collection.each(function(stock){
-      options.push(<option value={stock.id}>{stock.get('name')}</option>)
+      options.push(<option value={stock.id}>
+        {stock.get('name')} - {stock.get('address')}
+      </option>);
     });
-    return (<select>
+    return (<select name={this.props.field_name}>
       {options}
     </select>);
   }
