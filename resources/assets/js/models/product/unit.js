@@ -1,4 +1,4 @@
-var URL = '/stock/product/unit';
+var URL = '/stock/unit';
 var Model = Backbone.Model.extend({
   rootUrl : URL,
   initialize() {
