@@ -26,7 +26,12 @@ class ProductController extends Controller
     {
 
     }
-    $products = Product::where('name', 'LIKE', '%'.$q.'%')->orderBy('id', 'desc')->paginate(6);
+    $products = Product::with('brand')
+      ->with('stock')
+      ->with('unit')
+      ->where('name', 'LIKE', '%'.$q.'%')
+      ->orderBy('id', 'desc')
+      ->paginate(6);
     return $products;
   }
 

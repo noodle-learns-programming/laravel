@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 var StockSelect = require('./stock/select');
+var UnitSelect = require('./product/unit/select');
 
 module.exports = React.createClass({
   getInitialState() {
@@ -116,7 +117,7 @@ module.exports = React.createClass({
             </div>
             <div className="required field">
               <label>{ Lang.get('product.stock') }</label>
-              <StockSelect field_name="stock_id"/>
+              <StockSelect field_name="stock_id" value={this.state.stock_id}/>
             </div>
           </div>
           <div className="two fields">
@@ -142,7 +143,7 @@ module.exports = React.createClass({
             </div>
             <div className="required field">
               <label>{ Lang.get('product.unit') }</label>
-              <input ref="unit" name="unit" placeholder={Lang.get('product.unit')} type="text" />
+              <UnitSelect field_name="unit_id" value={this.state.unit_id}/>
             </div>
           </div>
           <div className="two fields">

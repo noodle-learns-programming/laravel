@@ -36,6 +36,7 @@ module.exports = React.createClass({
                 <th>{Lang.get('product.series')}</th>
                 <th>{Lang.get('product.unit')}</th>
                 <th>{Lang.get('product.brand')}</th>
+                <th>{Lang.get('product.stock')}</th>
               </tr>
           </thead>
           <tbody>{row}</tbody>
@@ -62,8 +63,9 @@ module.exports = React.createClass({
           </td>
           <td>{product.get('sku')}</td>
           <td>{product.get('series')}</td>
-          <td>{product.get('unit')}</td>
-          <td>{product.get('brand')}</td>
+          <td>{product.getUnit().get('name')}</td>
+          <td>{product.getBrand().get('name')}</td>
+          <td>{product.getStock().get('name')}</td>
         </tr>
       ));
     });

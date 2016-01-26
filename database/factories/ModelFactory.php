@@ -48,7 +48,7 @@ $factory->define(App\Models\Product::class, function (Faker\Generator $faker) {
     'brand_id'    => $faker->randomElement($array = array ('1', '2', '3', '4')),
     'supplier_id' => $faker->randomElement($array = array ('1', '2', '3', '4')),
     'is_active'   => $faker->randomElement($array = array ('0', '1')),
-    'unit'        => $faker->randomElement($array = array ('1', '2', '3', '4')),
+    'unit_id'     => $faker->randomElement($array = array ('1', '2', '3', '4')),
     'description' => $faker->sentence($nbWords = 6, $variableNbWords = true)
   ];
 });

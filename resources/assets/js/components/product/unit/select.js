@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-var BackboneModelMixin  = require('./../../mixins').BackboneModelMixin;
+var BackboneModelMixin  = require('./../../../mixins').BackboneModelMixin;
 
 module.exports = React.createClass({
   mixins : [BackboneModelMixin],
   getInitialState() {
     return {
-      collection : App.getModelCollection('stock')
+      collection : App.getModelCollection('unit')
     };
   },
   getBackboneModels(){
@@ -17,11 +17,11 @@ module.exports = React.createClass({
   },
   render: function() {
     var options = [
-      <option value="0">--{Lang.get('stock.please_select_one')}--</option>
+      <option value="0">--{Lang.get('product.unit_select')}--</option>
     ];
-    this.state.collection.each(function(stock){
-      options.push(<option value={stock.id}>
-        {stock.get('name')} - {stock.get('address')}
+    this.state.collection.each(function(unit){
+      options.push(<option value={unit.id}>
+        {unit.get('name')}
       </option>);
     });
     return (<select value={this.props.value}

@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->integer('stock_id')->unsigned();
             $table->integer('supplier_id')->unsigned();
             $table->boolean('is_active');
-            $table->integer('unit')->unsigned();
+            $table->integer('unit_id')->unsigned();
             $table->timestamps();
         });
     }

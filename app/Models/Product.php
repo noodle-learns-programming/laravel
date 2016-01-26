@@ -12,8 +12,9 @@ class Product extends Model
     'description',
     'sku',
     'series',
-    'unit',
+    'unit_id',
     'brand_id',
+    'stock_id',
     'supplier_id',
     'is_active',
     'image',
@@ -41,6 +42,21 @@ class Product extends Model
       throw new \Exception('Price of product can not have more than one active price value. Product: '. $this->id);
     }
     return $prices->first()->price;
+  }
+
+  public function brand()
+  {
+    return $this->belongsTo('App\Models\Brand');
+  }
+
+  public function stock()
+  {
+    return $this->belongsTo('App\Models\Stock');
+  }
+
+  public function unit()
+  {
+    return $this->belongsTo('App\Models\Product\Unit');
   }
 
   public function toArray()
