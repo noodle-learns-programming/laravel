@@ -35,9 +35,11 @@ module.exports = React.createClass({
         fields: {
           name    : 'empty',
           sku     : 'empty',
+          price   : 'empty',
+          stock_id: 'empty',
           series  : 'empty',
           brand   : 'empty',
-          unit    : 'empty'
+          unit_id : 'empty'
         },
         onSuccess : function(e, fields){
           e.preventDefault();
@@ -112,12 +114,20 @@ module.exports = React.createClass({
         <div className="ui form">
           <div className="two fields">
             <div className="required field">
-              <label>{ Lang.get('product.name') }</label>
-              <input ref="name" name="name" placeholder={Lang.get('product.name')} type="text" />
             </div>
             <div className="required field">
               <label>{ Lang.get('product.stock') }</label>
               <StockSelect field_name="stock_id" value={this.state.stock_id}/>
+            </div>
+          </div>
+          <div className="two fields">
+            <div className="required field">
+              <label>{ Lang.get('product.name') }</label>
+              <input ref="name" name="name" placeholder={Lang.get('product.name')} type="text" />
+            </div>
+            <div className="required field">
+              <label>{ Lang.get('product.price') }</label>
+              <input ref="price" name="price" placeholder={Lang.get('product.price')} />
             </div>
           </div>
           <div className="two fields">

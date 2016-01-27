@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Stock;
 
+use Auth;
 use App\User;
 use App\Models\Product;
+use App\Models\Product\Price;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -17,6 +19,20 @@ class ProductController extends Controller
   public function create()
   {
     return view('product.create');
+  }
+
+  public function setPrice(Request $request)
+  {
+    $product    = Product::find($request->get('id'));
+    $product->prices()->update(array(
+      'is_active' => 0
+    ));
+    $product->prices()->save(new Price([
+      'price'           => $request->get('price'),
+      'is_active'       => 1,
+      'created_user_id' => Auth::user()->id
+    ]));
+    return $product;
   }
 
   public function index(Request $request)
@@ -51,6 +67,10 @@ class ProductController extends Controller
       $input['image'] = $filename;
     }
     $result = $product->create($input);
+    $result->prices()->save(new Price([
+      'price'           => $input['price'],
+      'created_user_id' => Auth::user()->id
+    ]));
     return response()->json([
       'result' => $result
     ]);

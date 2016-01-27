@@ -20,5 +20,6 @@ return [
     'series'        => 'Series',
     'quality'       => 'SL',
     'price'         => 'G.T',
-    'total'         => 'T.T'
+    'total'         => 'T.T',
+    'unit_select'   => 'Chọn một'
 ];

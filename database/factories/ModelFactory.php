@@ -41,6 +41,8 @@ $factory->define(App\Models\Address::class, function (Faker\Generator $faker) {
 });
 
 $factory->define(App\Models\Product::class, function (Faker\Generator $faker) {
+  /*update products
+  set brand_id = ROUND((RAND())*3 + 1)*/
   return [
     'name'        => $faker->name,
     'sku'         => $faker->ean13,

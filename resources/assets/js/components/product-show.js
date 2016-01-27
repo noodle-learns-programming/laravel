@@ -5,6 +5,7 @@ module.exports = React.createClass({
   mixins : [BackboneModelMixin],
   componentDidMount() {
     this.props.collection.fetch();
+    this._modal = $(this.refs.form).find('.ui.modal');
   },
 
   componentDidUpdate() {
@@ -18,8 +19,17 @@ module.exports = React.createClass({
     return [this.props.collection];
   },
 
+  updatePriceHandle(product, e){
+    this._modal.modal({
+      onApprove: function(){
+        product.updatePrice(this._modal.find(':input').val());
+        console.log('La sao ta?', this._modal.find(':input').val())
+      }.bind(this)
+    }).modal('show');
+  },
+
   render() {
-    var row = this.renderBody(this.props.collection);
+    var rows= this.renderBody(this.props.collection);
     return (
       <form ref="form" onSubmit={this.handleSubmit} method="post">
         <h3 className="ui header">
@@ -32,6 +42,7 @@ module.exports = React.createClass({
           <thead>
               <tr>
                 <th>{Lang.get('product.name')}</th>
+                <th>{Lang.get('product.price')}</th>
                 <th>{Lang.get('product.sku')}</th>
                 <th>{Lang.get('product.series')}</th>
                 <th>{Lang.get('product.unit')}</th>
@@ -39,9 +50,21 @@ module.exports = React.createClass({
                 <th>{Lang.get('product.stock')}</th>
               </tr>
           </thead>
-          <tbody>{row}</tbody>
+          <tbody>{rows}</tbody>
           <tfoot>{this.renderFooter(this.props.collection)}</tfoot>
         </table>
+        <div className="ui tiny modal">
+          <div className="header">
+            {Lang.get('product.input_product_price')}
+          </div>
+          <div className="content">
+            <input name="price" />
+          </div>
+          <div className="actions">
+            <div className="ui button cancel">Cancel</div>
+            <div className="ui button ok">OK</div>
+          </div>
+        </div>
       </form>
     );
   },
@@ -61,6 +84,11 @@ module.exports = React.createClass({
               </div>
             </h4>
           </td>
+          <td className="ui right aligned"
+            onClick={this.updatePriceHandle.bind(this, product)}>
+            {(product.get('price')|0).format()}đ
+            &nbsp;<i className="edit icon"></i>
+          </td>
           <td>{product.get('sku')}</td>
           <td>{product.get('series')}</td>
           <td>{product.getUnit().get('name')}</td>
@@ -68,7 +96,7 @@ module.exports = React.createClass({
           <td>{product.getStock().get('name')}</td>
         </tr>
       ));
-    });
+    }.bind(this));
     return rows;
   },
   renderFooter (collection) {
@@ -77,7 +105,7 @@ module.exports = React.createClass({
     }
     return (
       <tr>
-        <th colSpan="5">
+        <th colSpan="7">
           <div className="ui right floated pagination menu">
             <a className="icon item" href="#stock/show-product?page=2">
               <i className="left chevron icon"></i>

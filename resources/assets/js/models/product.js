@@ -34,6 +34,20 @@ var Model = Backbone.Model.extend({
   setItem(item){
     this.set('item', item);
     return this;
+  },
+  updatePrice(value){
+    var data = this.toJSON();
+      data['price'] = value;
+    //Cho nay sao no khong work
+    //Va cai method bi override cua backbone no lam gi do
+    /*$.ajax({
+      type    : 'GET',
+      url     : URL+'/price',
+      data    : data
+    })
+    .done(function() {
+      console.log('updatePrice: ', arguments)
+    });*/
   }
 });
 
