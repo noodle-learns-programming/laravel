@@ -20765,7 +20765,7 @@ App.Router = Backbone.Router.extend({
     'stock/show-product': 'productShow',
     'invoice': 'invoice',
     'sale(/:id)': 'sale',
-    'sale/customer(/:action)(/:id)': 'customer',
+    'customer(/:action)(/:id)': 'customer',
     'test/redux': '_redux',
     'test/upload': '_upload',
     'test/material-ui': '_meterial'
@@ -21115,7 +21115,7 @@ module.exports = _react2.default.createClass({
      |------------------------------------------------------------
      */
     var action = $(e.currentTarget).data('action');
-    var fragment = ['sale', 'customer'];
+    var fragment = ['customer'];
     fragment.push(action);
     App.router.navigate(fragment.join('/'), { trigger: true });
     /**
@@ -22103,14 +22103,26 @@ module.exports = _react2.default.createClass({
   mixins: [BackboneModelMixin],
   componentDidMount: function componentDidMount() {
     this.props.collection.fetch();
+    this._modal = $(this.refs.form).find('.ui.modal');
   },
   componentDidUpdate: function componentDidUpdate() {},
   handleSubmit: function handleSubmit() {},
   getBackboneModels: function getBackboneModels() {
     return [this.props.collection];
   },
+  updatePriceHandle: function updatePriceHandle(product, e) {
+    this._modal.modal({
+      onShow: (function () {
+        this._modal.find('.product-name').text(product.get('name'));
+        this._modal.find('.price').text(product.get('price'));
+      }).bind(this),
+      onApprove: (function () {
+        product.updatePrice(this._modal.find(':input').val());
+      }).bind(this)
+    }).modal('show');
+  },
   render: function render() {
-    var row = this.renderBody(this.props.collection);
+    var rows = this.renderBody(this.props.collection);
     return _react2.default.createElement(
       'form',
       { ref: 'form', onSubmit: this.handleSubmit, method: 'post' },
@@ -22137,6 +22149,11 @@ module.exports = _react2.default.createClass({
               'th',
               null,
               Lang.get('product.name')
+            ),
+            _react2.default.createElement(
+              'th',
+              null,
+              Lang.get('product.price')
             ),
             _react2.default.createElement(
               'th',
@@ -22168,19 +22185,64 @@ module.exports = _react2.default.createClass({
         _react2.default.createElement(
           'tbody',
           null,
-          row
+          rows
         ),
         _react2.default.createElement(
           'tfoot',
           null,
           this.renderFooter(this.props.collection)
         )
+      ),
+      _react2.default.createElement(
+        'div',
+        { className: 'ui tiny modal' },
+        _react2.default.createElement(
+          'div',
+          { className: 'header' },
+          Lang.get('product.input_product_price'),
+          '  #',
+          _react2.default.createElement('span', { className: 'product-name' })
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'content' },
+          _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement('input', { name: 'price' })
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('product.current_price'),
+              ':',
+              _react2.default.createElement('strong', { className: 'price' })
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'actions' },
+          _react2.default.createElement(
+            'div',
+            { className: 'ui button cancel' },
+            'Cancel'
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'ui button ok' },
+            'OK'
+          )
+        )
       )
     );
   },
   renderBody: function renderBody(collection) {
     var rows = [];
-    collection.each(function (product, i) {
+    collection.each((function (product, i) {
       rows.push(_react2.default.createElement(
         'tr',
         { key: i },
@@ -22202,6 +22264,14 @@ module.exports = _react2.default.createClass({
               )
             )
           )
+        ),
+        _react2.default.createElement(
+          'td',
+          { className: 'ui right aligned',
+            onClick: this.updatePriceHandle.bind(this, product) },
+          (product.get('price') | 0).format(),
+          'đ  ',
+          _react2.default.createElement('i', { className: 'edit icon' })
         ),
         _react2.default.createElement(
           'td',
@@ -22229,7 +22299,7 @@ module.exports = _react2.default.createClass({
           product.getStock().get('name')
         )
       ));
-    });
+    }).bind(this));
     return rows;
   },
   renderFooter: function renderFooter(collection) {
@@ -22241,7 +22311,7 @@ module.exports = _react2.default.createClass({
       null,
       _react2.default.createElement(
         'th',
-        { colSpan: '5' },
+        { colSpan: '7' },
         _react2.default.createElement(
           'div',
           { className: 'ui right floated pagination menu' },
@@ -22326,9 +22396,11 @@ module.exports = _react2.default.createClass({
       fields: {
         name: 'empty',
         sku: 'empty',
+        price: 'empty',
+        stock_id: 'empty',
         series: 'empty',
         brand: 'empty',
-        unit: 'empty'
+        unit_id: 'empty'
       },
       onSuccess: function onSuccess(e, fields) {
         e.preventDefault();
@@ -22414,6 +22486,21 @@ module.exports = _react2.default.createClass({
         _react2.default.createElement(
           'div',
           { className: 'two fields' },
+          _react2.default.createElement('div', { className: 'required field' }),
+          _react2.default.createElement(
+            'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('product.stock')
+            ),
+            _react2.default.createElement(StockSelect, { field_name: 'stock_id', value: this.state.stock_id })
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
           _react2.default.createElement(
             'div',
             { className: 'required field' },
@@ -22430,9 +22517,9 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'label',
               null,
-              Lang.get('product.stock')
+              Lang.get('product.price')
             ),
-            _react2.default.createElement(StockSelect, { field_name: 'stock_id', value: this.state.stock_id })
+            _react2.default.createElement('input', { ref: 'price', name: 'price', placeholder: Lang.get('product.price') })
           )
         ),
         _react2.default.createElement(
@@ -22945,7 +23032,7 @@ module.exports = _react2.default.createClass({
           _react2.default.createElement(
             'h4',
             null,
-            Lang.get('invoce.products')
+            Lang.get('invoice.products')
           ),
           _react2.default.createElement(SaleItems, { collection: this.props.invoice.getItems() })
         ),
@@ -23903,6 +23990,29 @@ var Model = Backbone.Model.extend({
   setItem: function setItem(item) {
     this.set('item', item);
     return this;
+  },
+  updatePrice: function updatePrice(value) {
+    this.save({
+      'price': value
+    }, { patch: true }).done(function () {
+      console.log('updatePrice: ', arguments);
+    });
+    /*this.save({
+      'id'    : this.id,
+      'price' : value,
+    },  { patch: true, url: URL+'/price' }).done(function(){
+      console.log('updatePrice: ', arguments)
+    });*/
+    //Cho nay sao no khong work
+    //Va cai method bi override cua backbone no lam gi do
+    /*$.ajax({
+      type    : 'GET',
+      url     : URL+'/price',
+      data    : data
+    })
+    .done(function() {
+      console.log('updatePrice: ', arguments)
+    });*/
   }
 });
 

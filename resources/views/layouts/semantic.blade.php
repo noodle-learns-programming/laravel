@@ -19,7 +19,7 @@
             <div class="ui basic segment">
                 <div class="ui grid">
                     <div class="row">
-                        <div class="ten wide column">
+                        <div class="eleven wide column">
                             <div id="breadcrumb">
                                 @yield('breadcrumb')    
                             </div>
@@ -27,7 +27,7 @@
                                 @yield('content')
                             </div>
                         </div>
-                        <div class="six wide column">
+                        <div class="five wide column">
                             <div id="feed"></div>
                         </div>
                     </div>
