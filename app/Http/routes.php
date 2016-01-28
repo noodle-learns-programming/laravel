@@ -28,22 +28,28 @@ Route::group(['middleware' => ['web']], function () {
   Route::get('/home', 'HomeController@index');
 });
 
-Route::group(['namespace' => 'Api', 'prefix' => 'api'], function()
+Route::group([
+  'middleware' => ['web'],
+  'namespace' => 'Api',
+  'prefix' => 'api'
+  ], function()
 {
   Route::resource('search', 'SearchController');
   Route::resource('upload', 'UploadController');
 });
 
-Route::group(['namespace' => 'Stock', 'prefix' => 'stock'], function()
+Route::group([
+  'middleware' => ['web'],
+  'namespace' => 'Stock',
+  'prefix' => 'stock'], function()
 {
-  Route::put('product/price', 'ProductController@setPrice');
 	Route::resource('product', 'ProductController');
   Route::resource('stock', 'StockController');
   Route::resource('unit', 'Product\UnitController');
 });
 
 Route::group([
-  'middleware' => ['web'], 
+  'middleware' => ['web'],
   'namespace'  => 'Sale',
   'prefix'     => 'sale'], function()
 {

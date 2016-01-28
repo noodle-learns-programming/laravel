@@ -21,17 +21,21 @@ class ProductController extends Controller
     return view('product.create');
   }
 
-  public function setPrice(Request $request)
+  public function update(Request $request, $id)
   {
-    $product    = Product::find($request->get('id'));
-    $product->prices()->update(array(
-      'is_active' => 0
-    ));
-    $product->prices()->save(new Price([
-      'price'           => $request->get('price'),
-      'is_active'       => 1,
-      'created_user_id' => Auth::user()->id
-    ]));
+    $product    = Product::find($id);
+    if ($request->isMethod('patch')) {
+      if( $request->get('price') ){
+        $product->prices()->update(array(
+          'is_active' => 0
+        ));
+        $product->prices()->save(new Price([
+          'price'           => $request->get('price'),
+          'is_active'       => 1,
+          'created_user_id' => Auth::user()->id
+        ]));
+      }
+    }
     return $product;
   }
 
@@ -67,8 +71,12 @@ class ProductController extends Controller
       $input['image'] = $filename;
     }
     $result = $product->create($input);
+    $product->prices()->update([
+      'is_active' => 0
+    ]);
     $result->prices()->save(new Price([
       'price'           => $input['price'],
+      'is_active'       => 1,
       'created_user_id' => Auth::user()->id
     ]));
     return response()->json([

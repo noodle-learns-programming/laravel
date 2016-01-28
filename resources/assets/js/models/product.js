@@ -36,8 +36,17 @@ var Model = Backbone.Model.extend({
     return this;
   },
   updatePrice(value){
-    var data = this.toJSON();
-      data['price'] = value;
+    this.save({
+      'price' : value,
+    }, { patch: true }).done(function(){
+      console.log('updatePrice: ', arguments)
+    });
+    /*this.save({
+      'id'    : this.id,
+      'price' : value,
+    },  { patch: true, url: URL+'/price' }).done(function(){
+      console.log('updatePrice: ', arguments)
+    });*/
     //Cho nay sao no khong work
     //Va cai method bi override cua backbone no lam gi do
     /*$.ajax({

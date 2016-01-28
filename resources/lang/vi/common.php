@@ -11,6 +11,8 @@ return [
     'dashboard'     => 'Dashboard',
     'product'       => 'Sản phẩm',
     'show-product'  => 'Danh sách sản phẩm',
+    'customer'      => 'Khách hàng',
+    'list'          => 'Danh sách',
 
     'stock'                 => 'Quản lý kho',
     'stock_sale'            => 'Xuất nhập hàng',

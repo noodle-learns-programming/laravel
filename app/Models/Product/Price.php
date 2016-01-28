@@ -9,7 +9,9 @@ class Price extends Model
   protected $table = 'product_prices';
 
   protected $fillable = [
-    'price'
+    'price',
+    'is_active',
+    'created_user_id'
   ];
 
   public function getValidatorRules()
