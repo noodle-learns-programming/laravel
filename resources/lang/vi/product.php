@@ -21,5 +21,7 @@ return [
     'quality'       => 'SL',
     'price'         => 'G.T',
     'total'         => 'T.T',
-    'unit_select'   => 'Chọn một'
+    'unit_select'   => 'Chọn một',
+    'input_product_price' => 'Nhập giá tiền mới',
+    'current_price' => 'Giá hiện tại'
 ];

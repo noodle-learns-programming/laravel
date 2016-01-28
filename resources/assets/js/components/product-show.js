@@ -21,9 +21,12 @@ module.exports = React.createClass({
 
   updatePriceHandle(product, e){
     this._modal.modal({
+      onShow: function(){
+        this._modal.find('.product-name').text(product.get('name'));
+        this._modal.find('.price').text(product.get('price'));
+      }.bind(this),
       onApprove: function(){
         product.updatePrice(this._modal.find(':input').val());
-        console.log('La sao ta?', this._modal.find(':input').val())
       }.bind(this)
     }).modal('show');
   },
@@ -56,9 +59,18 @@ module.exports = React.createClass({
         <div className="ui tiny modal">
           <div className="header">
             {Lang.get('product.input_product_price')}
+            &nbsp; #<span className="product-name"></span>
           </div>
           <div className="content">
-            <input name="price" />
+            <p>
+              <input name="price" />
+            </p>
+            <p>
+              <label>
+                {Lang.get('product.current_price')}: 
+                <strong className="price"></strong>
+              </label>
+            </p>
           </div>
           <div className="actions">
             <div className="ui button cancel">Cancel</div>
