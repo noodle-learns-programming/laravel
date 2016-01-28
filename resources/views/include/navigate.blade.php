@@ -11,7 +11,7 @@
             <a class="item">
                 {{ trans('common.sale_total_revenue') }}
             </a>
-            <a class="item" href="#sale/customer">
+            <a class="item" href="#customer">
                 {{ trans('common.sale_customer') }}
             </a>
         </div>

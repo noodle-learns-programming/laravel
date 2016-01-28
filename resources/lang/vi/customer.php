@@ -13,5 +13,8 @@ return [
     'phone'   => 'Điện thoại',
     'dob'     => 'Ngày sinh',
     'address' => 'Địa chỉ',
-    'address_is_active' => 'Chọn'
+    'mobile_phone' => 'Điện thoại',
+    'address_is_active'     => 'Chọn',
+    'add_an_address'  => 'Thêm địa chỉ',
+    'addresses_list_empty'  => 'Chưa có địa chỉ nào'
 ];

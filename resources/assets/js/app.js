@@ -72,7 +72,7 @@ App.Router = Backbone.Router.extend({
     'stock/show-product' : 'productShow',
     'invoice' : 'invoice',
     'sale(/:id)' : 'sale',
-    'sale/customer(/:action)(/:id)' : 'customer',
+    'customer(/:action)(/:id)' : 'customer',
     'test/redux' : '_redux',
     'test/upload' : '_upload',
     'test/material-ui' : '_meterial'

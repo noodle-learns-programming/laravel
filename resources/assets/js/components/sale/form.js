@@ -111,7 +111,7 @@ module.exports = React.createClass({
             </div>
           </div>
           <div>
-            <h4>{Lang.get('invoce.products')}</h4>
+            <h4>{Lang.get('invoice.products')}</h4>
             <SaleItems collection={this.props.invoice.getItems()} />
           </div>
           <div className="ui two column grid">

@@ -29,7 +29,7 @@ module.exports = React.createClass({
      |------------------------------------------------------------
      */
     var action = $(e.currentTarget).data('action');
-    var fragment = ['sale', 'customer'];
+    var fragment = ['customer'];
         fragment.push(action);
     App.router.navigate(fragment.join('/'), {trigger: true});
     /**
