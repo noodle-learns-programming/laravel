@@ -73,7 +73,6 @@ App.Router = Backbone.Router.extend({
     'sale(/:id)' : 'sale',
     'customer(/:action)(/:id)' : 'customer',
     'todo': 'todo',
-    'test/redux' : '_redux',
     'test/upload' : '_upload',
     'test/material-ui' : '_meterial'
     },
@@ -96,7 +95,6 @@ App.Router = Backbone.Router.extend({
     ReactDOM.render(<Customer action={action} id={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
   },
   todo(){
-    console.log('store: ', store);
     render(
       <Provider store={store.default}>
         <Todos.default />
