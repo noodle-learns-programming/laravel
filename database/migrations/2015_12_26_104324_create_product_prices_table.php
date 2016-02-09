@@ -17,6 +17,7 @@ class CreateProductPricesTable extends Migration
             $table->integer('product_id');
             $table->bigInteger('price');
             $table->integer('created_user_id');
+            $table->tinyInteger('price_type');
             $table->timestamps();
         });
     }

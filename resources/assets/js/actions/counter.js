@@ -14,6 +14,14 @@ export function decrement() {
   }
 }
 
+/**
+ |--------------------------------------------------------------
+ | Cho nay return ra mot funciton voi hai input la:
+ | dispatch va getState, vay co nghia la khi redux goi cai 
+ | action nay no se truyent theo hai params la dispatch + getState
+ | getState cung la mot function
+ |--------------------------------------------------------------
+ */
 export function incrementIfOdd() {
   return (dispatch, getState) => {
     const { counter } = getState()
@@ -23,6 +31,7 @@ export function incrementIfOdd() {
     }
 
     dispatch(increment())
+    //Cho nay hoan toan co the return increment khong ta?
   }
 }
 

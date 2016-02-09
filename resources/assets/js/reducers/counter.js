@@ -8,7 +8,6 @@ export default function counter(state = 0, action) {
     case DECREMENT_COUNTER:
       return state - (action.value || 1)
     case ADDMORE_COUNTER:
-
       return state + (action.value || 10);
     default:
       return state

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\Product\Price;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+  use SoftDeletes;
   protected $fillable = [
     'name',
     'description',
@@ -16,11 +18,11 @@ class Product extends Model
     'brand_id',
     'stock_id',
     'supplier_id',
+    'category_id',
     'is_active',
-    'image',
-    'created_at',
-    'updated_at'
+    'image'
   ];
+  protected $dates = ['deleted_at'];
 
   public function getValidatorRules()
   {

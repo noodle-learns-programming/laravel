@@ -52,6 +52,7 @@
     <div class="item">
         <div class="header">{{ trans('common.test') }}</div>
         <div class="menu">
+            <a class="item" href="#todo">{{ trans('common.todo') }}</a>
             <a class="item" href="#test/redux">{{ trans('common.test_redux') }}</a>
             <a class="item" href="#test/upload">{{ trans('common.test_upload_file') }}</a>
             <a class="item" href="#test/material-ui">{{ trans('common.test_material_ui') }}</a>
