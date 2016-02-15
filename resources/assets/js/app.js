@@ -18,7 +18,7 @@ var ProductShow = require('./components/product-show');
 var Sale        = require('./components/sale');
 var Invoice     = require('./components/invoice');
 var Customer    = require('./components/customer');
-var Todos       = require('./components/todo/todos');
+import Todos from './components/todo/todos';
 //Model
 App.Collection  = {
   product   : require('./models/product').Collection,
@@ -63,9 +63,9 @@ App.run = function(){
   Backbone.history.start();
   return this;
 };
-const store = require('./store/todos');
+import store from './store/todos';
 App.Router = Backbone.Router.extend({
-    routes: {
+  routes: {
     '' : 'dashboard',
     'stock/product' : 'product',
     'stock/show-product' : 'productShow',
@@ -75,7 +75,7 @@ App.Router = Backbone.Router.extend({
     'todo': 'todo',
     'test/upload' : '_upload',
     'test/material-ui' : '_meterial'
-    },
+  },
   dashboard(){
     ReactDOM.render(<Dashboard />, document.getElementById('main'));
   },
@@ -95,9 +95,9 @@ App.Router = Backbone.Router.extend({
     ReactDOM.render(<Customer action={action} id={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
   },
   todo(){
-    render(
-      <Provider store={store.default}>
-        <Todos.default />
+    ReactDOM.render(
+      <Provider store={store}>
+        <Todos />
       </Provider>,
       document.getElementById('main')
     );
