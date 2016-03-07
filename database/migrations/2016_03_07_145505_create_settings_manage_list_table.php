@@ -25,6 +25,7 @@ class CreateSettingsManageListTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+        $table->index('category', 'IDX_CATEGORY');
     }
 
     /**

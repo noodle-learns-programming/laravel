@@ -50,6 +50,12 @@
         </div>
     </div>
     <div class="item">
+        <div class="header">{{ trans('common.settings') }}</div>
+        <div class="menu">
+            <a class="item" href="#setting">{{ trans('common.list_manage') }}</a>
+        </div>
+    </div>
+    <div class="item">
         <div class="header">{{ trans('common.test') }}</div>
         <div class="menu">
             <a class="item" href="#todo">{{ trans('common.todo') }}</a>

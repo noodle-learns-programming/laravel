@@ -18,6 +18,7 @@ var ProductShow = require('./components/product-show');
 var Sale        = require('./components/sale');
 var Invoice     = require('./components/invoice');
 var Customer    = require('./components/customer');
+var Setting     = require('./components/setting');
 import Todos from './components/todo/todos';
 //Model
 App.Collection  = {
@@ -72,6 +73,7 @@ App.Router = Backbone.Router.extend({
     'invoice' : 'invoice',
     'sale(/:id)' : 'sale',
     'customer(/:action)(/:id)' : 'customer',
+    'setting' : 'setting',
     'todo': 'todo',
     'test/upload' : '_upload',
     'test/material-ui' : '_meterial'
@@ -93,6 +95,9 @@ App.Router = Backbone.Router.extend({
   },
   customer(action, id){
     ReactDOM.render(<Customer action={action} id={id} collection={App.getModelCollection('customer')}/>, document.getElementById('main'));
+  },
+  setting(){
+    ReactDOM.render(<Setting />, document.getElementById('main'));
   },
   todo(){
     ReactDOM.render(
