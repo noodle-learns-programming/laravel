@@ -59,3 +59,11 @@ Route::group([
   Route::resource('invoice', 'InvoiceController');
 });
 
+Route::group([
+  'middleware' => ['web'],
+  'namespace'  => 'Setting',
+  'prefix'     => 'setting'], function()
+{
+  Route::resource('manage-list', 'ManageListController');
+});
+

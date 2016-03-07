@@ -26,7 +26,8 @@ App.Collection  = {
   customer  : require('./models/customer').Collection,
   invoice   : require('./models/invoice').Collection,
   stock     : require('./models/stock').Collection,
-  unit      : require('./models/product/unit').Collection
+  unit      : require('./models/product/unit').Collection,
+  setting   : require('./models/product/unit').Collection,
 };
 
 /**

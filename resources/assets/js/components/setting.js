@@ -13,19 +13,21 @@ module.exports = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <div className="ui right aligned grid">
-          <div className="left floated middle aligned left aligned six wide column">
-            <h4 className="ui header">{ Lang.get('customer.add') }</h4>
-          </div>
-          <div className="right floated right aligned six wide column">
-            <div className="ui secondary  menu">
-              <div className="right menu">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <table className="ui black table">
+        <thead>
+            <tr>
+              <th>{Lang.get('setting.manage_list_name')}</th>
+              <th>{Lang.get('setting.manage_list_description')}</th>
+              <th>{Lang.get('setting.manage_list_category')}</th>
+              <th>{Lang.get('setting.manage_list_value')}</th>
+              <th>{Lang.get('setting.manage_list_is_system')}</th>
+              <th>{Lang.get('setting.manage_list_is_default')}</th>
+              <th>{Lang.get('setting.manage_list_user')}</th>
+              <th>{Lang.get('setting.manage_list_order')}</th>
+              <th>{Lang.get('setting.manage_list_updated_at')}</th>
+            </tr>
+        </thead>
+      </table>
     );
   }
 });
