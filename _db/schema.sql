@@ -10,12 +10,28 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Dumping structure for table always.addresses
+CREATE TABLE IF NOT EXISTS `addresses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `customer_id` int(10) unsigned NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table always.brands
 CREATE TABLE IF NOT EXISTS `brands` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Data exporting was unselected.
 
@@ -23,18 +39,21 @@ CREATE TABLE IF NOT EXISTS `brands` (
 -- Dumping structure for table always.customers
 CREATE TABLE IF NOT EXISTS `customers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `gender` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `dob` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `home_phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `mobile_phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `gender` tinyint(4) NOT NULL,
+  `dob` date NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mobile_phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `home_phone` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `mobile_phone` (`mobile_phone`),
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `home_phone` (`home_phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Data exporting was unselected.
@@ -45,23 +64,21 @@ CREATE TABLE IF NOT EXISTS `invoices` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `customer_id` int(10) unsigned NOT NULL,
   `sale_user_id` int(10) unsigned NOT NULL,
-  `invoice_state` int(11) NOT NULL,
-  `invoice_status` int(11) NOT NULL,
-  `payment_total` float NOT NULL,
-  `payment_discount` float NOT NULL,
-  `payment_net` float NOT NULL,
-  `payment_type` int(11) NOT NULL,
-  `payment_status` int(11) NOT NULL,
+  `invoice_state` int(10) unsigned NOT NULL,
+  `invoice_status` tinyint(1) NOT NULL,
+  `payment_total` double(8,2) NOT NULL,
+  `payment_discount` double(8,2) NOT NULL,
+  `payment_net` double(8,2) NOT NULL,
+  `payment_type` int(10) unsigned NOT NULL,
+  `payment_status` tinyint(1) NOT NULL,
   `transfer_id` int(10) unsigned NOT NULL,
-  `buy_at_store` tinyint(1) unsigned NOT NULL,
+  `buy_at_store` tinyint(1) NOT NULL,
   `ship_address_id` int(10) unsigned NOT NULL,
-  `note` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `IDX_CUSTOMER` (`customer_id`),
-  KEY `IDX_TRANSFER` (`transfer_id`),
-  KEY `IDX_ADDRESS` (`ship_address_id`),
-  KEY `IDX_USER` (`sale_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `note` text COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Data exporting was unselected.
 
@@ -72,13 +89,14 @@ CREATE TABLE IF NOT EXISTS `invoice_items` (
   `invoice_id` int(10) unsigned NOT NULL,
   `product_id` int(10) unsigned NOT NULL,
   `quality` int(10) unsigned NOT NULL,
-  `product_price` float unsigned NOT NULL,
-  `discount` int(10) unsigned NOT NULL,
-  `type` int(10) unsigned NOT NULL,
+  `price` double(8,2) NOT NULL,
+  `discount_value` double(8,2) NOT NULL,
+  `discount_type` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
-  KEY `IDX_INVOICE` (`invoice_id`),
-  KEY `IDX_PRODUCT` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `invoice_items_invoice_id_product_id_unique` (`invoice_id`,`product_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Data exporting was unselected.
 
@@ -107,15 +125,106 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 -- Dumping structure for table always.products
 CREATE TABLE IF NOT EXISTS `products` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `sku` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `series` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `unit` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `brand` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `sku` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `series` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `brand_id` int(10) unsigned NOT NULL,
+  `stock_id` int(10) unsigned NOT NULL,
+  `supplier_id` int(10) unsigned NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `unit_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `deleted_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table always.product_categories
+CREATE TABLE IF NOT EXISTS `product_categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table always.product_prices
+CREATE TABLE IF NOT EXISTS `product_prices` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `price` bigint(20) NOT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `created_user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `price_type` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table always.product_units
+CREATE TABLE IF NOT EXISTS `product_units` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table always.settings_manage_list
+CREATE TABLE IF NOT EXISTS `settings_manage_list` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `category` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `value` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `is_default` tinyint(1) NOT NULL DEFAULT '0',
+  `is_system` tinyint(1) NOT NULL DEFAULT '0',
+  `user_id` int(10) unsigned NOT NULL,
+  `order` int(10) unsigned NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table always.stocks
+CREATE TABLE IF NOT EXISTS `stocks` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table always.suppliers
+CREATE TABLE IF NOT EXISTS `suppliers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `phone` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
