@@ -25651,6 +25651,7 @@ App.Collection = {
   invoice: require('./models/invoice').Collection,
   stock: require('./models/stock').Collection,
   unit: require('./models/product/unit').Collection,
+  category: require('./models/product/category').Collection,
   setting: require('./models/product/unit').Collection
 };
 
@@ -25741,7 +25742,7 @@ App.Router = Backbone.Router.extend({
 
 App.init().run();
 
-},{"./components/breadcrumb":187,"./components/customer":188,"./components/dashboard":191,"./components/feed":192,"./components/invoice":193,"./components/product":195,"./components/product-show":194,"./components/sale":198,"./components/setting":202,"./components/todo/todos":205,"./models/customer":209,"./models/invoice":210,"./models/product":212,"./models/product/unit":213,"./models/stock":214,"./overhead/extend":215,"./store/todos":217,"./test/upload":218,"react":174,"react-dom":5,"react-redux":10,"react-tap-event-plugin":18}],186:[function(require,module,exports){
+},{"./components/breadcrumb":187,"./components/customer":188,"./components/dashboard":191,"./components/feed":192,"./components/invoice":193,"./components/product":195,"./components/product-show":194,"./components/sale":199,"./components/setting":203,"./components/todo/todos":206,"./models/customer":210,"./models/invoice":211,"./models/product":213,"./models/product/category":214,"./models/product/unit":215,"./models/stock":216,"./overhead/extend":217,"./store/todos":219,"./test/upload":220,"react":174,"react-dom":5,"react-redux":10,"react-tap-event-plugin":18}],186:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -26018,7 +26019,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../models/customer":209,"./customer/form":189,"./customer/list":190,"react":174,"react-dom":5}],189:[function(require,module,exports){
+},{"./../models/customer":210,"./customer/form":189,"./customer/list":190,"react":174,"react-dom":5}],189:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -26300,7 +26301,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":206,"react":174,"react-dom":5}],190:[function(require,module,exports){
+},{"./../../mixins":207,"react":174,"react-dom":5}],190:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -26542,7 +26543,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":206,"./form":189,"react":174,"react-dom":5}],191:[function(require,module,exports){
+},{"./../../mixins":207,"./form":189,"react":174,"react-dom":5}],191:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -26917,7 +26918,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":206,"react":174}],194:[function(require,module,exports){
+},{"./../mixins":207,"react":174}],194:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -27182,7 +27183,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../mixins":206,"react":174}],195:[function(require,module,exports){
+},{"./../mixins":207,"react":174}],195:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -27197,6 +27198,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var StockSelect = require('./stock/select');
 var UnitSelect = require('./product/unit/select');
+var CategorySelect = require('./product/category/select');
 
 module.exports = _react2.default.createClass({
   displayName: 'exports',
@@ -27317,21 +27319,6 @@ module.exports = _react2.default.createClass({
         _react2.default.createElement(
           'div',
           { className: 'two fields' },
-          _react2.default.createElement('div', { className: 'required field' }),
-          _react2.default.createElement(
-            'div',
-            { className: 'required field' },
-            _react2.default.createElement(
-              'label',
-              null,
-              Lang.get('product.stock')
-            ),
-            _react2.default.createElement(StockSelect, { field_name: 'stock_id', value: this.state.stock_id })
-          )
-        ),
-        _react2.default.createElement(
-          'div',
-          { className: 'two fields' },
           _react2.default.createElement(
             'div',
             { className: 'required field' },
@@ -27348,7 +27335,7 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'label',
               null,
-              Lang.get('product.price')
+              Lang.get('product.price!long')
             ),
             _react2.default.createElement('input', { ref: 'price', name: 'price', placeholder: Lang.get('product.price') })
           )
@@ -27416,6 +27403,50 @@ module.exports = _react2.default.createClass({
           { className: 'two fields' },
           _react2.default.createElement(
             'div',
+            { className: 'required field' },
+            _react2.default.createElement(
+              'label',
+              null,
+              Lang.get('product.category_id')
+            ),
+            _react2.default.createElement(CategorySelect, { field_name: 'category_id', value: this.state.category_id })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'field' },
+            _react2.default.createElement(
+              'div',
+              { className: 'two fields' },
+              _react2.default.createElement(
+                'div',
+                { className: 'field' },
+                _react2.default.createElement(
+                  'label',
+                  { htmlFor: 'quality_min' },
+                  Lang.get('product.quality_min'),
+                  _react2.default.createElement('i', { className: 'info circle icon' })
+                ),
+                _react2.default.createElement('input', { ref: 'quality_min', id: 'quality_min', name: 'quality_min', placeholder: '0', type: 'text' })
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'field' },
+                _react2.default.createElement(
+                  'label',
+                  { htmlFor: 'quality_max' },
+                  Lang.get('product.quality_max'),
+                  _react2.default.createElement('i', { className: 'info circle icon' })
+                ),
+                _react2.default.createElement('input', { ref: 'quality_max', id: 'quality_max', name: 'quality_max', placeholder: '9999', type: 'text' })
+              )
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'two fields' },
+          _react2.default.createElement(
+            'div',
             { className: 'field' },
             _react2.default.createElement(
               'label',
@@ -27445,7 +27476,62 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./product/unit/select":197,"./stock/select":203,"react":174,"react-dom":5}],196:[function(require,module,exports){
+},{"./product/category/select":196,"./product/unit/select":198,"./stock/select":204,"react":174,"react-dom":5}],196:[function(require,module,exports){
+'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var BackboneModelMixin = require('./../../../mixins').BackboneModelMixin;
+
+module.exports = _react2.default.createClass({
+  displayName: 'exports',
+
+  mixins: [BackboneModelMixin],
+  getInitialState: function getInitialState() {
+    return {
+      collection: App.getModelCollection('category')
+    };
+  },
+  getBackboneModels: function getBackboneModels() {
+    return [this.state.collection];
+  },
+  componentDidMount: function componentDidMount() {
+    this.state.collection.fetch();
+  },
+
+  render: function render() {
+    var options = [_react2.default.createElement(
+      'option',
+      { value: '0' },
+      '--',
+      Lang.get('product.category_select'),
+      '--'
+    )];
+    this.state.collection.each(function (item) {
+      options.push(_react2.default.createElement(
+        'option',
+        { value: item.id },
+        item.get('name')
+      ));
+    });
+    return _react2.default.createElement(
+      'select',
+      { value: this.props.value,
+        name: this.props.field_name },
+      options
+    );
+  }
+});
+
+},{"./../../../mixins":207,"react":174,"react-dom":5}],197:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -27594,7 +27680,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":206,"react":174}],197:[function(require,module,exports){
+},{"./../../mixins":207,"react":174}],198:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -27649,7 +27735,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../../mixins":206,"react":174,"react-dom":5}],198:[function(require,module,exports){
+},{"./../../../mixins":207,"react":174,"react-dom":5}],199:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -27719,7 +27805,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./product/list":196,"./sale/form":199,"react":174,"react-dom":5}],199:[function(require,module,exports){
+},{"./product/list":197,"./sale/form":200,"react":174,"react-dom":5}],200:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28076,7 +28162,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":206,"./../../models/customer":209,"./items":200,"./shipping-addresses":201,"react":174,"react-dom":5}],200:[function(require,module,exports){
+},{"./../../mixins":207,"./../../models/customer":210,"./items":201,"./shipping-addresses":202,"react":174,"react-dom":5}],201:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28206,7 +28292,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":174}],201:[function(require,module,exports){
+},{"react":174}],202:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28355,7 +28441,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":206,"./../address/form":186,"react":174,"react-dom":5}],202:[function(require,module,exports){
+},{"./../../mixins":207,"./../address/form":186,"react":174,"react-dom":5}],203:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28436,7 +28522,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"react":174,"react-dom":5}],203:[function(require,module,exports){
+},{"react":174,"react-dom":5}],204:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28493,7 +28579,7 @@ module.exports = _react2.default.createClass({
   }
 });
 
-},{"./../../mixins":206,"react":174,"react-dom":5}],204:[function(require,module,exports){
+},{"./../../mixins":207,"react":174,"react-dom":5}],205:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28522,7 +28608,7 @@ var NewTodo = function NewTodo(_ref) {
 
 exports.default = NewTodo;
 
-},{"react":174}],205:[function(require,module,exports){
+},{"react":174}],206:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -28607,7 +28693,7 @@ function mapStateToProps(todos) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Todos);
 
-},{"./../../actions/todo":184,"./new-todo":204,"react":174,"react-dom":5,"react-redux":10}],206:[function(require,module,exports){
+},{"./../../actions/todo":184,"./new-todo":205,"react":174,"react-dom":5,"react-redux":10}],207:[function(require,module,exports){
 'use strict';
 
 var BackboneModelMixin = {
@@ -28662,7 +28748,7 @@ var FileUploadMixin = {
 exports.FileUploadMixin = FileUploadMixin;
 exports.BackboneModelMixin = BackboneModelMixin;
 
-},{}],207:[function(require,module,exports){
+},{}],208:[function(require,module,exports){
 'use strict';
 
 var URL = '/sale/address';
@@ -28704,7 +28790,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],208:[function(require,module,exports){
+},{}],209:[function(require,module,exports){
 'use strict';
 
 var URL = '/stock/brand';
@@ -28724,7 +28810,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],209:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 'use strict';
 
 var AddressCollection = require('./address').Collection;
@@ -28759,7 +28845,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./address":207}],210:[function(require,module,exports){
+},{"./address":208}],211:[function(require,module,exports){
 'use strict';
 
 var Customer = require('./customer').Model;
@@ -28858,7 +28944,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./customer":209,"./invoice/item":211}],211:[function(require,module,exports){
+},{"./customer":210,"./invoice/item":212}],212:[function(require,module,exports){
 'use strict';
 
 var Product = require('./../product').Model;
@@ -28944,7 +29030,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./../product":212}],212:[function(require,module,exports){
+},{"./../product":213}],213:[function(require,module,exports){
 'use strict';
 
 var Brand = require('./brand').Model;
@@ -29018,7 +29104,27 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{"./brand":208,"./product/unit":213,"./stock":214}],213:[function(require,module,exports){
+},{"./brand":209,"./product/unit":215,"./stock":216}],214:[function(require,module,exports){
+'use strict';
+
+var URL = '/stock/category';
+var Model = Backbone.Model.extend({
+  rootUrl: URL,
+  initialize: function initialize() {}
+});
+
+var Collection = Backbone.Collection.extend({
+  url: URL,
+  model: Model,
+  parse: function parse(response) {
+    return response;
+  }
+});
+
+exports.Model = Model;
+exports.Collection = Collection;
+
+},{}],215:[function(require,module,exports){
 'use strict';
 
 var URL = '/stock/unit';
@@ -29038,7 +29144,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],214:[function(require,module,exports){
+},{}],216:[function(require,module,exports){
 'use strict';
 
 var URL = '/stock/stock';
@@ -29058,7 +29164,7 @@ var Collection = Backbone.Collection.extend({
 exports.Model = Model;
 exports.Collection = Collection;
 
-},{}],215:[function(require,module,exports){
+},{}],217:[function(require,module,exports){
 'use strict';
 
 $.ajaxSetup({
@@ -29090,7 +29196,7 @@ Number.prototype.format = function (n, x, s, c) {
   return (c ? num.replace(',', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || '.'));
 };
 
-},{}],216:[function(require,module,exports){
+},{}],218:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29115,7 +29221,7 @@ exports.default = function () {
   }
 };
 
-},{"immutable":2}],217:[function(require,module,exports){
+},{"immutable":2}],219:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29132,7 +29238,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = (0, _redux.createStore)(_todos2.default);
 
-},{"./../reducers/todos":216,"redux":176}],218:[function(require,module,exports){
+},{"./../reducers/todos":218,"redux":176}],220:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');

@@ -46,6 +46,7 @@ Route::group([
 	Route::resource('product', 'ProductController');
   Route::resource('stock', 'StockController');
   Route::resource('unit', 'Product\UnitController');
+  Route::resource('category', 'Product\CategoryController');
 });
 
 Route::group([

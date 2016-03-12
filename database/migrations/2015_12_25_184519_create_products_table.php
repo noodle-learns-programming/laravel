@@ -15,8 +15,10 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('sku');
+            $table->string('series');
             $table->string('name');
             $table->string('description');
+            $table->integer('unit_id')->unsigned();
             $table->integer('brand_id')->unsigned();
             $table->integer('stock_id')->unsigned();
             $table->integer('supplier_id')->unsigned();
@@ -24,7 +26,6 @@ class CreateProductsTable extends Migration
             $table->integer('quality_min')->unsigned();
             $table->integer('quality_max')->unsigned();
             $table->boolean('is_active');
-            $table->integer('unit_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });

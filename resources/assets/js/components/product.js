@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 var StockSelect = require('./stock/select');
 var UnitSelect = require('./product/unit/select');
+var CategorySelect = require('./product/category/select');
 
 module.exports = React.createClass({
   getInitialState() {
@@ -114,19 +115,11 @@ module.exports = React.createClass({
         <div className="ui form">
           <div className="two fields">
             <div className="required field">
-            </div>
-            <div className="required field">
-              <label>{ Lang.get('product.stock') }</label>
-              <StockSelect field_name="stock_id" value={this.state.stock_id}/>
-            </div>
-          </div>
-          <div className="two fields">
-            <div className="required field">
               <label>{ Lang.get('product.name') }</label>
               <input ref="name" name="name" placeholder={Lang.get('product.name')} type="text" />
             </div>
             <div className="required field">
-              <label>{ Lang.get('product.price') }</label>
+              <label>{ Lang.get('product.price!long') }</label>
               <input ref="price" name="price" placeholder={Lang.get('product.price')} />
             </div>
           </div>
@@ -154,6 +147,30 @@ module.exports = React.createClass({
             <div className="required field">
               <label>{ Lang.get('product.unit') }</label>
               <UnitSelect field_name="unit_id" value={this.state.unit_id}/>
+            </div>
+          </div>
+          <div className="two fields">
+            <div className="required field">
+              <label>{ Lang.get('product.category_id') }</label>
+              <CategorySelect field_name="category_id" value={this.state.category_id}/>
+            </div>
+            <div className="field">
+              <div className="two fields">
+                <div className="field">
+                  <label htmlFor="quality_min">
+                    { Lang.get('product.quality_min') }
+                    <i className="info circle icon"></i>
+                  </label>
+                  <input ref="quality_min" id="quality_min" name="quality_min" placeholder="0" type="text" />
+                </div>
+                <div className="field">
+                  <label htmlFor="quality_max">
+                    { Lang.get('product.quality_max') }
+                    <i className="info circle icon"></i>
+                  </label>
+                  <input ref="quality_max" id="quality_max" name="quality_max" placeholder="9999" type="text" />
+                </div>
+              </div>
             </div>
           </div>
           <div className="two fields">

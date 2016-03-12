@@ -27,6 +27,7 @@ App.Collection  = {
   invoice   : require('./models/invoice').Collection,
   stock     : require('./models/stock').Collection,
   unit      : require('./models/product/unit').Collection,
+  category  : require('./models/product/category').Collection,
   setting   : require('./models/product/unit').Collection,
 };
 
