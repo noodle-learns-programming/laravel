@@ -17,10 +17,10 @@ module.exports = React.createClass({
   },
   render: function() {
     var options = [
-      <option value="0">--{Lang.get('product.category_select')}--</option>
+      <option value="">--{Lang.get('product.category_select')}--</option>
     ];
     this.state.collection.each(function(item){
-      options.push(<option value={item.id}>
+      options.push(<option value={item.id} key={item.id}>
         {item.get('name')}
       </option>);
     });

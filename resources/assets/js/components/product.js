@@ -34,13 +34,15 @@ module.exports = React.createClass({
       .form({
         on: 'blur',
         fields: {
-          name    : 'empty',
-          sku     : 'empty',
-          price   : 'empty',
-          stock_id: 'empty',
-          series  : 'empty',
-          brand   : 'empty',
-          unit_id : 'empty'
+          name        : 'empty',
+          sku         : 'empty',
+          price       : 'empty',
+          series      : 'empty',
+          brand       : 'empty',
+          unit_id     : 'empty',
+          category_id : 'empty',
+          quality_min : 'empty',
+          quality_max : 'empty'
         },
         onSuccess : function(e, fields){
           e.preventDefault();
@@ -151,19 +153,19 @@ module.exports = React.createClass({
           </div>
           <div className="two fields">
             <div className="required field">
-              <label>{ Lang.get('product.category_id') }</label>
+              <label>{ Lang.get('product.category') }</label>
               <CategorySelect field_name="category_id" value={this.state.category_id}/>
             </div>
             <div className="field">
               <div className="two fields">
-                <div className="field">
+                <div className="required field">
                   <label htmlFor="quality_min">
                     { Lang.get('product.quality_min') }
                     <i className="info circle icon"></i>
                   </label>
                   <input ref="quality_min" id="quality_min" name="quality_min" placeholder="0" type="text" />
                 </div>
-                <div className="field">
+                <div className="required field">
                   <label htmlFor="quality_max">
                     { Lang.get('product.quality_max') }
                     <i className="info circle icon"></i>

@@ -27230,10 +27230,12 @@ module.exports = _react2.default.createClass({
         name: 'empty',
         sku: 'empty',
         price: 'empty',
-        stock_id: 'empty',
         series: 'empty',
         brand: 'empty',
-        unit_id: 'empty'
+        unit_id: 'empty',
+        category_id: 'empty',
+        quality_min: 'empty',
+        quality_max: 'empty'
       },
       onSuccess: function onSuccess(e, fields) {
         e.preventDefault();
@@ -27407,7 +27409,7 @@ module.exports = _react2.default.createClass({
             _react2.default.createElement(
               'label',
               null,
-              Lang.get('product.category_id')
+              Lang.get('product.category')
             ),
             _react2.default.createElement(CategorySelect, { field_name: 'category_id', value: this.state.category_id })
           ),
@@ -27419,7 +27421,7 @@ module.exports = _react2.default.createClass({
               { className: 'two fields' },
               _react2.default.createElement(
                 'div',
-                { className: 'field' },
+                { className: 'required field' },
                 _react2.default.createElement(
                   'label',
                   { htmlFor: 'quality_min' },
@@ -27430,7 +27432,7 @@ module.exports = _react2.default.createClass({
               ),
               _react2.default.createElement(
                 'div',
-                { className: 'field' },
+                { className: 'required field' },
                 _react2.default.createElement(
                   'label',
                   { htmlFor: 'quality_max' },
@@ -27510,7 +27512,7 @@ module.exports = _react2.default.createClass({
   render: function render() {
     var options = [_react2.default.createElement(
       'option',
-      { value: '0' },
+      { value: '' },
       '--',
       Lang.get('product.category_select'),
       '--'
@@ -27518,7 +27520,7 @@ module.exports = _react2.default.createClass({
     this.state.collection.each(function (item) {
       options.push(_react2.default.createElement(
         'option',
-        { value: item.id },
+        { value: item.id, key: item.id },
         item.get('name')
       ));
     });
@@ -27714,7 +27716,7 @@ module.exports = _react2.default.createClass({
   render: function render() {
     var options = [_react2.default.createElement(
       'option',
-      { value: '0' },
+      { value: '' },
       '--',
       Lang.get('product.unit_select'),
       '--'
@@ -27722,7 +27724,7 @@ module.exports = _react2.default.createClass({
     this.state.collection.each(function (unit) {
       options.push(_react2.default.createElement(
         'option',
-        { value: unit.id },
+        { value: unit.id, key: unit.id },
         unit.get('name')
       ));
     });

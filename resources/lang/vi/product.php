@@ -25,6 +25,7 @@ return [
     'price_sale'    => 'Giá bán',
     'total'         => 'T.T',
     'unit_select'   => 'Chọn một',
+    'category'      => 'Nhóm hàng',
     'input_product_price' => 'Nhập giá tiền mới',
     'current_price' => 'Giá hiện tại',
     'quality_min'   => 'Tồn kho tối thiểu',
